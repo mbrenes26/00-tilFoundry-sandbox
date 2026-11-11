@@ -11,3 +11,4 @@
 {"auditor": "seguridad", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "registro": "issue-4/auditoria/seguridad-a5bc3f7", "resultado": "aprobado", "tipo": "veredicto"}
 {"auditor": "codigo", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "registro": "issue-4/auditoria/codigo-a5bc3f7", "resultado": "cambios", "tipo": "veredicto"}
 {"auditor": "ux", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "registro": "issue-4/auditoria/ux-a5bc3f7", "resultado": "aprobado", "tipo": "veredicto"}
+{"auditor": "ui", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "registro": "issue-4/auditoria/ui-a5bc3f7", "resultado": "cambios", "tipo": "veredicto"}
