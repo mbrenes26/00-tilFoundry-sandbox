@@ -13,28 +13,24 @@ aprobacion: {"por": "process:core", "fuente": "core", "commit_aprobado": "1d7dcf
 Commit de referencia proporcionado por Core: `1d7dcf93f72f8462131f818ac5816be635c484c7`.
 
 ## Resultado
-Cambios: implementación y pruebas correctas en la verificación realizada, pero queda pendiente acreditar la evidencia TDD exigida por la spec. No se solicita cambiar el comportamiento de la función.
+**Cambios** por falta de evidencia verificable del rojo original del TDD exigido por la spec. No encontré defectos funcionales ni criterios de comportamiento sin pruebas.
 
-## Referencias y alcance
-Leídos `spec-solucion`, `discovery`, conversación, diff y los tres archivos completos. Los registros `cerebro` y `contrato` no existen; la spec indica una sola línea y documenta que no hay decisiones previas disponibles. El diff solo añade `saludo.py`, `tests/test_saludo.py` y `requirements-dev.txt`, dentro del alcance aprobado informado por Core. No se observaron cambios en Foundry ni archivos fuera de alcance.
-
-## Criterios verificados
-- C1: `saludo.py:11`; caso `ana` en `tests/test_saludo.py:7`, con aserción de igualdad en línea 17. Pasa.
-- C2: `saludo.py:9-10`; caso `vacio` en `tests/test_saludo.py:8`. Pasa.
-- C3: `saludo.py:9-10`; caso `solo-espacios` en `tests/test_saludo.py:9`. Pasa.
-- C4: `saludo.py:11` conserva el nombre original; caso `espacios-originales` en `tests/test_saludo.py:10`. Pasa.
-- C5: caso `acentos` en `tests/test_saludo.py:11`. Pasa.
-- C6: `tests/test_saludo.py:20-28` llama a la función para los cinco casos y comprueba stdout y stderr vacíos mediante capsys. Pasa. La implementación no introduce otros efectos secundarios.
-- C7: `requirements-dev.txt:1` contiene exactamente `pytest>=8,<9`. Instalación y descubrimiento desde la raíz comprobados correctamente.
-La firma pública y la documentación coinciden con la spec. No se encontró código muerto, duplicación problemática ni manejo de errores omitido dentro del contrato; los valores que no son cadenas están expresamente excluidos.
-
-## Evidencia ejecutada
-En la sesión aislada: `python --version` informó Python 3.12.16; `python -m pip install -r requirements-dev.txt` instaló pytest 8.4.2 correctamente; `python -m pytest -v` descubrió seis casos y terminó con `6 passed in 0.02s`.
-También se intentó `git rev-parse HEAD`, que falló porque la sesión no contiene `.git`. La asociación al commit es la proporcionada por Core, no una comprobación local.
+## Criterio y alcance
+Consulté `spec-solucion`, discovery y conversación. Core identifica la spec como aprobada; su registro conserva el encabezado «borrador». No existen registros `cerebro` ni `contrato`; la spec declara una sola línea y ningún contrato entre líneas. El diff solo añade `saludo.py`, `tests/test_saludo.py` y `requirements-dev.txt`, dentro del alcance. No modifica Foundry ni archivos existentes.
 
 ## Hallazgo bloqueante
-B1 — Evidencia TDD requerida todavía no verificable. La sección «Verificación y evidencia requerida» de `spec-solucion` exige pruebas fallidas antes de implementar y correctas después, con comandos y salidas reales; «Entrega y aprobación» exige evidencia por criterio en el PR. La herramienta de lectura del PR devolvió únicamente los diffs, sin cuerpo ni checks. Los registros consultados `informe-construccion`, `informe-pruebas`, `construccion`, `pruebas`, `evidencia` y `entrega` no existen. Por tanto, la ejecución actual demuestra verde, pero no acredita la fase roja previa ni permite comprobar la evidencia publicada. Esto no demuestra que el cuerpo del PR carezca de ella: es una limitación de acceso a la evidencia disponible.
-Acción: facilitar al auditor el cuerpo del PR #3 y la evidencia original de rojo y verde por criterio, con comandos y salidas reales. Si aún no está publicada, incorporarla al PR mediante el rol autorizado. No presentar una ejecución posterior como prueba de haber seguido TDD antes de implementar. Solicitar nueva revisión cuando sea accesible.
+**COD-1 — Falta evidencia accesible del rojo anterior a implementar.** La sección «Verificación y evidencia requerida» exige pruebas fallidas antes de implementar y correctas después, con comandos y salidas reales por criterio; no contempla excepción. La conversación consultada no contiene ejecuciones originales publicadas por Core que acrediten ese rojo. Los registros `evidencia` e `informe-pruebas` devuelven «No existe». El comentario de Core de 2026-11-11 a las 13:10:44 también identifica esta evidencia como pendiente. El resultado verde obtenido en esta auditoría no acredita la secuencia histórica.
 
-## Limitaciones y sugerencias
-El estado de los checks remotos tampoco fue expuesto por las herramientas; el éxito local no los sustituye. El Manager debe obtenerlo de Core. No hay sugerencias adicionales de código ni defectos funcionales observados. No se modificaron archivos fuente.
+Corrección requerida: recuperar y hacer accesible la evidencia original registrada por Core, con sus comandos, resultados y vinculación a las pruebas, e incluir sus referencias de rojo y verde en el PR. Si no existe, declararlo expresamente al Manager para que gestione una decisión humana sobre la exigencia de la spec; no presentar una ejecución fallida posterior como TDD original. No hace falta alterar la función para resolver este hallazgo documental.
+
+## Cobertura y evidencia funcional
+- Criterios 1–5: `saludo.py:9-11` implementa el caso vacío mediante `strip()` y conserva el nombre original en los demás casos. `tests/test_saludo.py:4-17` verifica exactamente Ana, cadena vacía, solo espacios, espacios exteriores y María José. Pasaron los cinco casos parametrizados.
+- Criterio 6: `tests/test_saludo.py:20-28` llama a la función con los cinco casos y comprueba stdout y stderr mediante `capsys`. Pasó.
+- Criterio 7: `requirements-dev.txt:1` contiene `pytest>=8,<9`. Ejecuté desde la raíz `python -m pip install -r requirements-dev.txt && python -m pytest -v && python -m pytest`: salida 0; ambas ejecuciones dieron `6 passed in 0.02s`, con Python 3.12.16 y pytest 8.4.2.
+- La firma pública y documentación están en `saludo.py:4-7`. No observé código muerto, duplicación innecesaria ni efectos secundarios; las entradas que no son cadenas quedan fuera del contrato.
+
+## Límites de comprobación
+La primera ejecución no pudo iniciar pytest porque no estaba instalado; se resolvió instalando las dependencias aprobadas. Ese fallo de entorno no es evidencia del rojo del TDD. La sesión no contiene `.git`, por lo que no pude verificar allí el hash; sus archivos coinciden con el diff entregado por Core. La herramienta de cambios no expone el cuerpo ni los checks del PR y no hay herramienta específica disponible para consultarlos: no afirmo que los checks estén verdes ni que el cuerpo carezca de referencias. El Manager debe obtener esos datos junto con la evidencia original. La plantilla `plantillas/informe-auditoria.md` no está disponible en la rama.
+
+## Sugerencias
+Ninguna adicional. No modifiqué archivos del proyecto ni solicité transiciones.
