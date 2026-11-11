@@ -9,32 +9,30 @@ confidencialidad: "interna"
 procedencia: {"rol": "agente:seguridad", "commit": "1d7dcf93f72f8462131f818ac5816be635c484c7", "modelo": "gpt-6-astra"}
 aprobacion: {"por": "process:core", "fuente": "core", "commit_aprobado": "1d7dcf93f72f8462131f818ac5816be635c484c7"}
 ---
-# Auditoría de seguridad
-
+## Auditoría de seguridad
 Trabajo: issue-2. PR: #3. Commit de referencia proporcionado por Core: 1d7dcf93f72f8462131f818ac5816be635c484c7.
 
-## Veredicto
-Aprobado en seguridad: no se identificaron hallazgos bloqueantes. Este veredicto no decide la entrega ni altera la consolidación calculada por Core.
+### Veredicto
+Aprobado en seguridad: no se identificaron hallazgos bloqueantes en el diff revisado. Este veredicto no aprueba la entrega ni resuelve la evidencia de TDD, que corresponde a la revisión de código.
 
-## Criterio y alcance
-Consultados spec-solucion y discovery. Core identifica la spec como aprobada; el registro conserva estado documental «borrador». No existen registros cerebro ni contrato disponibles; la spec declara una única línea sin contrato entre líneas. Revisados el diff completo y los tres archivos completos: saludo.py, tests/test_saludo.py y requirements-dev.txt. No hay cambios fuera de ese alcance, secretos visibles ni modificaciones de Foundry o .github/.
+### Criterio y alcance
+Se consultaron spec-solucion, discovery y conversación. Core identifica la spec como aprobada; el registro conserva la etiqueta «borrador». No existen registros de cerebro ni contrato separado; la spec indica una sola línea sin contrato entre líneas. Se revisaron los tres archivos completos y sus diffs: saludo.py, tests/test_saludo.py y requirements-dev.txt. No hay cambios en configuración de Foundry ni archivos fuera del alcance en el diff suministrado.
 
-## Evidencia de seguridad
-- saludo.py:4-11: función sin importaciones, red, persistencia, ejecución de comandos, consultas SQL ni evaluación de plantillas. strip() determina el caso vacío y la interpolación devuelve texto literal. No hay un contexto ejecutable que convierta el nombre en una inyección. La conservación del texto original cumple el contrato; no corresponde añadir escape HTML a esta librería de texto.
-- saludo.py:8-11: no registra, imprime ni transmite el nombre recibido. No introduce almacenamiento de datos personales, autenticación, autorización ni permisos nuevos. Las entradas no textuales están explícitamente fuera del contrato.
-- tests/test_saludo.py:1-28: pruebas con datos ficticios, sin credenciales ni operaciones externas; líneas 20-28 comprueban ausencia de salida estándar y de errores.
-- requirements-dev.txt:1: única dependencia directa nueva, pytest>=8,<9, solo de desarrollo y exactamente la solicitada. No hay dependencias de ejecución ni fuentes de descarga personalizadas.
+### Evidencia de seguridad
+- saludo.py:4-11: función de transformación de texto mediante strip() y una cadena interpolada fija. El nombre no se interpreta como código, comando, consulta ni plantilla. No hay destinos de ejecución que permitan inyección.
+- saludo.py:9-11: trata las cadenas vacías según el contrato y conserva las demás. No admitir tipos distintos de str está explícitamente fuera del contrato; no se exige validación adicional. No hay contexto HTML que requiera escape.
+- saludo.py:1-11: sin persistencia, red, registros de nombres, autenticación, autorización ni cambios de permisos. No se introduce un tratamiento de datos personales distinto de devolver el saludo al llamante.
+- tests/test_saludo.py:1-28: datos de ejemplo y pruebas locales; no contiene credenciales ni operaciones externas. Las líneas 20-28 comprueban ausencia de salida estándar y de errores.
+- requirements-dev.txt:1: únicamente pytest>=8,<9, tal como exige la spec y solo como dependencia de desarrollo. No introduce dependencias de ejecución, URLs de instalación ni credenciales.
+- No se encontraron secretos en ninguno de los tres diffs.
 
-## Comprobaciones ejecutadas
-- Entorno aislado: Python 3.12.16.
-- Comprobación directa con Python, sin escribir archivos: ocho entradas, incluidas cadenas con sintaxis SQL, shell, Python y HTML. Se verificaron resultados literales y ausencia de stdout/stderr. Salida: «8 entradas verificadas: texto literal y sin salida stdout/stderr.»; código 0.
-- El primer intento de pytest falló porque no estaba instalado. Después se ejecutó `python -m pip install -r requirements-dev.txt && PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider`: código 0, pytest 8.4.2, «6 passed in 0.01s».
+### Hallazgos bloqueantes
+Ninguno de seguridad.
 
-## Bloqueantes
-Ninguno identificado.
-
-## Sugerencias
+### Sugerencias
 Ninguna necesaria para este alcance.
 
-## Límites de la verificación
-Las herramientas no proporcionaron el estado de los checks remotos del PR; el registro checks no existe. Las pruebas locales no sustituyen esos checks. La sesión carece de .git, por lo que no fue posible corroborar allí el hash: la referencia al commit procede de Core. No se consultó una base de vulnerabilidades de dependencias; la instalación y las pruebas no certifican ausencia de avisos de seguridad en pytest o sus dependencias transitivas.
+### Comprobaciones y límites
+Se intentó ejecutar en sesión aislada: git rev-parse HEAD; python --version; PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider -q; python -m pip show pytest. Salida real: Python 3.12.16; git informó que no hay repositorio .git; pytest no está instalado y las pruebas no se ejecutaron. Código final del comando: 1. No se instalaron dependencias ni se modificaron archivos. No se pudo corroborar el commit desde la sesión; la referencia anterior procede de Core.
+El diff no aporta estados de checks y leer_registro('checks') devolvió «No existe»: no se afirma que la integración continua esté en verde. Tampoco se verificó una versión resuelta de pytest ni se consultó una base actualizada de vulnerabilidades; no se certifica ausencia de avisos de dependencias. El veredicto se basa en revisión estática del cambio acotado.
+La plantilla plantillas/informe-auditoria.md no está disponible mediante leer_archivo; se entrega el informe con criterio, evidencia, bloqueantes, sugerencias y limitaciones explícitos.
