@@ -1,43 +1,45 @@
 ---
 id: "issue-4/auditoria/codigo-a5bc3f7"
 tipo: "informe-auditoria"
-titulo: "Auditoría de codigo sobre a5bc3f7: cambios"
+titulo: "Auditoría de codigo sobre a5bc3f7: aprobado"
 version: 1
 estado: "aprobado"
 solucion: "issue-4"
 confidencialidad: "interna"
 procedencia: {"rol": "agente:codigo", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "modelo": "gpt-6-astra"}
-costo: {"proveedor": "azure-foundry", "tokens_entrada": 105106, "tokens_salida": 1918, "monto_ia": 0.519057, "minutos_computo": 1.329, "monto_computo": 0.002392}
+costo: {"proveedor": "azure-foundry", "tokens_entrada": 118989, "tokens_salida": 2095, "monto_ia": 0.498698, "minutos_computo": 1.534, "monto_computo": 0.002761}
 aprobacion: {"por": "process:core", "fuente": "core", "commit_aprobado": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659"}
 ---
 # Auditoría de código — issue-4, PR #5
 
-Commit auditado: `a5bc3f7771bcbfc717ff0b068a8915eb1e208659`.
-Veredicto: **cambios**, por evidencia de aceptación incompleta; no detecté un fallo funcional en la lógica revisada.
+Commit auditado: a5bc3f7771bcbfc717ff0b068a8915eb1e208659.
+Veredicto: aprobado en la especialidad de código. Sin hallazgos bloqueantes. No supone aprobar la entrega ni acreditar los checks de GitHub.
 
-## Base y alcance
-Consulté `spec-solucion`, `discovery`, `escalamiento`, conversación, diff y archivos de implementación/pruebas. No existen registros `cerebro` ni `contrato`; la spec prescribe HTML/CSS/JavaScript local sin dependencias y una sola línea. El cambio respeta esa arquitectura y las rutas aprobadas. No hay modificaciones de Foundry en el diff examinado. La plantilla `plantillas/informe-auditoria.md` no está disponible; uso secciones explícitas de evidencia, bloqueantes y sugerencias.
+## Referencias y alcance
+Leí spec-solucion, discovery, el registro vigente de escalamiento, la conversación disponible, el diff y los ejecutores de pruebas completos. No existe registro cerebro ni contrato entre líneas; la implementación respeta el stack fijado por la spec: HTML/CSS/JavaScript local sin dependencias de ejecución, instalación o servidor. Los archivos del cambio están dentro de index.html, styles.css, game.js y tests/. No encontré cambios en Foundry ni secretos en el diff.
 
-## Evidencia y cobertura
-- Ejecuté `node tests/game.test.js`: **12/12 aprobadas**. Ejecuté además `node --check game.js && node --check tests/browser.cjs && node --check tests/game.test.js`: salida **0**.
-- C1: referencias locales y ausencia de dependencias externas comprobadas por pruebas de archivos. La evidencia registrada por Core incluye apertura `file://` offline en Chromium y cero solicitudes externas/errores de consola; no repetí esa batería de navegador en esta auditoría.
-- C2–C3: las seis salas, disposición, recursos y objetivos están implementados. Los tests ejercen datos y la batería de navegador comprueba barras y objetivos en el DOM. Existe confirmación humana del aspecto a 1280 × 720 en Chrome 157.0.8103.50, Windows, zoom 100 %.
-- C4–C5: `game.js:38–65` implementa tiempo transcurrido, diagonal normalizada, límites del cuerpo, liberación de teclas y pérdida de foco. Las pruebas ejercen ocho controles, intervalos distintos, bordes/esquinas y limpieza de entrada.
-- C6: `game.js:24–37,46–47` implementa proximidad inclusiva, desempate estable por orden, sustitución y ocultamiento. Las pruebas ejercen las seis puertas y el límite de 48 unidades.
-- C7: escala uniforme separada de coordenadas lógicas; hay pruebas de escala y evidencia automática de geometría en ambas ventanas, pero no aceptación completa del comportamiento escalado.
-- TDD: Core registró el rojo `0/12` antes de implementar y posteriormente el verde `12/12`, además del navegador. La corroboración de navegador fue posterior, como declara `tests/EVIDENCIA.md`.
+Se mantiene el alcance de escritorio ratificado por la persona. No incorporo requisitos de teléfono ni de recorrido con lector de pantalla.
 
-## Bloqueante
-**COD-1 — Falta completar la verificación exigida por C4 y C7.**
+## Evidencia independiente
+Ejecuté en la sesión aislada:
+`node tests/game.test.js && node --check game.js && node --check tests/browser.cjs && node --check tests/game.test.js && node tests/browser.cjs`
+Resultado: salida 0; 12/12 pruebas deterministas aprobadas, sintaxis válida y todas las comprobaciones de navegador aprobadas en Chrome/156.0.8078.79. Incluye file:// offline, ausencia de errores de consola y solicitudes externas, geometría a 1280 × 720 y 1600 × 900, ocho controles mantenidos y liberados, blur sintético, cuatro esquinas y las seis puertas mediante controles reales del protocolo del navegador. El ejecutor produjo capturas; no las inspeccioné visualmente.
 
-Evidencia: `tests/browser.cjs:65` dispara un evento `blur` sintético; no realiza un cambio real de ventana. Las líneas 52–60 solo comprueban geometría a 1600 × 900 y vuelven a 1280 × 720 antes de recorrer los controles. `tests/game.test.js:95–98` comprueba factores de escala y que llamar a `fitScale` no muta el estado, pero no ejercita colisiones e interacción en la escena redimensionada. `tests/EVIDENCIA.md:31–41` reconoce estos límites. La persona confirmó expresamente el 2026-11-11 a las 21:43:38 UTC que no probó la pérdida real de foco ni la nitidez al redimensionar; `escalamiento` conserva esos requisitos, sin dispensarlos.
+## Cobertura de criterios
+1. Apertura local: index.html:7–8 carga únicamente los archivos locales; tests/game.test.js prueba las referencias y tests/browser.cjs:38–46 abre el ejecutor y el juego con file:// y red desconectada. Prueba independiente aprobada.
+2. Escena y distribución: game.js:7–14 define las seis puertas en dos filas; room() y draw() dibujan salas, pasillo y astronauta. Hay prueba de datos y geometría de navegador. La revisión visual humana del 11 de noviembre, 21:31 y 21:43 UTC, confirma la escena a 1280 × 720 en Chrome 157.0.8103.50, Windows, zoom 100 %. No atribuyo a las pruebas lógicas validación visual.
+3. Recursos y objetivos: game.js:15–22 y 77–89 define los valores, construye barras e iconos y muestra los tres objetivos. Las pruebas verifican datos exactos, proporciones de barras y permanencia de recursos tras recorrido; también verifican que los datos de objetivos no cambian al avanzar o interactuar. No hay mecanismos para completar tareas.
+4. Movimiento: game.js:38–49 normaliza la diagonal y usa tiempo transcurrido; 51–67 gestiona pulsación, liberación, prevención de scroll, blur y visibilidad; 153–161 integra animación y reinicio temporal. Las pruebas ejercen ambos esquemas, intervalos diferentes y detención. La prueba humana del 22:04 UTC, repetida a las 22:20, confirma Alt+Tab con flecha pulsada, liberación fuera y regreso sin movimiento atascado.
+5. Colisiones: game.js:44–45 limita el cuerpo completo, no solo su centro. Pruebas deterministas de cuatro bordes y cuatro esquinas, más recorrido de esquinas en navegador, aprobadas. La persona confirma recorrido sin atravesar paredes, también después de redimensionar.
+6. Interacción: game.js:24–37 selecciona por distancia dentro de radio inclusivo 48, mantiene desempate estable y sustituye el mensaje; 46–47 lo oculta al alejarse. Las pruebas ejercen nombres de las seis salas, frontera del radio, desempate, sustitución y ocultamiento. El navegador recorre las seis puertas; la revisión humana anterior también confirmó cada sala.
+7. Escalado: game.js:50, 75–76 y styles.css:5–6 separan coordenadas lógicas y presentación mediante escala uniforme. Las pruebas del navegador comprueban geometría y proporciones a ambas dimensiones. El test lógico de invariancia es débil —véase sugerencia—, pero la separación de coordenadas se confirma en el código y hay evidencia manual complementaria: la persona confirmó nitidez a 1600 × 900 y al redimensionar, recorrido sin atravesar paredes e interacción con las salas que probó. No afirmo que probara individualmente las seis puertas después de redimensionar, ni lo exijo como requisito adicional a la spec.
 
-Acción: completar y registrar la prueba real de cambiar de ventana con una tecla mantenida y volver sin movimiento atascado; completar la inspección a 1600 × 900 y el recorrido con colisiones/interacción tras redimensionar, indicando navegador, versión, zoom y resultados. No hace falta repetir la revisión humana ya confirmada a 1280 × 720. Incorporar evidencia verificable y corregir únicamente si aparece un fallo. No sustituir estas comprobaciones por otro `blur` sintético o por la sola geometría DOM. Este hallazgo es de cobertura de aceptación, no un juicio sobre la calidad visual, que corresponde a UI/UX.
+La nueva evidencia humana registrada en escalamiento cubre la comprobación real de foco y las comprobaciones de redimensionado que anteriormente constaban pendientes; no corresponde volver a pedir esas mismas pruebas.
 
 ## Sugerencias no bloqueantes
-- `tests/game.test.js:15–16,105–107`: en el ejecutor HTML, C1 retorna sin comprobar nada y aparece como APROBADO. Marcarlo como omitido/no aplicable o añadir una comprobación real de navegador; la prueba Node y la batería offline sí aportan cobertura independiente.
-- `styles.css:10`: eliminar `top: sixty`, declaración inválida y sin efecto que queda antes de `top: 60px`.
-- `tests/EVIDENCIA.md:28–29,44`: menciona dos PNG que no están en el inventario de la rama ni en la sesión actual. Publicarlos como evidencia accesible o aclarar que son salidas generadas del verificador, no archivos incluidos en el PR.
+- styles.css:10: quitar `top: sixty`, declaración inválida y redundante. El posterior `top: 60px` funciona y evita un defecto de presentación actual.
+- tests/game.test.js, prueba C7: comparar un estado antes y después de llamar a fitScale(), que no recibe ese estado, no detecta regresiones de la integración del resize. Conviene ampliar tests/browser.cjs para repetir límites e interacción a 1600 × 900; hoy vuelve a 1280 × 720 antes del recorrido. La evidencia manual cubre esta entrega, pero la automatización sería más útil para cambios futuros.
+- tests/game.test.js:16 y resumen del ejecutor HTML: C1 retorna sin comprobaciones en navegador y aun así figura APROBADO. Marcar ese subcaso como omitido/no aplicable o añadir una comprobación propia del navegador evitaría presentar 12 comprobaciones efectivas cuando una solo se ejecuta en Node. La apertura offline está cubierta independientemente por tests/browser.cjs y no queda un criterio sin verificar.
 
-## Límites de esta auditoría
-La herramienta del PR devolvió el diff, no su cuerpo ni el estado de sus checks; los registros `pr` y `checks` no existen. Por ello no puedo acreditar que el cuerpo del PR enlace el rojo/verde ni afirmar que sus checks estén en verde. El Manager debe verificar esos metadatos. No modifiqué archivos ni solicité transiciones.
+## Límites de trazabilidad para el Manager
+La herramienta de diff no proporciona cuerpo del PR ni estado de checks; no pude confirmar esos dos elementos. tests/EVIDENCIA.md:8–12 documenta el rojo previo (salida 1, 0/12 por ausencia de game.js) y el verde posterior, pero el tramo de conversación que contiene aquel rojo quedó omitido por la herramienta. El verde actual sí fue reproducido y registrado por Core en esta ejecución. No presento la narración del archivo como evidencia independiente del rojo ni como comprobación del cuerpo del PR: corresponde verificar su presencia y los checks con los metadatos de Core antes de decidir la entrega. El documento de construcción conserva pendientes históricos; deben leerse junto al escalamiento vigente y las confirmaciones humanas posteriores, no como estado actual del trabajo.
