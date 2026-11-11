@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nave lunar — Bitácora de exploración</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main id="stage" aria-label="Prototipo navegable de la nave lunar">
+    <canvas id="scene" width="1200" height="675" aria-label="Nave cenital: Puente de Mando, Laboratorio y Soporte Vital arriba; Habitaciones, Almacén y Sala de Máquinas abajo, conectadas por el pasillo central."></canvas>
+    <header><h1>NAVE LUNAR <span>/ SELENE-01</span></h1><span class="status">● SISTEMAS EN LÍNEA</span></header>
+    <section id="resources" aria-label="Recursos de la nave"></section>
+    <aside id="objectives"><div class="eyebrow">REGISTRO DE MISIÓN / 01</div><h2>Objetivo actual</h2><div class="rule"></div><ol id="objective-list"></ol><p class="panel-note">DESTINO: SUPERFICIE LUNAR<br>Estado: en preparación</p><div class="moon" aria-hidden="true"></div></aside>
+    <div id="message" role="status" aria-live="polite" hidden></div>
+    <footer><p>Flechas o WASD para moverte. E junto a una puerta para identificar la sala</p><span>EXPLORACIÓN / CUBIERTA 01</span></footer>
+  </main>
+  <noscript>Activa JavaScript en el navegador para recorrer la nave.</noscript>
+</body>
+</html>
