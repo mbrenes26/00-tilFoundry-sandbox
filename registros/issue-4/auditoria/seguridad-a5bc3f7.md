@@ -7,36 +7,30 @@ estado: "aprobado"
 solucion: "issue-4"
 confidencialidad: "interna"
 procedencia: {"rol": "agente:seguridad", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "modelo": "gpt-6-astra"}
-costo: {"proveedor": "azure-foundry", "tokens_entrada": 99715, "tokens_salida": 1546, "monto_ia": 0.460695, "minutos_computo": 0.423, "monto_computo": 0.000761}
+costo: {"proveedor": "azure-foundry", "tokens_entrada": 88228, "tokens_salida": 1367, "monto_ia": 0.430529, "minutos_computo": 0.34, "monto_computo": 0.000612}
 aprobacion: {"por": "process:core", "fuente": "core", "commit_aprobado": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659"}
 ---
-# Informe de auditoría de seguridad
+# Auditoría de seguridad — issue-4, PR #5
 
-## Identificación y veredicto
-- Trabajo: issue-4. PR: #5.
-- Commit auditado según Core: a5bc3f7771bcbfc717ff0b068a8915eb1e208659.
-- Resultado: aprobado en seguridad, sin hallazgos bloqueantes. No constituye aprobación de entrega ni resuelve los requisitos visuales pendientes.
+Commit evaluado: a5bc3f7771bcbfc717ff0b068a8915eb1e208659 (identificación proporcionada por Core).
+Veredicto: aprobado en seguridad. No se identificaron hallazgos bloqueantes.
 
 ## Criterio y alcance
-Se consultaron spec-solucion, discovery, conversación y diff, y se leyeron completos los ejecutores de pruebas. Core identifica la spec como aprobada y el trabajo como VERIFYING; el encabezado antiguo «borrador» no se tomó como estado vigente. No existen registros cerebro ni contrato. El alcance autorizado es index.html, styles.css, game.js y tests/. No se observan cambios en Foundry, configuración del repositorio ni archivos fuera del alcance.
-La plantilla plantillas/informe-auditoria.md no está disponible; se usa esta estructura explícita de criterio, hallazgos, evidencia y límites.
+Consulté spec-solucion, discovery, escalamiento, conversación, diff e inventario de archivos. No existe registro cerebro ni contrato; el criterio arquitectónico es la spec aprobada indicada por Core: HTML/CSS/JavaScript local, sin servidor, dependencias remotas, persistencia ni instalación para jugar. Revisé los archivos de aplicación y los ejecutores de pruebas completos; el diff inicial estaba recortado y completé la lectura de los archivos de tests. No hay cambios en configuración de Foundry ni archivos fuera del alcance informado por Core.
 
 ## Hallazgos bloqueantes
-Ninguno. No se identificaron secretos, credenciales ni vulnerabilidades explotables en los archivos revisados.
+Ninguno. No observé secretos o credenciales en el contenido revisado, ni flujos explotables de inyección, extracción de datos o escalada de permisos en el juego.
 
-## Evaluación con evidencia
-- Recursos locales y ausencia de dependencias remotas: index.html:7–8 carga exclusivamente styles.css y game.js. El juego no incorpora paquetes, servidor, autenticación, persistencia ni permisos de dispositivo. No se introducen dependencias con versiones que auditar.
-- Inyección y datos personales: game.js:80–93 construye la presentación con createElement y textContent; los nombres, objetivos y valores proceden de constantes locales (líneas 7–23). No hay innerHTML, evaluación dinámica, lectura de parámetros de URL ni tratamiento de datos personales en el juego.
-- Entradas: game.js:51–68 limita las teclas a controles conocidos y las usa únicamente para movimiento e interacción. No se convierten en HTML, comandos o rutas de archivo.
-- Herramienta opcional: tests/browser.cjs:3–10 lanza Chromium con argumentos separados y sin shell; emplea un perfil temporal propio. Las expresiones enviadas por Runtime.evaluate son literales del verificador, no entradas del jugador. La depuración se consulta en 127.0.0.1:9222 (líneas 29–31); no forma parte de index.html ni del juego distribuido para abrir localmente. La limpieza final elimina el perfil temporal creado por el propio proceso.
-- Pruebas HTML: tests/index.html carga dos scripts locales; tests/game.test.js presenta resultados mediante textContent, no interpretación de HTML.
+## Evidencia de revisión
+- index.html:7–8 y tests/index.html:8: scripts y estilos locales. La aplicación no introduce servicios, bibliotecas externas ni descargas.
+- game.js:6–23, 80–93: datos de salas, recursos y objetivos constantes; los textos se insertan con textContent o se dibujan en canvas. No se interpretan como HTML o código, ni se leen parámetros de URL o mensajes externos.
+- game.js:53–69: entradas limitadas a controles de teclado conocidos; no existe ejecución de comandos ni persistencia de esas entradas. No se implementan cuentas, autenticación, datos personales o backend que requieran nuevos controles de autorización.
+- tests/browser.cjs:9–16, 26–39, 58 y 81: el proceso Chromium y las expresiones del protocolo de depuración proceden del propio verificador, sin argumentos de shell interpolados desde entradas del jugador. Perfil temporal propio, capturas con rutas fijas y limpieza del perfil temporal. Las conexiones HTTP/WebSocket pertenecen a la verificación local y no al juego.
+- Ejecuté en sesión aislada node tests/game.test.js y comprobaciones de sintaxis de game.js, tests/browser.cjs y tests/game.test.js: código de salida 0, 12/12 pruebas aprobadas. La búsqueda complementaria de superficies sensibles solo encontró el verificador local y la expresión de comprobación de dependencias; la evaluación no depende únicamente de esa búsqueda.
+- La evidencia previa registrada por Core incluye ejecución de tests/browser.cjs con apertura file:// offline, ausencia de errores de consola y 0 solicitudes HTTP externas del juego. No repetí ese ejecutor en esta auditoría porque genera archivos de capturas.
 
-## Sugerencia no bloqueante
-S-1 — Reducir privilegios del verificador opcional (tests/browser.cjs:10,29–31). Se desactiva siempre el sandbox de Chromium y se utiliza el puerto fijo 9222. Recomiendo conservar el sandbox por defecto, permitir la excepción solo en un entorno aislado que la necesite y seleccionar un endpoint de depuración exclusivo del proceso iniciado, en lugar de reutilizar potencialmente otro Chromium que ya escuche en 9222. El perfil temporal ya reduce el riesgo. No se acredita una explotación en este prototipo: el verificador carga archivos locales controlados y no se ejecuta al jugar; por eso se registra como endurecimiento y no como bloqueo.
-
-## Evidencia ejecutada
-En sesión aislada se ejecutó node tests/game.test.js: 12/12 aprobadas. También se ejecutaron node --check game.js y node --check tests/browser.cjs sin errores. El comando completo terminó con código 0. La búsqueda estática de sinks HTML, evaluación dinámica, APIs de red, almacenamiento, cookies y ejecución de procesos no encontró estas superficies en los tres archivos del juego; las coincidencias operativas quedaron limitadas al verificador opcional descrito arriba.
-La conversación contiene evidencia registrada por Core de pruebas anteriores en Chromium con apertura file:// offline, sin errores de consola y sin solicitudes HTTP externas del juego. No se repitió ese ejecutor en esta auditoría porque escribe capturas; no se modificaron archivos.
+## Sugerencias no bloqueantes
+S-1 — Endurecimiento del verificador opcional (tests/browser.cjs:10, 29–31). Evitar --no-sandbox cuando el entorno permita el aislamiento de Chromium, y preferir un puerto efímero asociado al proceso recién iniciado en vez del puerto fijo 9222. Reduce la pérdida de defensa en profundidad y el riesgo de conectarse a otra instancia local. El verificador actual usa un perfil temporal y carga archivos controlados del proyecto; no identifiqué un camino explotable desde las entradas del juego. No es un bloqueo para esta entrega local.
 
 ## Límites
-Las herramientas disponibles no mostraron el estado de checks del PR #5 y leer_registro(tipo=checks) devolvió «No existe». No afirmo que los checks del commit estén verdes: las pruebas de sesión y la evidencia previa no sustituyen ese estado. Tampoco se realizó un escaneo externo de CVE del Chromium instalado ni una revisión visual, ajena a esta especialidad. El Manager debe conservar estos límites al consolidar los cuatro veredictos.
+El estado de los checks de GitHub no aparece en la respuesta del PR y leer_registro(tipo=checks) devuelve que no existe; no los declaro aprobados. Core y el Manager deben comprobarlos para la entrega. No se hizo un escaneo contra una base de vulnerabilidades de Chromium/Node; no se agregan paquetes de terceros al producto. Este veredicto cubre seguridad, no reemplaza los restantes auditores ni la aprobación humana. No modifiqué archivos ni pedí transiciones.
