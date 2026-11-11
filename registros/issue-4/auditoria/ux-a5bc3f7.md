@@ -7,22 +7,21 @@ estado: "aprobado"
 solucion: "issue-4"
 confidencialidad: "interna"
 procedencia: {"rol": "agente:ux", "commit": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659", "modelo": "gpt-6-sol"}
-costo: {"proveedor": "azure-foundry", "tokens_entrada": 82871, "tokens_salida": 1327, "monto_ia": 0.079656, "minutos_computo": 1.081, "monto_computo": 0.001946}
+costo: {"proveedor": "azure-foundry", "tokens_entrada": 61065, "tokens_salida": 955, "monto_ia": 0.066983, "minutos_computo": 1.021, "monto_computo": 0.001838}
 aprobacion: {"por": "process:core", "fuente": "core", "commit_aprobado": "a5bc3f7771bcbfc717ff0b068a8915eb1e208659"}
 ---
-# Informe de auditoría — UX
+## Auditoría UX — PR #5, commit a5bc3f7771bcbfc717ff0b068a8915eb1e208659
 
-**Trabajo:** issue-4 · **PR:** #5 · **Commit auditado:** `a5bc3f7771bcbfc717ff0b068a8915eb1e208659` · **Veredicto:** aprobado en UX.
+**Resultado:** aprobado para la especificación de escritorio del issue #4.
 
-## Bloqueantes
-Ninguno observado en el flujo de la persona usuaria: abrir el archivo, recorrer el pasillo e identificar las seis salas.
+### Bloqueantes
+Ninguno en experiencia de uso. La persona confirmó en el issue que mantendrá teléfono y lector de pantalla fuera de esta entrega.
 
-## Sugerencias y verificación pendiente
-- Antes de la entrega, completar o dejar expresamente sin acreditar la revisión visual manual a 1600 × 900, la nitidez al redimensionar y el cambio real de ventana con una tecla pulsada. El comentario de la persona en el issue #4 confirma la experiencia en Chrome 157.0.8103.50, Windows, zoom 100 %, a 1280 × 720, pero indica que no probó esos tres casos. `tests/browser.cjs` simula pérdida de foco y comprueba geometría, no reemplaza esas observaciones. No hay aquí evidencia de un fallo de UX; es una limitación de verificación que debe conocer el manager.
+### Evidencia
+- `index.html:17-19` muestra «Objetivo actual», la indicación de Flechas/WASD y E, y un espacio de mensaje; `game.js:47-58` permite moverse con ambos controles, detiene al soltar o perder foco y evita que las flechas desplacen la página. `game.js:24-46,97,158-163` muestra el nombre de la puerta cercana al pulsar E y oculta el mensaje al salir del radio.
+- En esta auditoría ejecuté `node tests/game.test.js && node tests/browser.cjs`: salida 0, 12/12 pruebas locales y comprobaciones de Chromium aprobadas; recorrido automatizado por las seis puertas, apertura `file://` sin conexión, paneles y recursos sin cambios y escala sin scroll a 1280 × 720 y 1600 × 900. El navegador automatizado fue Chromium 156.0.8078.79; estas comprobaciones no sustituyen una inspección visual.
+- La persona registró en el issue una revisión real en Chrome 157.0.8103.50, Windows, zoom 100 %: a 1280 × 720 comprobó visibilidad y fluidez; a 1600 × 900 y tras redimensionar comprobó nitidez, recorrido y las salas que probó; también comprobó que tras Alt+Tab el astronauta permanece detenido. El recorrido automatizado sí cubre las seis puertas, pero la última comprobación humana no afirma haber probado las seis después de redimensionar.
+- El diff incluye únicamente `index.html`, `styles.css`, `game.js` y `tests/`, dentro del alcance. No se pudo consultar desde estas herramientas el estado de los checks del PR en GitHub; la ejecución local y la evidencia publicada en el issue no equivalen a confirmarlos.
 
-## Evidencia
-- La instrucción para jugar está visible y en español (`index.html:18`); las seis puertas se pueden identificar sin entrar en las salas (`game.js:7-14,39-45,147-150`; `index.html:17`). El mensaje aparece al pulsar E, se reemplaza al escoger otra puerta y se oculta al salir del radio (`game.js:39-56,113`). Los objetivos y los porcentajes solicitados se presentan como información estática (`game.js:15-23,102-112`; `index.html:16`).
-- En sesión aislada, `node tests/game.test.js && node tests/browser.cjs` terminó con salida 0: 12/12 pruebas y apertura `file://` sin conexión; comprobación automatizada de los ocho controles, las seis puertas, el mensaje, la detención al soltar y tras blur sintético, sin scroll ni errores de consola. El ejecutor reporta expresamente que las capturas a 1280 × 720 y 1600 × 900 no se revisaron visualmente.
-- No dispongo de un estado independiente de los checks del PR #5 mediante las herramientas de esta auditoría; la ejecución local anterior no debe confundirse con los checks de GitHub.
-
-**Criterio:** spec aprobada `issue-4/spec-solucion`, sin contrato entre líneas ni decisiones vigentes del cerebro registradas.
+### Sugerencias no bloqueantes
+Ninguna de UX dentro de la especificación aprobada. La presentación para teléfonos y el recorrido con lector de pantalla quedaron explícitamente para un pedido distinto.
