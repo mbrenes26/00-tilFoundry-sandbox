@@ -1,24 +1,37 @@
 ---
 id: "issue-2/discovery"
 tipo: "discovery"
-titulo: "Discovery inicial: función de saludo en Python"
+titulo: "Discovery para confirmar: librería de saludo en Python"
 version: 1
 estado: "borrador"
 solucion: "issue-2"
 confidencialidad: "interna"
-procedencia: {"rol": "agente:manager-producto", "commit": "2ec6d2ee15d220f24a7a7fbea0b90e2282149c1c", "modelo": "gpt-6.1-sol"}
+procedencia: {"rol": "agente:manager-producto", "commit": "b34d3e313069f8497beb20b62b56cc410a3808f5", "modelo": "gpt-6.1-sol"}
 ---
+## Necesidad
+Crear una pequeña librería de Python que devuelva un saludo por nombre, con pruebas automatizadas mediante pytest.
+
 ## Lo que la persona dijo
-Quiere una función con pruebas para una pequeña librería de Python. Debe recibir un nombre y devolver «Hola, <nombre>!». Si el nombre viene vacío, debe devolver «Hola, mundo!».
+- La función recibirá un nombre y devolverá `Hola, <nombre>!`.
+- Una cadena vacía devolverá `Hola, mundo!`.
+- Un nombre compuesto solo por espacios también contará como vacío.
+- La librería se creará desde cero en este repositorio y utilizará pytest.
 
 ## Repositorio observado
-El inventario disponible solo contiene README.md, cuyo contenido es el título «00-tilFoundry-sandbox». No se observaron código, tests ni configuración de ejecución.
+El inventario contiene únicamente README.md, con el título `00-tilFoundry-sandbox`. No se observaron código, pruebas ni configuración de ejecución. La persona confirmó que es un desarrollo nuevo (greenfield).
 
 ## Inferencias
-Se propone tratar este pedido como un desarrollo nuevo (greenfield), pendiente de confirmación de la persona.
+Una sola línea de producto puede cubrir la función y sus pruebas. El resultado del saludo se devuelve como texto; no se requiere mostrarlo en pantalla.
 
 ## Supuestos y datos no verificados
-No está definido si un nombre compuesto solo por espacios cuenta como vacío. Tampoco están definidos el nombre público de la función, la estructura de la librería ni el comando de pruebas. No hay registro de cerebro disponible; no se presuponen decisiones vigentes.
+- No se ha definido el nombre público de la función ni la estructura de archivos; se propondrán en la spec.
+- No se ha definido si se conservan los espacios alrededor de un nombre no vacío. La propuesta para confirmar es conservar el nombre tal como se recibe y usar la comprobación de espacios únicamente para detectar nombres vacíos.
+- No se han solicitado entradas distintas de cadenas de texto ni validaciones para ellas.
+- No existe un registro de cerebro disponible: no se presuponen decisiones vigentes.
+- No se han ejecutado pruebas; todavía no hay implementación.
 
-## Pendiente
-Confirmar que se creará la librería desde cero en este repositorio y aclarar el comportamiento para nombres compuestos solo por espacios. Todavía no hay discovery confirmado ni spec aprobada.
+## Alcance propuesto
+Función de saludo para nombres de texto y pruebas con pytest de un nombre normal, una cadena vacía y una cadena compuesta solo por espacios. Sin modificar README.md ni añadir funciones ajenas al saludo.
+
+## Pendiente de confirmación
+Mostrar este resumen a la persona y obtener su confirmación antes de redactar la spec. El estado sigue siendo DISCOVERING; no existe spec aprobada.
