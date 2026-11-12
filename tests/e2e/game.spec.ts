@@ -36,6 +36,8 @@ test('J2 todos los controles esenciales caben a 1280x720',async({page})=>{
 test('J4 aviso se invalida y revalida tras controles reales de espera',async({page})=>{
  await prepare(page,{antenna:false});await page.getByTestId('launch').click();
  await expect(page.getByTestId('risk-warning')).toContainText('68 %');
+ // Para cambiar el estado hay que cerrar primero el aviso modal.
+ await page.getByTestId('cancel-warning').click();
  await action(page,'wait-20');await expect(page.getByTestId('risk-warning')).toBeHidden();
  await expect(page.getByTestId('launch-anyway')).toHaveCount(0);await expect(page.getByTestId('result')).toBeHidden();
  await action(page,'wait-20');await expect(page.getByTestId('clock')).toHaveText('Día 1, 10:40');

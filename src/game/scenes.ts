@@ -128,10 +128,15 @@ export class UIScene extends Phaser.Scene {
    ${session.busy?`<div class="progress panel" data-testid="progress" tabindex="-1">Tarea confirmada en curso · sin cancelación <div class="bar"><span style="width:${Math.round(this.progress*100)}%"></span></div></div>`:''}
    ${this.pending?this.confirmation(this.pending):''}
    ${session.warning?`<section class="dialog panel" data-testid="risk-warning" role="dialog" aria-modal="true" aria-labelledby="risk-title"><h2 id="risk-title">Riesgos detectados en la revisión</h2><ul>${v.launch.risks.map(r=>`<li>${r.text}</li>`).join('')}</ul><p>Estos riesgos provocarán fallo. Cancelar no consume tiempo.</p><button data-testid="cancel-warning">Cancelar</button><button data-testid="launch-anyway" class="danger">Lanzar de todos modos</button></section>`:''}`;
+  const dialog=this.root.querySelector<HTMLElement>('[role=dialog]');
+  // El fondo modal no recibe puntero ni foco; cada render recrea los controles.
+  for(const child of Array.from(this.root.children)) (child as HTMLElement).inert=!!dialog&&child!==dialog;
   this.restoreFocus(focused);
  }
  private confirmation(action:Action){const p=previewAction(session.state,action);return `<section class="dialog panel" data-testid="confirmation" role="dialog" aria-modal="true" aria-labelledby="confirmation-title"><h2 id="confirmation-title">Confirmar acción</h2><p>${p.durationMinutes} min de juego · ${money(p.budgetCost)}${p.inventoryCosts.parts?` · ${p.inventoryCosts.parts} repuestos`:''}</p><p>${p.effects.map(text).join('<br>')}</p><p class="danger">${p.reasons.map(r=>text(r.text)).join(' ')}</p><button data-testid="cancel-action">Cancelar</button><button data-testid="confirm-action" ${p.allowed?'':'disabled'}>Confirmar</button></section>`;}
  private click(event:Event){
+  const dialog=this.root.querySelector<HTMLElement>('[role=dialog]');
+  if(dialog&&!dialog.contains(event.target as Node)){event.preventDefault();return;}
   const button=(event.target as HTMLElement).closest('button');if(!button||button.disabled)return;const id=button.dataset.testid;
   if(id?.startsWith('room-')){this.room=id.slice(5);this.render();return;}
   if(id==='close-panel'){this.room=null;this.render();return;}
