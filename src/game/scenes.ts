@@ -51,11 +51,47 @@ export class UIScene extends Phaser.Scene {
  private progress=0;
  private launchAnimating=false;
  private handler=(event:Event)=>this.click(event);
+ private modalOrigin:string|null=null;
+ private modalId:string|null=null;
+ private keyboardHandler=(event:KeyboardEvent)=>{
+  if(event.key!=='Tab')return;
+  const dialog=this.root.querySelector<HTMLElement>('[role=dialog]');if(!dialog)return;
+  const buttons=Array.from(dialog.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'));
+  const index=buttons.indexOf(document.activeElement as HTMLButtonElement);
+  event.preventDefault();buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length]?.focus();
+ };
+ private focusKey(element:Element|null){
+  if(!element||!this.root.contains(element))return null;
+  const el=element as HTMLElement;
+  if(el.dataset.testid)return `[data-testid="${el.dataset.testid}"]`;
+  if(el.dataset.profile)return `[data-profile="${el.dataset.profile}"]`;
+  return null;
+ }
+ private restoreFocus(previous:string|null){
+  const dialog=this.root.querySelector<HTMLElement>('[role=dialog]');
+  const id=dialog?.dataset.testid??null;
+  const find=(key:string|null)=>key?this.root.querySelector<HTMLElement>(key):null;
+  const available=(el:HTMLElement|null)=>el&&!el.matches(':disabled')?el:null;
+  let target:HTMLElement|null=null;
+  if(dialog){
+   const saved=available(find(previous));
+   target=id===this.modalId&&saved&&dialog.contains(saved)?saved:dialog.querySelector('button:not(:disabled)');
+  }else{
+   target=available(find(this.modalId?this.modalOrigin:previous));
+   // Los controles deshabilitados no pueden recibir foco nativo. Durante una
+   // tarea o un despegue se enfoca su estado; después, el panel de origen.
+   if(!target&&(this.modalId||previous))target=this.root.querySelector<HTMLElement>('[data-testid=progress], [data-testid=launch-animation]')
+    ??available(find(this.modalOrigin))
+    ??this.root.querySelector<HTMLElement>('[data-testid=repairs-panel]');
+  }
+  this.modalId=id;target?.focus({preventScroll:true});
+ }
  constructor(){super('UIScene');}
  create(){
   this.room=null;this.draft=72;this.chosen='balanced';this.pending=null;this.progress=0;this.launchAnimating=false;this.message='Explora la base. Las fases orientan: no son barreras de lanzamiento.';
-  this.root=document.createElement('div');this.root.className='game-ui';this.root.addEventListener('click',this.handler);this.add.dom(0,0,this.root).setOrigin(0);this.render();
-  this.events.once('shutdown',()=>{this.root.removeEventListener('click',this.handler);this.tweens.killAll();this.time.removeAllEvents();this.root.remove();});
+  this.modalOrigin=null;this.modalId=null;
+  this.root=document.createElement('div');this.root.className='game-ui';this.root.addEventListener('click',this.handler);this.root.addEventListener('keydown',this.keyboardHandler);this.add.dom(0,0,this.root).setOrigin(0);this.render();
+  this.events.once('shutdown',()=>{this.root.removeEventListener('click',this.handler);this.root.removeEventListener('keydown',this.keyboardHandler);this.tweens.killAll();this.time.removeAllEvents();this.root.remove();});
  }
  private actionButton(id:string,label:string,action:Action){const p=previewAction(session.state,action);const complete=(action.type==='repair'&&session.state.repairs[action.system])||(action.type==='weather'&&session.state.weatherConsulted)||(action.type==='trajectory'&&session.state.trajectory);const disabled=session.busy||!!session.state.result||complete;return `<button data-testid="${id}" ${disabled?'disabled':''} title="${text([...p.effects,...p.reasons.map(r=>r.text)].join(' '))}">${label}${complete?' ✓':` <small>${p.durationMinutes} min · ${money(p.budgetCost)}${p.inventoryCosts.parts?` · ${p.inventoryCosts.parts} rep.`:''}</small>`}</button>`;}
  private details(v:GameView){
@@ -74,6 +110,7 @@ export class UIScene extends Phaser.Scene {
   const title=rooms.find(([id])=>id===this.room)?.[1];return `<section class="detail panel" data-testid="detail"><header><h2>${title}</h2><button data-testid="close-panel">Cerrar</button></header>${content}</section>`;
  }
  render(){
+  const focused=this.focusKey(document.activeElement);
   const s=session.state,v=getView(s,this.draft),a=this.actionButton.bind(this);
   const launchReasons=[...v.launch.blockedReasons.map(r=>r.text),...(session.busy?['Hay una tarea en curso.']:[])];
   this.root.innerHTML=`
@@ -84,15 +121,16 @@ export class UIScene extends Phaser.Scene {
    <div class="platform-label">PLATAFORMA DE LANZAMIENTO<br>Cohete ${s.profile?v.profile.name:'sin diseñar'}</div>
    <div class="status panel" role="status">${text(this.message)}</div>
    <section class="parameters panel"><h2>Parámetros de Lanzamiento</h2><div class="row"><button data-testid="angle-minus" ${session.busy||this.draft<=45||s.result?'disabled':''}>−</button><b>${this.draft}° borrador</b><button data-testid="angle-plus" ${session.busy||this.draft>=90||s.result?'disabled':''}>+</button>${a('angle-confirm','Confirmar ángulo',{type:'angle',angle:this.draft})}</div><p>45–90° · Recomendado 72° ±2° ${v.estimates.correct?'✓':'✕'}<br>Previsualización: ${nf(v.estimates.fuel)} L · ${v.estimates.orbitMinutes.toFixed(1)} min a órbita<br>Confirmado: ${s.angle}° ${s.angleConfirmed?'✓':'(inicial, no confirmado)'}</p><div class="row"><span>Esperar:</span>${([5,10,20] as const).map(minutes=>a('wait-'+minutes,`${minutes} min`,{type:'wait',minutes})).join('')}</div></section>
-   <section class="repairs panel"><h2>Reparaciones Pendientes (${2-v.repairCount})</h2><p>Bomba de combustible: ${s.repairs.pump?100:76} % → 100 %</p>${a('repair-pump','Reparar bomba',{type:'repair',system:'pump'})}<p>Antena de comunicación: ${s.repairs.antenna?100:68} % → 100 %</p>${a('repair-antenna','Reparar antena',{type:'repair',system:'antenna'})}</section>
+   <section class="repairs panel" data-testid="repairs-panel" tabindex="-1"><h2>Reparaciones Pendientes (${2-v.repairCount})</h2><p>Bomba de combustible: ${s.repairs.pump?100:76} % → 100 %</p>${a('repair-pump','Reparar bomba',{type:'repair',system:'pump'})}<p>Antena de comunicación: ${s.repairs.antenna?100:68} % → 100 %</p>${a('repair-antenna','Reparar antena',{type:'repair',system:'antenna'})}</section>
    <section class="general panel"><h2>Estado General</h2>${Object.entries(v.general).map(([k,n])=>`<div class="bar-label">${({ship:'Nave',systems:'Sistemas',resources:'Recursos'})[k as keyof typeof v.general]} ${n} %<div class="bar"><span style="width:${n}%"></span></div></div>`).join('')}<small>Recursos = inventario restante.</small><button class="launch" data-testid="launch" ${launchReasons.length||this.launchAnimating?'disabled':''}>LANZAR MISIÓN</button></section>
    <div class="launch-reasons panel">${launchReasons.length?'Bloqueos: '+launchReasons.join(' '):'Sin bloqueos físicos.'}<br>${v.launch.risks.length?'Riesgos (permiten lanzar): '+v.launch.risks.map(r=>r.text).join(' '):'Sin riesgos actuales.'}</div>
-   ${this.launchAnimating?'<div class="animation-label" data-testid="launch-animation">DESPEGUE EN CURSO</div>':this.details(v)}
-   ${session.busy?`<div class="progress panel" data-testid="progress">Tarea confirmada en curso · sin cancelación <div class="bar"><span style="width:${Math.round(this.progress*100)}%"></span></div></div>`:''}
+   ${this.launchAnimating?'<div class="animation-label" data-testid="launch-animation" tabindex="-1">DESPEGUE EN CURSO</div>':this.details(v)}
+   ${session.busy?`<div class="progress panel" data-testid="progress" tabindex="-1">Tarea confirmada en curso · sin cancelación <div class="bar"><span style="width:${Math.round(this.progress*100)}%"></span></div></div>`:''}
    ${this.pending?this.confirmation(this.pending):''}
-   ${session.warning?`<section class="dialog panel" data-testid="risk-warning"><h2>Riesgos detectados en la revisión</h2><ul>${v.launch.risks.map(r=>`<li>${r.text}</li>`).join('')}</ul><p>Estos riesgos provocarán fallo. Cancelar no consume tiempo.</p><button data-testid="cancel-warning">Cancelar</button><button data-testid="launch-anyway" class="danger">Lanzar de todos modos</button></section>`:''}`;
+   ${session.warning?`<section class="dialog panel" data-testid="risk-warning" role="dialog" aria-modal="true" aria-labelledby="risk-title"><h2 id="risk-title">Riesgos detectados en la revisión</h2><ul>${v.launch.risks.map(r=>`<li>${r.text}</li>`).join('')}</ul><p>Estos riesgos provocarán fallo. Cancelar no consume tiempo.</p><button data-testid="cancel-warning">Cancelar</button><button data-testid="launch-anyway" class="danger">Lanzar de todos modos</button></section>`:''}`;
+  this.restoreFocus(focused);
  }
- private confirmation(action:Action){const p=previewAction(session.state,action);return `<section class="dialog panel" data-testid="confirmation"><h2>Confirmar acción</h2><p>${p.durationMinutes} min de juego · ${money(p.budgetCost)}${p.inventoryCosts.parts?` · ${p.inventoryCosts.parts} repuestos`:''}</p><p>${p.effects.map(text).join('<br>')}</p><p class="danger">${p.reasons.map(r=>text(r.text)).join(' ')}</p><button data-testid="cancel-action">Cancelar</button><button data-testid="confirm-action" ${p.allowed?'':'disabled'}>Confirmar</button></section>`;}
+ private confirmation(action:Action){const p=previewAction(session.state,action);return `<section class="dialog panel" data-testid="confirmation" role="dialog" aria-modal="true" aria-labelledby="confirmation-title"><h2 id="confirmation-title">Confirmar acción</h2><p>${p.durationMinutes} min de juego · ${money(p.budgetCost)}${p.inventoryCosts.parts?` · ${p.inventoryCosts.parts} repuestos`:''}</p><p>${p.effects.map(text).join('<br>')}</p><p class="danger">${p.reasons.map(r=>text(r.text)).join(' ')}</p><button data-testid="cancel-action">Cancelar</button><button data-testid="confirm-action" ${p.allowed?'':'disabled'}>Confirmar</button></section>`;}
  private click(event:Event){
   const button=(event.target as HTMLElement).closest('button');if(!button||button.disabled)return;const id=button.dataset.testid;
   if(id?.startsWith('room-')){this.room=id.slice(5);this.render();return;}
@@ -103,7 +141,7 @@ export class UIScene extends Phaser.Scene {
   if(button.dataset.profile){this.chosen=button.dataset.profile as ProfileId;this.render();return;}
   if(id==='angle-minus'||id==='angle-plus'){this.draft+=id==='angle-plus'?1:-1;this.render();return;}
   if(id==='confirm-action'&&this.pending){const action=this.pending;this.pending=null;this.execute(action);return;}
-  if(id==='launch'){this.pending=null;this.room=null;const result=session.requestLaunch();if(result==='launched')this.startLaunch();else if(result==='blocked')this.message=getView(session.state).launch.blockedReasons.map(r=>r.text).join(' ');this.render();return;}
+  if(id==='launch'){this.modalOrigin=this.focusKey(button);this.pending=null;this.room=null;const result=session.requestLaunch();if(result==='launched')this.startLaunch();else if(result==='blocked')this.message=getView(session.state).launch.blockedReasons.map(r=>r.text).join(' ');this.render();return;}
   if(id==='launch-anyway'){if(session.confirmLaunch())this.startLaunch();this.render();return;}
   let action:Action|undefined;
   if(id?.startsWith('design-'))action={type:'design',profile:this.chosen};
@@ -111,7 +149,7 @@ export class UIScene extends Phaser.Scene {
   if(id==='repair-pump'||id==='repair-antenna')action={type:'repair',system:id==='repair-pump'?'pump':'antenna'};
   if(id==='load')action={type:'load'};if(id==='angle-confirm')action={type:'angle',angle:this.draft};if(id==='verify')action={type:'verify'};
   if(id?.startsWith('wait-'))action={type:'wait',minutes:Number(id.slice(5)) as 5|10|20};
-  if(action){this.pending=action;session.cancelWarning();this.render();}
+  if(action){this.modalOrigin=this.focusKey(button);this.pending=action;session.cancelWarning();this.render();}
  }
  private execute(action:Action){
   const p=session.begin(action);if(!p.allowed){this.message=p.reasons.map(r=>r.text).join(' ');this.render();return;}
@@ -145,7 +183,7 @@ export class ResultScene extends Phaser.Scene {
  create(){
   this.cameras.main.setBackgroundColor('#0a1326');const score=getScore(session.state),r=session.state.result!;
   const root=document.createElement('div');root.className='result-ui';root.innerHTML=`<section class="panel result" data-testid="result"><h1>${r.outcome==='success'?'Misión completada':'Misión fallida'}</h1><p>Hora de preparación: ${formatTime(score.metrics.minute)}</p><p>Presupuesto restante ${money(score.metrics.budget)} · Repuestos ${score.metrics.parts} u.</p><ul>${r.causes.map(c=>`<li>${text(c.text)}</li>`).join('')}</ul><h2 data-testid="score">${nf(score.total)} / 1.000</h2><div data-testid="breakdown" class="score-grid"><div>Presupuesto<strong>${score.budget}</strong></div><div>Repuestos<strong>${score.parts}</strong></div><div>Tiempo<strong>${score.time}</strong></div><div>Precisión<strong>${score.precision}</strong></div></div><p>${r.outcome==='failure'?'Componentes de diagnóstico: una misión fallida no obtiene puntaje.':'Sin riesgos. La preparación hizo posible el éxito.'}</p><p>Combustible restante a bordo: ${nf(session.state.cargo.fuel)} L.</p><button data-testid="restart">Reiniciar</button></section>`;
-  const restart=()=>{session.reset();this.scene.stop('LaunchScene');this.scene.stop('UIScene');this.scene.stop('BaseScene');this.scene.start('BaseScene');this.scene.launch('UIScene');};root.querySelector('button')!.addEventListener('click',restart);this.add.dom(0,0,root).setOrigin(0);
+  const restart=()=>{session.reset();this.scene.stop('LaunchScene');this.scene.stop('UIScene');this.scene.stop('BaseScene');this.scene.start('BaseScene');this.scene.launch('UIScene');};root.querySelector('button')!.addEventListener('click',restart);this.add.dom(0,0,root).setOrigin(0);root.querySelector<HTMLButtonElement>('button')!.focus({preventScroll:true});
   this.events.once('shutdown',()=>{this.time.removeAllEvents();this.tweens.killAll();root.querySelector('button')?.removeEventListener('click',restart);root.remove();});
  }
 }
