@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección HTTP que muestra Vite (normalmente `http://127.0.0.1:5173`). Dev y preview escuchan solo en `127.0.0.1` (loopback); no se exponen a la red local. Esto reduce exposición, pero no corrige las vulnerabilidades conocidas de las dependencias. No se puede jugar mediante `file://`.
+Abre la dirección HTTP que muestra Vite (normalmente `http://127.0.0.1:5173`). Dev y preview escuchan solo en `127.0.0.1` (loopback); no se exponen a la red local. Esto reduce exposición, pero no sustituye las revisiones de seguridad. No se puede jugar mediante `file://`.
 
 ```bash
 npm test                  # Vitest: reglas, contrato de arte, control de tareas
@@ -23,7 +23,9 @@ PREVIEW=1 npm run test:e2e # Mismas pruebas contra build por HTTP
 npm run assets            # Regenerar arte original, no descarga imágenes
 ```
 
-Dependencias fijadas: phaser 3.90.0, vite 6.1.0, vitest 3.0.5, typescript 5.7.3, @playwright/test 1.51.1. La instalación usa el lockfile. La publicación y elección de hosting son trabajos separados; el build no supone un despliegue. Estas versiones aprobadas tienen avisos de seguridad en npm audit; no se han sustituido ni aplicado actualizaciones automáticas.
+Dependencias fijadas: phaser 3.90.0, vite 6.4.6, vitest 4.1.12, typescript 5.7.3, @playwright/test 1.65.0. La instalación normal usa `npm ci` con el lockfile. Para resolver esta actualización se usó temporalmente `npx npm@11 install` solo en la sesión aislada, con npm 11.21.2 (Node requerido: `^20.17.0 || >=22.9.0`). El lockfile resultante pasó una instalación limpia con Node v22.23.5 y su npm 10.9.9, sin instalar npm globalmente ni cambiar configuración. La publicación y elección de hosting son trabajos separados; el build no supone un despliegue.
+
+La auditoría completa posterior a `npm ci`, incluyendo desarrollo, terminó con código 0 y cero vulnerabilidades en cada severidad y en total. Es el resultado del árbol y la base de avisos consultada, no una garantía universal de seguridad. Vitest y @vitest/mocker instalados en 4.1.12 están fuera de los rangos de GHSA-82fw-gwwq-j7x9 y GHSA-qxg6-89mg-rqv8 registrados en la auditoría previa; no se verificó el parche fuente ni se ejecutó un exploit. Evidencia y cambios transitivos: [informe de la revisión D1–D4](tests/e2e/dependencies-report.md). No se usaron nuevas dependencias directas, overrides, exclusiones de auditoría ni actualizaciones forzadas.
 
 ## Controles y preparación
 
