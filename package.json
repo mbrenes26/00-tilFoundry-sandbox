@@ -1,0 +1,6 @@
+{
+  "name": "nivel-1-despegue", "version": "1.0.0", "private": true, "type": "module",
+  "scripts": {"dev":"vite --host 0.0.0.0", "build":"tsc --noEmit && vite build", "preview":"vite preview --host 0.0.0.0", "test":"vitest run", "test:e2e":"playwright test", "assets":"node scripts/assets/generate.mjs"},
+  "dependencies":{"phaser":"3.90.0"},
+  "devDependencies":{"vite":"6.1.0", "vitest":"3.0.5", "typescript":"5.7.3", "@playwright/test":"1.51.1"}
+}
