@@ -1,32 +1,35 @@
 ---
 id: "issue-6/discovery"
 tipo: "discovery"
-titulo: "Discovery en curso: inicio desde cero, ejecución local y recursos originales"
+titulo: "Discovery en curso: requisitos completos y decisiones de tiempo y fallo pendientes"
 version: 1
 estado: "borrador"
 solucion: "issue-6"
 confidencialidad: "interna"
-procedencia: {"rol": "agente:manager-producto", "commit": "fad867479158fcd88f9c04cf6486ee1100388d43", "modelo": "gpt-6.1-sol"}
-costo: {"proveedor": "azure-foundry", "tokens_entrada": 18145, "tokens_salida": 772, "monto_ia": 0.016992, "minutos_computo": 0, "monto_computo": 0.0}
+procedencia: {"rol": "agente:manager-producto", "commit": "f7e1212f30daaeb3f2d9d90b9383fc114fb895bf", "modelo": "gpt-6.1-sol"}
+costo: {"proveedor": "azure-foundry", "tokens_entrada": 27242, "tokens_salida": 926, "monto_ia": 0.021769, "minutos_computo": 0, "monto_computo": 0.0}
 ---
 ## Lo que la persona dijo
-- Público: jugadores casuales de 13 años en adelante, interesados en gestión ligera o en el espacio, sin conocimientos técnicos previos.
-- Experiencia central: dirigir una misión con toda la base a la vista, elegir el orden de las acciones y ver sus consecuencias; el despegue debe sentirse como recompensa.
-- Aprendizaje integrado: dependencias del lanzamiento, priorización de presupuesto/repuestos/tiempo e importancia de reparar y verificar.
-- Primer nivel: partidas de 10 a 15 minutos, interfaz comprensible sin tutorial largo, fallo con explicación para reintentar, pixel art, español y Phaser 3.
-- Confirma que se empieza desde cero (greenfield), sin código ni recursos gráficos externos. La referencia visual es el mockup que indica haber adjuntado al issue.
-- Todos los gráficos, incluidos personajes, salas, cohete e íconos, deben crearse como pixel art original y guardarse en el repositorio.
-- La primera versión se ejecutará localmente con `npm run dev`. `npm run build` debe generar una versión estática alojable sin cambios.
-- No ha elegido hosting; la publicación queda para otro trabajo, posiblemente con GitHub Pages.
+- Público: jugadores casuales de 13 años en adelante; gestión ligera y espacio sin conocimientos técnicos previos.
+- Experiencia: dirigir toda la base a la vista, decidir el orden de las acciones, observar consecuencias y disfrutar el despegue como recompensa. Aprender dependencias, priorización y utilidad de reparar y verificar.
+- Primer nivel en español, pixel art original, partidas objetivo de 10 a 15 minutos, comprensión sin tutorial largo y fallos explicados para reintentar.
+- Confirma proyecto desde cero, sin código ni gráficos externos. Todos los gráficos se crean y guardan en el repositorio.
+- Ejecución local con npm run dev y generación estática con npm run build. Hosting no elegido; publicar queda para otro trabajo.
+- Recuperó el resto del pedido: Phaser 3 con versión exacta estable, Vite, Vitest, reglas en módulos puros de TypeScript/JavaScript independientes de Phaser; escenas BootScene, BaseScene, UIScene, LaunchScene y ResultScene. Animaciones con spritesheets y this.anims; tweens para ascenso y progreso; eventos de this.time, sin setInterval.
+- Base visual de 1600×900, pixelArt y escalado FIT; escritorio obligatorio, móvil deseable. Paleta azul marino/gris con cian, naranja, amarillo y verde; tipografía pixel o monoespaciada.
+- Guardado en localStorage y audio elaborados opcionales. Sin niveles posteriores, multijugador, backend ni cuentas.
+- Criterios recibidos completos: pantalla con todos los paneles y nueve salas; cuatro fases; reloj y ventana; descuento de recursos; dos reparaciones con efectos; ángulo y validación; habilitación del lanzamiento; despegue y resultado con puntaje; tests de reglas y README.
+- La persona indica que la descripción textual completa del mockup sirve como referencia aunque no se pueda leer la imagen. Compartió enlace https://github.com/user-attachments/assets/2fb5fec0-284f-47fa-adf7-7c6f87cea68c.
 ## Evidencia del repositorio
-El inventario actual devuelve únicamente README.md. La lectura registrada previamente mostraba solo el título «00-tilFoundry-sandbox». No aparecen implementación, dependencias, pruebas ni comandos de ejecución.
+Inventario previo: únicamente README.md con el título del proyecto. Sin implementación, dependencias ni pruebas. La persona confirmó greenfield.
 ## Inferencias
-La experiencia necesita decisiones comprensibles y consecuencias visibles, no una simulación técnica exhaustiva. Esto deberá confirmarse al concretar las reglas.
+Conviene priorizar decisiones comprensibles y consecuencias visibles frente a una simulación exhaustiva. El tiempo por acciones y un resultado sin azar oculto podrían favorecer el aprendizaje; son propuestas, no acuerdos.
 ## Supuestos
-No se fijan todavía fórmulas de balance, duración de acciones ni modelo de azar.
+No hay fórmulas de balance ni duración de acciones aprobadas. Los 10 a 15 minutos son una meta de experiencia, no una duración comprobada.
 ## No verificado y preguntas pendientes
-- La herramienta devuelve el pedido original recortado en los requisitos no funcionales, después de la indicación de animar mediante spritesheets. Falta recuperar el resto antes de especificar.
-- No se ha podido visualizar el mockup ni se dispone de un enlace al adjunto en la conversación recibida.
-- Quedan por acordar el avance del reloj, el fallo o reprogramación al perder la ventana, las reglas de probabilidad de éxito y el balance para partidas de 10 a 15 minutos.
+- El enlace de la imagen está disponible como texto, pero la imagen no se ha visualizado con las herramientas disponibles. La descripción textual está autorizada como referencia.
+- Falta acordar si el reloj avanza continuamente o solo por acciones y espera explícita.
+- Falta elegir fallo o reprogramación al perder la ventana y resultado determinista o probabilístico.
+- Después habrá que concretar costos, duraciones, diseño, clima, cálculo de consumo y puntaje.
 ## Estado del discovery
-El inicio desde cero y la ejecución local están confirmados. Aún no se ha presentado ni confirmado el resumen completo de discovery. No hay spec aprobada; el cerebro está vacío. La primera spec deberá fijar el stack y la ejecución, respetando Phaser 3 y la entrega estática solicitados.
+Requisitos recuperados. Sigue pendiente presentar y confirmar el resumen completo antes de escribir la spec. No hay spec aprobada y el cerebro está vacío; la primera spec fijará Phaser 3, Vite, pruebas y ejecución local/estática.
