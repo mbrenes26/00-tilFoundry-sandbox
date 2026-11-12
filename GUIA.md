@@ -12,11 +12,31 @@ avísale a TIL Costa Rica.
    entender la necesidad y te propone una spec, que dice qué se construye y cómo se sabe que está bien.
 4. Si estás de acuerdo con la spec, apruébala con el comando que te indica el mensaje. Nada se construye sin
    tu aprobación.
-5. TIL Foundry construye con pruebas, abre un PR y lo auditan los agentes de seguridad y de código.
+5. TIL Foundry construye con pruebas, abre un PR y lo auditan los agentes de seguridad y de código, y los de
+   UX y UI si cambia la interfaz.
 6. Cuando la auditoría pasa, decides la entrega. Al aprobarla, TIL Foundry fusiona el PR y cierra el issue.
 
 Todo lo que escribe un agente aparece como `til-foundry[bot]`; lo que decides tú queda firmado con tu
 cuenta.
+
+## Quién hace qué
+
+TIL Foundry es una fábrica con una jerarquía fija, y la hace cumplir Core, no la buena voluntad de un
+agente. Cada agente tiene solo las herramientas de su rol y decide un paso por vez; lo que no le toca,
+Core lo rechaza. Solo el Manager de producto y el Manager de Auditoría te hablan para pedirte una decisión.
+
+| Quién | Qué hace | Qué no puede hacer |
+|---|---|---|
+| Persona (tú) | Decides siempre tú: Aprobar la spec. Aprobar o rechazar la entrega. Desbloquear un pedido. Aceptar o no un cambio de alcance. | Nada se construye ni se fusiona sin tu decisión, y tu silencio nunca cuenta como aprobación. |
+| Manager de producto (`manager-producto`) | Conversa contigo en el issue, escribe la spec y dirige la construcción con el constructor y el probador. Abre el PR. | No decide la entrega ni cambia el alcance sin ti. |
+| Constructor (`constructor`) | Escribe el código con pruebas (TDD), dentro del alcance de la spec, en una sesión aislada. | No habla contigo ni pide cambios de estado. |
+| Probador (`probador`) | Intenta romper lo construido y escribe pruebas que demuestran las fallas. | No escribe código de producción. |
+| Auditores de seguridad y de código (`seguridad`, `codigo`) | Revisan cada PR, cada uno por su lado y con un modelo distinto del que construyó. | No comentan, no cambian archivos ni deciden la entrega. |
+| Auditores de UX y UI (`ux`, `ui`) | Revisan la experiencia y la interfaz cuando el cambio la toca, según lo que fija la spec. | No comentan, no cambian archivos ni deciden la entrega. |
+| Manager de Auditoría (`manager-auditoria`) | Junta los informes y decide, solo entre lo que Core permite: pedirte la entrega, retrabajo o escalarte. | No construye ni puede saltarse a los auditores. |
+
+Lo que deciden las reglas lo calcula Core con código, no un agente: qué auditores corren, el riesgo, si
+se puede entregar y qué archivos entran en el alcance.
 
 ## Comandos
 
@@ -38,7 +58,7 @@ Cada comando va solo en su propia línea del comentario.
 | `ESCALATED` | Tal vez no hace falta software para lo que necesitas. | Sí: decide si seguimos |
 | `SPECIFIED` | Aprobaste la spec; empieza la construcción. | No |
 | `BUILDING` | El constructor escribe el código y sus pruebas en la rama `foundry/issue-<n>` y abre el PR. | No |
-| `VERIFYING` | Los auditores de seguridad y de código revisan el PR. | No |
+| `VERIFYING` | Los auditores revisan el PR: seguridad y código siempre, y UX y UI si cambia la interfaz. | No |
 | `REWORK` | Los auditores pidieron cambios; el constructor los hace y se vuelve a auditar. | No |
 | `AWAITING_APPROVAL` | La auditoría pasó y la entrega espera tu decisión. | Sí: aprueba o rechaza la entrega |
 | `DELIVERED` | Entregado: TIL Foundry fusionó el PR y cerró el issue. | No |
