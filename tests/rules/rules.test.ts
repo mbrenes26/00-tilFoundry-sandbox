@@ -14,6 +14,14 @@ describe('R2 costos, perfiles y prerrequisitos',()=>{
  it('ángulo entero y confirmación idempotente',()=>{for(const angle of [44,91,72.5,NaN])expect(applyAction(initial(),{type:'angle',angle}).ok).toBe(false);for(const angle of [45,70,72,74,90]){const s=step(initial(),{type:'angle',angle});expect(s.minute).toBe(515);expect(s.angleConfirmed).toBe(true);expect(step(s,{type:'angle',angle})).toEqual(s);}expect(applyAction(initial(),{type:'trajectory'}).ok).toBe(false);expect(applyAction(initial(),{type:'verify'}).ok).toBe(false);});
 });
 describe('R3 reloj y clima',()=>{
+ it.each([600,660])('lanzamiento aplicado en límite inclusivo %i',minute=>{
+  const s={...prepared(),minute};const before=JSON.stringify(s);
+  const launched=step(s,{type:'launch'});
+  expect(JSON.stringify(s)).toBe(before);expect(launched.minute).toBe(minute);
+  expect(launched.launched).toBe(true);expect(launched.result?.outcome).toBe(minute===600?'success':'failure');
+  expect(launched.result?.causes.map(c=>c.code)).toEqual(minute===600?[]:['weather']);
+  expect(launched.cargo.fuel).toBe(8000);
+ });
  it.each([[599,12,true],[600,20,false],[639,20,false],[640,45,false],[660,45,false],[661,45,false]])('límite %i',(minute,wind,early)=>{const s={...prepared(),minute};expect(getView(s).weather.current.wind).toBe(wind);expect(evaluateLaunch(s).blockedReasons.some(x=>x.code==='early')).toBe(early);const copy=JSON.stringify(s);getView(s,90);expect(JSON.stringify(s)).toBe(copy);});
  it('umbrales clima, ventana perdida y terminal',()=>{expect(isUnfavorable({wind:40,rain:30})).toBe(false);expect(isUnfavorable({wind:41,rain:0})).toBe(true);expect(isUnfavorable({wind:0,rain:31})).toBe(true);let s={...prepared(),minute:660};s=step(s,{type:'wait',minutes:5});expect(s.result?.causes[0].code).toBe('time');expect(s.launched).toBe(false);expect(getScore(s).total).toBe(0);expect(applyAction(s,{type:'wait',minutes:5}).ok).toBe(false);expect(initial().result).toBeNull();});
 });

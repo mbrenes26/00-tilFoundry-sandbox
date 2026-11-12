@@ -6,3 +6,12 @@ it('J4 aviso actual, cancelar, invalidación y omitir revisión',()=>{const g=ne
 it('J5 reinicio invalida callbacks y avisos',()=>{const g=new Session();const p=g.begin({type:'repair',system:'pump'});g.reset();g.complete(p.token);expect(g.state.minute).toBe(510);expect(g.busy).toBe(false);expect(g.state.budget).toBe(1000000);expect(g.confirmLaunch()).toBe(false);});
 it('J1/J6 configuración, cinco escenas reales y timers Phaser',()=>{const main=readFileSync('src/main.ts','utf8');expect(main).toContain('pixelArt: true');expect(main).toContain('Phaser.Scale.FIT');expect(main).toContain('width: 1600');expect(main).toContain('height: 900');const code=readFileSync('src/game/scenes.ts','utf8');for(const name of ['BootScene','BaseScene','UIScene','LaunchScene','ResultScene'])expect(code).toContain(`class ${name} extends Phaser.Scene`);expect(code).toContain('this.anims');expect(code).toContain('this.tweens');expect(code).toContain('this.time');expect(code).not.toContain('setInterval');});
 it('J7 documentación de HTTP, comandos, fórmula, fases y exclusiones',()=>{const doc=readFileSync('README.md','utf8');for(const word of ['Node.js 22','npm ci','npm run dev','npm run build','npm run preview','npm test','npm run test:e2e','HTTP','riesgos','orientativas','floor','docs/assets.md','10–15','pendiente','backend'])expect(doc).toContain(word);});
+it('J1 servidores locales limitados a loopback y Chromium usa la misma dirección',()=>{
+ const pkg=JSON.parse(readFileSync('package.json','utf8'));
+ for(const name of ['dev','preview']){
+  expect(pkg.scripts[name]).toContain('--host 127.0.0.1');
+  expect(pkg.scripts[name]).not.toContain('0.0.0.0');
+ }
+ const config=readFileSync('playwright.config.ts','utf8');
+ expect(config).toContain('http://127.0.0.1:4173');
+});

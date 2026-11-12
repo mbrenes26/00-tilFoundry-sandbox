@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección HTTP que muestra Vite (normalmente `http://localhost:5173`). No se puede jugar mediante `file://`.
+Abre la dirección HTTP que muestra Vite (normalmente `http://127.0.0.1:5173`). Dev y preview escuchan solo en `127.0.0.1` (loopback); no se exponen a la red local. Esto reduce exposición, pero no corrige las vulnerabilidades conocidas de las dependencias. No se puede jugar mediante `file://`.
 
 ```bash
 npm test                  # Vitest: reglas, contrato de arte, control de tareas
