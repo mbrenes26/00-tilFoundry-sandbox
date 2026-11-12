@@ -1,0 +1,11 @@
+# Cerebro
+
+Las decisiones vigentes de este proyecto: arquitectura, stack y convenciones. Las escribe TIL Foundry con lo que la persona aprueba en cada spec; no se editan a mano.
+
+| Id | Estado | Decisión | Origen |
+|---|---|---|---|
+| C-1 | vigente | Juego web sin backend en TypeScript 5, con Phaser 3 para dibujo y entrada, Vite 6 para desarrollo y generación estática, Vitest 3 para pruebas de reglas y Playwright 1 con Chromium para pruebas de navegador. | issue-6/spec-solucion, aprobada por human:mbrenes26 el 2026-11-12 (https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6812916720), commit 4ef0ff2 |
+| C-2 | vigente | Las reglas de estado, recursos, reloj, trayectoria, riesgos y puntaje son módulos puros independientes de Phaser. El renderizado consume ese estado y no duplica reglas de negocio. | issue-6/spec-solucion, aprobada por human:mbrenes26 el 2026-11-12 (https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6812916720), commit 4ef0ff2 |
+| C-3 | vigente | Phaser usa BootScene, BaseScene, UIScene, LaunchScene y ResultScene, pixelArt: true y Phaser.Scale.FIT, con resolución lógica 1600×900. Animaciones de sprites mediante this.anims, tweens para ascenso y progreso y this.time para temporizadores; no se usa setInterval para el juego. | issue-6/spec-solucion, aprobada por human:mbrenes26 el 2026-11-12 (https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6812916720), commit 4ef0ff2 |
+| C-4 | vigente | El proyecto se ejecuta por HTTP local con Node.js 22 y npm run dev; npm run build genera una versión estática. La publicación y la elección de hosting son trabajos separados. No se ejecuta mediante file://. | issue-6/spec-solucion, aprobada por human:mbrenes26 el 2026-11-12 (https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6812916720), commit 4ef0ff2 |
+| C-5 | vigente | Los gráficos son pixel art originales, guardados en el repositorio y con inventario de procedencia. La interfaz y los mensajes del juego están en español. | issue-6/spec-solucion, aprobada por human:mbrenes26 el 2026-11-12 (https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6812916720), commit 4ef0ff2 |
