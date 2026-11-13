@@ -76,3 +76,4 @@
 {"completado": false, "fase": "fin", "fecha": "2026-11-12T23:29:58Z", "id": "9d3845cc3a88", "rol": "manager-producto", "tipo": "ejecucion"}
 {"accion": "aviso", "fecha": "2026-11-13T17:25:53Z", "motivo": "mensaje fijo al cliente", "tipo": "guardia", "traba": "2026-11-12T22:25:41Z"}
 {"accion": "retomar", "fecha": "2026-11-13T19:27:24Z", "motivo": "Última ejecución de manager-producto incompleta tras 64 min (2026-11-12T22:25:58Z–23:29:58Z), compatible con tope de tiempo; no hay retoma previa en esta traba ni errores de Core. Aviso al cliente ya registrado.", "tipo": "guardia", "traba": "2026-11-12T22:25:41Z"}
+{"fase": "inicio", "fecha": "2026-11-13T19:27:25Z", "id": "4fdb7efbe744", "rol": "manager-producto", "tipo": "ejecucion"}
