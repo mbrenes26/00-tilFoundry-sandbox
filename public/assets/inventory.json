@@ -1,0 +1,18 @@
+{
+  "project": "Lúmina: guardianes del laberinto",
+  "resources": [
+    {
+      "file": "actors.svg",
+      "author": "Agente constructor de TIL Foundry, issue-8, paso 9",
+      "provenance": "Diseño original creado para este repositorio mediante rectángulos y paths SVG sobre cuadrícula de 16 píxeles; sin recursos externos ni personajes copiados.",
+      "use": "Spritesheet de 12 frames 16×16: luciérnaga Lúmina (0–1), guardianes terracota/lila/celeste/ámbar (2–9), guardianes vulnerables (10–11). Animaciones Phaser de dos frames."
+    },
+    {
+      "file": "tiles.svg",
+      "author": "Agente constructor de TIL Foundry, issue-8, paso 9",
+      "provenance": "Pixel art original creado para este repositorio con paths SVG alineados a píxeles; sin texturas externas.",
+      "use": "Spritesheet de cuatro frames 16×16: muro (0), suelo (1), semilla luminosa/píldora (2), prisma/poder (3). Renderizado del mapa y objetos del estado puro."
+    }
+  ],
+  "notes": "Todos los gráficos de archivo están enumerados aquí. Los marcos y barras son primitivas geométricas de Phaser/CSS. Tipografía del sistema, sin archivos de fuentes externos. El mapa original está definido en src/game/map.ts."
+}
