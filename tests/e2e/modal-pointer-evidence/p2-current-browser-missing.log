@@ -1,0 +1,394 @@
+
+> nivel-1-despegue@1.0.0 test:e2e
+> playwright test tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts tests/e2e/game.spec.ts
+
+
+Running 24 tests using 1 worker
+
+  ✘   1 tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio (3ms)
+  ✘   2 tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo (3ms)
+  ✘   3 tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio (3ms)
+  ✘   4 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo (3ms)
+  ✘   5 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba (6ms)
+  ✘   6 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena (3ms)
+  ✘   7 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima (3ms)
+  ✘   8 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible (3ms)
+  ✘   9 tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito (3ms)
+  ✘  10 tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento (6ms)
+  ✘  11 tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 (2ms)
+  ✘  12 tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera (2ms)
+  ✘  13 tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 10:00 inclusivo (27ms)
+  ✘  14 tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 11:00 inclusivo (3ms)
+  ✘  15 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1600 (2ms)
+  ✘  16 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1600 (2ms)
+  ✘  17 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1280 (3ms)
+  ✘  18 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1280 (2ms)
+  ✘  19 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1600x900 (3ms)
+  ✘  20 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1280x720 (3ms)
+  ✘  21 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1600 (3ms)
+  ✘  22 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1600 (2ms)
+  ✘  23 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1280 (3ms)
+  ✘  24 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1280 (3ms)
+
+
+  1) tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J1-J2-A4-J6-nueve-sal-8490a-es-y-capturas-en-escritorio/error-context.md
+
+  2) tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo ──────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J3-progreso-exclusivo-y-lectura-sin-tiempo/error-context.md
+
+  3) tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio ───────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-ganadora-componentes-animación-y-reinicio/error-context.md
+
+  4) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo ────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-fallo-por-ángulo/error-context.md
+
+  5) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba ─────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-fallo-por-bomba/error-context.md
+
+  6) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena ────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-fallo-por-antena/error-context.md
+
+  7) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima ─────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-fallo-por-clima/error-context.md
+
+  8) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible ───────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-J5-fallo-por-múltiples-y-combustible/error-context.md
+
+  9) tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J5-omisión-de-verific-0fedd-recto-también-permite-éxito/error-context.md
+
+  10) tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento ─────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J5-ventana-perdida-sin-iniciar-lanzamiento/error-context.md
+
+  11) tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 ─────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J2-todos-los-controles-esenciales-caben-a-1280x720/error-context.md
+
+  12) tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-J4-aviso-se-invalida--be5a8--controles-reales-de-espera/error-context.md
+
+  13) tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 10:00 inclusivo ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-R3-lanzamiento-real-en-10-00-inclusivo/error-context.md
+
+  14) tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 11:00 inclusivo ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/game-R3-lanzamiento-real-en-11-00-inclusivo/error-context.md
+
+  15) tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1600 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/modal-pointer-REWORK-punte-edba7--y-conserva-reparación-1600/error-context.md
+
+  16) tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1600 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/modal-pointer-REWORK-punte-d1f90-a-acciones-al-cancelar-1600/error-context.md
+
+  17) tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1280 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/modal-pointer-REWORK-punte-2e1d9--y-conserva-reparación-1280/error-context.md
+
+  18) tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1280 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/modal-pointer-REWORK-punte-81ba2-a-acciones-al-cancelar-1280/error-context.md
+
+  19) tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1600x900 ─────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-objetivos-completos-sin-solapamiento-1600x900/error-context.md
+
+  20) tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1280x720 ─────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-objetivos-completos-sin-solapamiento-1280x720/error-context.md
+
+  21) tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1600 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-confirmación-42dba-mar-y-foco-tras-render-1600/error-context.md
+
+  22) tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1600 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-riesgo-semán-869af-mar-y-foco-tras-render-1600/error-context.md
+
+  23) tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1280 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-confirmación-4f471-mar-y-foco-tras-render-1280/error-context.md
+
+  24) tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1280 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/rework-REWORK-riesgo-semán-4d1ad-mar-y-foco-tras-render-1280/error-context.md
+
+  24 failed
+    tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio 
+    tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo ───────────────────────
+    tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio ────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo ─────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba ──────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena ─────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima ──────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible ────────────────────────
+    tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito 
+    tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento ───────────────────────
+    tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 ───────────────
+    tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera ──
+    tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 10:00 inclusivo ──────────────────────────
+    tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 11:00 inclusivo ──────────────────────────
+    tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1600 
+    tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1600 
+    tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1280 
+    tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1280 
+    tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1600x900 ───────────
+    tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1280x720 ───────────
+    tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1600 
+    tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1600 
+    tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1280 
+    tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1280 

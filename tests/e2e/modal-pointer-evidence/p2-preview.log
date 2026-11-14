@@ -1,0 +1,27 @@
+
+> nivel-1-despegue@1.0.0 test:e2e
+> playwright test tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts
+
+
+Running 10 tests using 1 worker
+
+UI-2 confirmation 1600: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓   1 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1600 (4.3s)
+UI-2 risk-warning 1600: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓   2 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1600 (11.5s)
+UI-2 confirmation 1280: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓   3 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1280 (4.0s)
+UI-2 risk-warning 1280: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓   4 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1280 (11.2s)
+UI-1 1600x900 initial: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+UI-1 1600x900 prepared: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+  ✓   5 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1600x900 (6.7s)
+UI-1 1280x720 initial: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+UI-1 1280x720 prepared: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+  ✓   6 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1280x720 (6.3s)
+  ✓   7 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1600 (4.0s)
+  ✓   8 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1600 (11.5s)
+  ✓   9 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1280 (4.0s)
+  ✓  10 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1280 (11.4s)
+
+  10 passed (1.3m)

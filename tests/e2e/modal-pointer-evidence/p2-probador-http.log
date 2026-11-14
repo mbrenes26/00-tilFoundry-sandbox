@@ -1,0 +1,41 @@
+
+> nivel-1-despegue@1.0.0 test:e2e
+> playwright test tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts tests/e2e/game.spec.ts
+
+
+Running 24 tests using 1 worker
+
+  ✓   1 tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio (3.1s)
+  ✓   2 tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo (3.4s)
+  ✓   3 tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio (18.9s)
+  ✓   4 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo (15.8s)
+  ✓   5 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba (13.2s)
+  ✓   6 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena (13.2s)
+  ✓   7 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima (15.6s)
+  ✓   8 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible (13.9s)
+  ✓   9 tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito (28.3s)
+  ✓  10 tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento (11.4s)
+  ✓  11 tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 (26.9s)
+  ✓  12 tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera (11.1s)
+  ✓  13 tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 10:00 inclusivo (10.8s)
+  ✓  14 tests/e2e/game.spec.ts:50:37 › R3 lanzamiento real en 11:00 inclusivo (13.3s)
+UI-2 confirmation 1600: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓  15 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1600 (3.9s)
+UI-2 risk-warning 1600: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓  16 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1600 (11.4s)
+UI-2 confirmation 1280: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓  17 tests/e2e/modal-pointer.spec.ts:40:2 › REWORK puntero confirmación bloquea fondo y conserva reparación 1280 (3.9s)
+UI-2 risk-warning 1280: 6 clics físicos + 12 activaciones DOM, acción/ángulo/sala/reloj/aviso e indicadores invariantes
+  ✓  18 tests/e2e/modal-pointer.spec.ts:49:2 › REWORK puntero aviso bloquea fondo y libera acciones al cancelar 1280 (11.3s)
+UI-1 1600x900 initial: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+UI-1 1600x900 prepared: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+  ✓  19 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1600x900 (6.6s)
+UI-1 1280x720 initial: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+UI-1 1280x720 prepared: {"client":471,"scroll":471,"textRects":18,"problems":[]}
+  ✓  20 tests/e2e/rework.spec.ts:56:2 › REWORK objetivos completos sin solapamiento 1280x720 (6.4s)
+  ✓  21 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1600 (4.2s)
+  ✓  22 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1600 (11.6s)
+  ✓  23 tests/e2e/rework.spec.ts:69:1 › REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render 1280 (4.0s)
+  ✓  24 tests/e2e/rework.spec.ts:87:1 › REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render 1280 (11.4s)
+
+  24 passed (4.6m)
