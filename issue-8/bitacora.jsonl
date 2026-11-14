@@ -42,3 +42,4 @@
 {"completado": true, "costo_usd": 0.745521, "fase": "fin", "fecha": "2026-11-14T15:21:25Z", "id": "e7d2a4db0acb", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "inicio", "fecha": "2026-11-14T15:21:26Z", "id": "e2d87a22de12", "rol": "manager-producto", "tipo": "ejecucion"}
 {"completado": true, "costo_usd": 0.274643, "fase": "fin", "fecha": "2026-11-14T15:25:34Z", "id": "e2d87a22de12", "rol": "manager-producto", "tipo": "ejecucion"}
+{"accion": "aviso", "fecha": "2026-11-14T16:12:50Z", "motivo": "mensaje fijo al cliente", "tipo": "guardia", "traba": "2026-11-14T15:01:01Z"}
