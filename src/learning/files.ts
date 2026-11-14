@@ -22,7 +22,7 @@ function detail(error: unknown): string { return error instanceof Error ? error.
  * No garantiza persistencia ante corte eléctrico, ni semántica de todos los sistemas de archivos.
  * Si Windows niega reemplazar un archivo abierto, se informa sin destruir el anterior.
  * Cargas/validaciones no escriben. Una falla de limpieza se informa junto al error original. */
-async function atomicSave(path: string, text: string, fs: FileOperations): Promise<void> {
+export async function atomicSave(path: string, text: string, fs: FileOperations = defaultFileOperations): Promise<void> {
   const temporary = `${path}.${randomUUID()}.tmp`;
   let handle: TemporaryHandle | undefined, created = false;
   try {

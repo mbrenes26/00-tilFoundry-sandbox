@@ -1,0 +1,54 @@
+{
+  "environment": {
+    "node": "v22.23.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "commands": [
+    "npm run train -- --seed 42 --budget-seconds 60 --output runs/paso-8",
+    "npm run evaluate -- --initial runs/paso-8/initial-policy.json --policy runs/paso-8/policy.json --output runs/paso-8/evaluation.json"
+  ],
+  "measured": {
+    "evento": "fin",
+    "reason": "budget",
+    "activeSeconds": 60.00653209000018,
+    "sessionActiveSeconds": 60.00653209000018,
+    "budgetSeconds": 60,
+    "excessSeconds": 0.006532090000177959,
+    "steps": 232864,
+    "sessionSteps": 232864,
+    "durationSeconds": 62.606444034,
+    "stepsPerSecond": 3880.6441880484167,
+    "wallStepsPerSecond": 3719.489320836324,
+    "maxRSSBytes": 132341760,
+    "sampledMaxRSSBytes": 127725568,
+    "memoryMethod": "process.resourceUsage().maxRSS en KiB convertido a bytes: máximo del proceso desde inicio, incluye carga/guardado; process.memoryUsage().rss muestreado entre lotes y tras guardados.",
+    "arrayPayloadBytes": 6040674,
+    "memoryLimitations": "JSON, serialización/parseo, objetos, GC y runtime consumen memoria adicional; RSS no es el límite de arrays. Windows con 4 GB no certificado."
+  },
+  "episodes": 1541,
+  "updates": 57967,
+  "replaySize": 10000,
+  "replayCursor": 2864,
+  "persistentBufferBytes": 5912048,
+  "memoryBudget": {
+    "replay": 5870000,
+    "networks": 42048,
+    "gradient": 21024,
+    "targetReplacement": 21024,
+    "sampledBatch": 20224,
+    "batchReferences": 1280,
+    "activations": 1088,
+    "stepObservations": 576,
+    "actionWorkspace": 256,
+    "distances": 570,
+    "pathQueue": 6840,
+    "gameWorkspace": 55744,
+    "total": 6040674
+  },
+  "policySHA256": {
+    "initial-policy.json": "1fccdecc6438e1d5e230515f2ab4dc01acf2b81ab7b3d10159727bcf1e6049fb",
+    "policy.json": "22f69f2e751876916cda4e024594b393b760f1cc9b187989797968c47a43a3e5"
+  },
+  "limitations": "Humo local de 60 segundos activos; no seis horas ni Windows. Copias JSON/parseo, runtime/objetos/GC son adicionales. Sin garantía de mejora. Salidas entrenadas quedan en runs ignorado; hashes identifican este experimento, no garantizan reproducir los mismos pasos con presupuesto de reloj."
+}
