@@ -28,3 +28,4 @@
 {"alerta": "bloqueo-repetido", "detalle": "el trabajo pasó a BLOCKED 4 veces", "fecha": "2026-11-14T20:47:23Z", "rol": "manager-producto", "tipo": "alerta"}
 {"fase": "inicio", "fecha": "2026-11-14T20:47:25Z", "id": "897c2278318e", "rol": "feedback-loop", "tipo": "ejecucion"}
 {"completado": true, "costo_usd": 0.601062, "fase": "fin", "fecha": "2026-11-14T20:48:55Z", "id": "897c2278318e", "rol": "feedback-loop", "tipo": "ejecucion"}
+{"fase": "inicio", "fecha": "2026-11-14T20:48:56Z", "id": "f2e7f162103f", "rol": "feedback-loop", "tipo": "ejecucion"}
