@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { toPolicy } from '../../src/learning/policy';
+import { captureIdentity } from './evidence/identity';
 import { boardGeometry } from './evidence/geometry';
 import { createNetwork } from '../../src/learning/network';
 
@@ -25,6 +26,34 @@ for (const width of [390, 1600]) {
 test.describe(`rework ${width}px · fixture sintética no entrenada`, () => {
   test.setTimeout(60000);
   test.use({ viewport: { width, height: width === 390 ? 844 : 900 } });
+
+test('I-1/I-2: diagnóstico visual de identidad sin modificar presentación', async ({ page }) => {
+  await page.clock.install();
+  await page.goto('/'); await upload(page);
+  await expect(page.locator('#start')).toBeEnabled();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
+  await captureIdentity(page, 'import');
+  await page.getByLabel('Semilla de partida').fill('42');
+  await page.locator('#start').click();
+  await page.locator('#pause').click();
+  await page.locator('#restart').click();
+  await page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
+    const launch = game.scene.getScene('LaunchScene');
+    for (let i = 0; i < 100; i++) {
+      launch.playback.paused = false; launch.pulse(); launch.playback.paused = true;
+    }
+  });
+  await captureIdentity(page, 'playback');
+  await page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
+    const launch = game.scene.getScene('LaunchScene');
+    launch.playback.paused = false;
+    while (launch.playback.state.status === 'running') launch.pulse();
+    launch.playback.paused = true;
+  });
+  await captureIdentity(page, 'final');
+});
 
 test('I-3: importación inválida, límites, recuperación y semilla segura', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -209,5 +238,5 @@ async function checkLayout(page: Page, selector: string, phase: string) {
     expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(panel.x);
   }
   expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(geometry.canvas.y + geometry.canvas.height);
-  await page.screenshot({ path: `tests/browser/evidence/verification-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
+  await page.screenshot({ path: `tests/browser/evidence/identity-layout-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
 }

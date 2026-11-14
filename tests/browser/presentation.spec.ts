@@ -82,7 +82,7 @@ test('I-1: inventario original completo y APIs de presentación sin setInterval'
   expect(sources).not.toContain('setInterval');
 });
 
-test('I-1/I-2: tablero completo y arte opaco distinguible a 390px', async ({ page }) => {
+test('I-1/I-2: tablero completo y dimensiones del arte opaco a 390px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await expect.poll(() => page.evaluate(async () => {
