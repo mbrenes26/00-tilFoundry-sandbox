@@ -9,7 +9,7 @@ export interface PolicyMetadata {
 }
 /** Contrato JSON de inferencia compartido navegador/Node. No contiene replay, PRNG ni entrenador.
  * w1[h*36+i], w2[a*64+h]: salida-major; b1[h], b2[a]. Acciones del motor 0/1/2/3.
- * Arrays JSON normales; arquitectura/versiones se validarán al importar (paso de persistencia). */
+ * Arrays JSON normales; policy-format.ts valida arquitectura/versiones/dimensiones antes de importar. */
 export interface PolicyV1 {
   schemaVersion: 1;
   rulesVersion: string;
