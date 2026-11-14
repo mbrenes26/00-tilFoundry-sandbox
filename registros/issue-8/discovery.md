@@ -1,41 +1,32 @@
 ---
 id: "issue-8/discovery"
 tipo: "discovery"
-titulo: "Discovery confirmado: laberinto original y aprendizaje neuronal local"
+titulo: "Discovery confirmado: reglas y entrenamiento separado de la visualización"
 version: 1
 estado: "borrador"
 solucion: "issue-8"
 confidencialidad: "interna"
-procedencia: {"rol": "agente:manager-producto", "commit": "aabbdfbaec0a89ee4ba98765970961588f7ebadd", "modelo": "gpt-6.1-sol"}
-costo: {"proveedor": "azure-foundry", "tokens_entrada": 28618, "tokens_salida": 893, "monto_ia": 0.017876, "minutos_computo": 0, "monto_computo": 0.0}
+procedencia: {"rol": "agente:manager-producto", "commit": "2e38feb0560da5e2dd3b047e3e7ff339bca9a984", "modelo": "gpt-6.1-sol"}
+costo: {"proveedor": "azure-foundry", "tokens_entrada": 43785, "tokens_salida": 1183, "monto_ia": 0.023387, "minutos_computo": 0, "monto_computo": 0.0}
 ---
 ## Lo que la persona dijo y confirmó
-- Crear desde cero un juego original de laberinto con nombre, personajes y arte propios, píldoras, píldoras de poder y enemigos con modos de persecución y dispersión.
-- Usar una red neuronal que aprenda jugando, no estrategias programadas como jugador principal.
-- Acepta el stack vigente del repositorio y el desarrollo desde cero.
-- Entrenar localmente en Windows con 4 GB de RAM, sin GPU, con límite de seis horas.
-- Confirmó el resumen y el alcance inicial: un solo laberinto original, guardar la red y verla jugar, comparar puntuación antes y después y frente a una referencia aleatoria; sin meta del nivel 256 ni reproducción del fallo original.
-- Pastoreo, riesgo calculado y estrategias contraintuitivas son intereses de observación, no resultados garantizados.
-## Repositorio y cerebro consultado
-- Proyecto nuevo confirmado a partir del inventario anterior: solo README.md, sin código ni pruebas; no se volvió a inspeccionar en esta ejecución.
-- C-2: reglas puras independientes de Phaser y renderizado sin duplicarlas.
-- C-3: BootScene, BaseScene, UIScene, LaunchScene y ResultScene; pixelArt, FIT, resolución lógica 1600×900 y temporizadores de Phaser.
-- C-4: HTTP local con Node.js 22, npm run dev y build estático; publicación separada.
-- C-5: pixel art original con inventario de procedencia e interfaz en español.
-- C-7: TypeScript 5, Phaser 3, Vite 6.4.6, Vitest 4.1.12 y Playwright 1.65.0.
+- Juego original de laberinto desde cero, con nombre, personajes y pixel art propios, píldoras, poderes y enemigos con persecución/dispersión.
+- Red neuronal que aprenda jugando como jugador principal; estrategias programadas solo para controlar enemigos y una referencia aleatoria para evaluar.
+- Respeta el stack vigente. Confirma proyecto nuevo y un único laberinto, sin nivel 256 ni reproducción del fallo original.
+- Entrenamiento local en Windows, 4 GB de RAM, sin GPU, con límite de seis horas.
+- Confirmó tres vidas, cuatro enemigos, puntuación por píldoras y capturas con bonificación creciente; final al limpiar el laberinto o perder las vidas.
+- Confirmó entrenamiento sin dibujar partidas, con pausa, guardado y reanudación, y visualización posterior de la red guardada.
 ## Necesidad de fondo
-- Experimentar localmente con aprendizaje neuronal y observar cómo cambia el juego del agente mediante mediciones de puntuación, sin exigir una estrategia emergente concreta. El resumen que expresa esta necesidad fue confirmado por la persona.
-## Propuesta para concretar reglas, pendiente de aceptación
-- Partidas con tres vidas y cuatro enemigos; puntos por píldoras y por enemigos capturados durante un poder, con bonificación creciente en cadena.
-- Terminar cada partida al limpiar el único laberinto o perder las tres vidas; sin niveles adicionales en esta versión.
-- Entrenamiento acelerado sin dibujar cada partida, con pausa, guardado y reanudación; reproducción visual de la red guardada por separado.
-## Supuestos y datos no verificados
-- No se han fijado biblioteca neuronal, algoritmo, tamaño de red, tiempos de modos ni presupuesto de memoria.
-- No se asume que deban consumirse seis horas durante la construcción ni que la sesión aislada equivalga al equipo de la persona.
-- No se han medido rendimiento ni memoria en Windows con 4 GB de RAM.
-## Pendiente de acordar
-- Confirmar las reglas propuestas y la forma de entrenar y observar.
-- Fijar métricas, semillas, recompensas y criterios de aceptación reproducibles en la spec.
+Experimentar con aprendizaje neuronal local y observar su evolución con mediciones de puntuación antes/después y frente a una referencia aleatoria, sin prometer comportamientos emergentes concretos.
+## Repositorio y cerebro consultado
+- Inventario actual: solo README.md, con título del repositorio; sin código, dependencias ni pruebas. Proyecto nuevo confirmado por la persona.
+- Se respetan C-2, C-3, C-4, C-5 y C-7; no se propone migración.
+## Inferencias
+- Una red pequeña calculada en CPU y un entrenamiento independiente del renderizado son apropiados para explorar la viabilidad en ese equipo.
+- La comparación debe usar semillas fijas y registrar resultados aunque no haya mejora.
+## Supuestos y no verificado
+- No se conocen CPU ni navegador instalado; no se ha medido rendimiento o consumo total en Windows de 4 GB.
+- Las seis horas son un límite del experimento, no una promesa de convergencia, pastoreo o mejora.
+- Algoritmo, recompensas, límites de episodios y contratos se proponen en la spec para aprobación, no se presentan como acuerdos previos.
 ## Límites
-- Las seis horas son límite del experimento, no garantía de mejora, pastoreo, maniobras al límite ni sacrificios aprendidos.
-- La publicación queda fuera según C-4.
+Un laberinto; sin niveles adicionales, backend, GPU, publicación ni garantía de maniobras al píxel o sacrificios aprendidos. La entrega será código y evidencia reproducible; la ejecución de seis horas en el equipo de la persona quedará pendiente si no se mide allí.
