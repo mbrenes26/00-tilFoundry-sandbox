@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="16" viewBox="0 0 192 16" shape-rendering="crispEdges">
+<!-- Pixel art original de Lúmina: luciérnaga y escarabajos de cristal, dos fotogramas por actor. -->
+<defs>
+<g id="firefly"><path fill="#7faeaa" d="M2 4h4v2H2zM10 4h4v2h-4zM4 6h2v3H4zM10 6h2v3h-2z"/><path fill="#e4f3b0" d="M6 3h4v8H6z"/><path fill="#e8cf70" d="M5 10h6v3H5zM6 13h4v1H6z"/><path fill="#112b35" d="M6 4h1v1H6zM9 4h1v1H9z"/></g>
+<g id="beetle"><path fill="currentColor" d="M4 2h2v3H4zM10 2h2v3h-2zM4 5h8v7H4zM6 12h4v2H6zM2 6h2v2H2zM12 6h2v2h-2zM2 10h2v2H2zM12 10h2v2h-2z"/><path fill="#152638" d="M7 7h2v6H7z"/><path fill="#eff6dd" d="M5 5h2v2H5zM9 5h2v2H9z"/></g>
+</defs>
+<use href="#firefly"/><g transform="translate(16 0)"><use href="#firefly"/><path fill="#b2dfcd" d="M1 7h4v2H1zM11 7h4v2h-4z"/></g>
+<use href="#beetle" x="32" color="#d97f98"/><use href="#beetle" x="48" y="-1" color="#e69dad"/>
+<use href="#beetle" x="64" color="#7bb9df"/><use href="#beetle" x="80" y="-1" color="#9acfeb"/>
+<use href="#beetle" x="96" color="#ae91de"/><use href="#beetle" x="112" y="-1" color="#c5abea"/>
+<use href="#beetle" x="128" color="#e2ac6e"/><use href="#beetle" x="144" y="-1" color="#efd197"/>
+<use href="#beetle" x="160" color="#8cd2aa"/><use href="#beetle" x="176" y="-1" color="#c7eed4"/>
+</svg>
