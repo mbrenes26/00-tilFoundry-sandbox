@@ -93,7 +93,10 @@ for(const success of [true,false])test(`P6 J6 ascenso ${success?'exitoso':'falli
  const start=await page.evaluate(()=>performance.now());
  const sample=()=>page.evaluate(()=>{const s=(window as any).__game.scene.getScene('LaunchScene');return s.children.list.filter((o:any)=>['rocket','smoke','flame'].includes(o.texture?.key)).map((o:any)=>({key:o.texture.key,y:o.y,frame:o.frame.name,visible:o.visible,animation:o.anims?.currentAnim?.key,playing:o.anims?.isPlaying}));});
  const first=await sample();expect(first.find((s:any)=>s.key==='smoke')).toMatchObject({animation:'smoke-burn',playing:true,visible:true});expect(first.find((s:any)=>s.key==='flame')).toMatchObject({animation:'flame-burn',playing:true,visible:true});
- await p6Capture(page,`${label}-launch-a`);await page.waitForTimeout(350);await p6Capture(page,`${label}-launch-b`);
+ await p6Capture(page,`${label}-launch-a`);
+ const effectFrames={smoke:new Set<number>(),flame:new Set<number>()};
+ await expect.poll(async()=>{for(const effect of await sample())if(effect.key==='smoke'||effect.key==='flame')effectFrames[effect.key as 'smoke'|'flame'].add(Number(effect.frame));return {smoke:[...effectFrames.smoke].sort(),flame:[...effectFrames.flame].sort()};},{timeout:1200,intervals:[60]}).toEqual({smoke:[0,1,2],flame:[0,1,2]});
+ await p6Capture(page,`${label}-launch-b`);
  await page.waitForTimeout(850);const later=await sample();expect(later.find((s:any)=>s.key==='rocket')!.y).toBeLessThan(first.find((s:any)=>s.key==='rocket')!.y);await p6Capture(page,`${label}-ascent`);
  if(!success){await page.waitForTimeout(1300);expect((await sample()).find((s:any)=>s.key==='flame')!.visible).toBe(false);await p6Capture(page,'failure-anomaly');}
  // Timestamp DOM del resultado, independiente del intervalo de consulta de Playwright.
@@ -103,4 +106,25 @@ for(const success of [true,false])test(`P6 J6 ascenso ${success?'exitoso':'falli
  await expect(page.getByTestId('result')).toContainText(success?'Misión completada':'Misión fallida');await p6Capture(page,`${label}-result`);
  await reset(page);await p6Capture(page,`${label}-restart`);expect((await characterState(page)).every((s:any)=>s.animation.endsWith('-idle'))).toBe(true);
  await room(page,'observation');await close(page);await expect(page.getByTestId('launch-animation')).toBeHidden();
+});
+
+// P6 complemento: frames observados, no solo bandera isPlaying.
+// Los controles de reparación/carga activan trabajo de técnicos. Astronaut-work
+// sigue siendo exclusivamente la sonda de render documentada arriba.
+test('P6 J6 frames reales idle, reparación y carga; configuración FIT',async({page})=>{
+ const config=await page.evaluate(()=>{const g=(window as any).__game;return {width:g.config.width,height:g.config.height,pixelArt:g.config.pixelArt,fit:g.scale.scaleMode===3};});
+ expect(config).toEqual({width:1600,height:900,pixelArt:true,fit:true});
+ const collect=async(index:number,animation:string)=>{
+  const seen=new Set<number>();
+  await expect.poll(async()=>{const s=(await characterState(page))[index];expect(s.animation).toBe(animation);expect(s.visible&&s.playing).toBe(true);seen.add(Number(s.frame));return [...seen].sort();},{timeout:1500,intervals:[60]}).toEqual(animation.endsWith('-idle')?[0,1]:[2,3]);
+ };
+ await collect(0,'technician-idle');await collect(7,'astronaut-idle');
+ await page.getByTestId('repair-pump').click();await page.getByTestId('confirm-action').click();
+ await expect(page.getByTestId('progress')).toBeVisible();await collect(3,'technician-work');
+ await expect(page.getByTestId('progress')).toBeHidden({timeout:5000});await collect(3,'technician-idle');
+ await room(page,'design');await page.locator('[data-profile=balanced]').click();await action(page,'design-balanced');
+ await room(page,'control');await action(page,'trajectory');await room(page,'fuel');
+ await page.getByTestId('load').click();await page.getByTestId('confirm-action').click();
+ await expect(page.getByTestId('progress')).toBeVisible();await collect(4,'technician-work');
+ await expect(page.getByTestId('progress')).toBeHidden({timeout:5000});await collect(4,'technician-idle');
 });
