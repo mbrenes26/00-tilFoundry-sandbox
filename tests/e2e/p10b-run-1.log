@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+{"width":1600,"durationMs":7032.600000000093,"score":712,"frames":[0,1,2],"restartObservedMs":8201.100000000093,"restartSamples":490,"errors":[]}
+  ✓  1 tests/e2e/p10b-success.spec.ts:8:32 › P10b éxito y reinicio exacto 1600 (25.8s)
+{"width":1280,"durationMs":7032.699999999721,"score":712,"frames":[0,1,2],"restartObservedMs":8203.200000000186,"restartSamples":493,"errors":[]}
+  ✓  2 tests/e2e/p10b-success.spec.ts:8:32 › P10b éxito y reinicio exacto 1280 (25.0s)
+
+  2 passed (53.8s)
