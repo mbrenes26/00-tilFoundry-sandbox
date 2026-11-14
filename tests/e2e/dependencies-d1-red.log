@@ -1,0 +1,45 @@
+
+> nivel-1-despegue@1.0.0 test
+> vitest run --run tests/game/dependency-version.test.ts
+
+
+ RUN  v3.2.7 /trabajo
+
+ ❯ tests/game/dependency-version.test.ts (1 test | 1 failed) 9ms
+   × D1 cinco versiones exactas aprobadas y lockfile coherente sin nuevas directas ni Vitest 5 8ms
+     → expected { Object (vite, vitest, ...) } to deeply equal { vite: '6.4.6', …(3) }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/game/dependency-version.test.ts > D1 cinco versiones exactas aprobadas y lockfile coherente sin nuevas directas ni Vitest 5
+AssertionError: expected { Object (vite, vitest, ...) } to deeply equal { vite: '6.4.6', …(3) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "@playwright/test": "1.65.0",[39m
+[31m+   "@playwright/test": "1.51.1",[39m
+[2m    "typescript": "5.7.3",[22m
+[32m-   "vite": "6.4.6",[39m
+[32m-   "vitest": "4.1.12",[39m
+[31m+   "vite": "6.1.0",[39m
+[31m+   "vitest": "3.2.7",[39m
+[2m  }[22m
+
+ ❯ tests/game/dependency-version.test.ts:9:31
+      7|   const expected = {vite: '6.4.6', vitest: '4.1.12', typescript: '5.7.…
+      8|   expect(pkg.dependencies).toEqual({phaser: '3.90.0'});
+      9|   expect(pkg.devDependencies).toEqual(expected);
+       |                               ^
+     10|   expect(pkg.overrides).toBeUndefined();
+     11|   expect(pkg.optionalDependencies).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  16:27:14
+   Duration  699ms (transform 161ms, setup 0ms, collect 84ms, tests 9ms, environment 0ms, prepare 114ms)
+

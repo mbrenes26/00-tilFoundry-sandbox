@@ -1,0 +1,23 @@
+
+> nivel-1-despegue@1.0.0 test:e2e
+> playwright test
+
+
+Running 14 tests using 1 worker
+
+  ✓  1 tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio (3.2s)
+  ✓  2 tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo (3.0s)
+  ✓  3 tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio (20.3s)
+  ✓  4 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo (18.3s)
+  ✓  5 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba (15.1s)
+  ✓  6 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena (15.1s)
+  ✓  7 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima (18.0s)
+  ✓  8 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible (15.7s)
+  ✓  9 tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito (32.4s)
+  ✓  10 tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento (13.3s)
+  ✓  11 tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 (30.0s)
+  ✓  12 tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera (12.8s)
+  ✓  13 tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 10:00 inclusivo (12.6s)
+  ✓  14 tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 11:00 inclusivo (15.7s)
+
+  14 passed (3.8m)

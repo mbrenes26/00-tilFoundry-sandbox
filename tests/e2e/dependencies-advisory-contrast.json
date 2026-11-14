@@ -1,0 +1,26 @@
+[
+  {
+    "name": "@vitest/mocker",
+    "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+    "range": ">=2.1.0 <4.1.11",
+    "baseline": "3.2.7",
+    "installed": "4.1.12",
+    "finalAuditFinding": null
+  },
+  {
+    "name": "@vitest/mocker",
+    "url": "https://github.com/advisories/GHSA-qxg6-89mg-rqv8",
+    "range": ">=2.1.0-beta.7 <4.1.12",
+    "baseline": "3.2.7",
+    "installed": "4.1.12",
+    "finalAuditFinding": null
+  },
+  {
+    "name": "vitest",
+    "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+    "range": ">=2.1.0 <4.1.11",
+    "baseline": "3.2.7",
+    "installed": "4.1.12",
+    "finalAuditFinding": null
+  }
+]

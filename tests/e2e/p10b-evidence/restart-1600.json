@@ -1,0 +1,77 @@
+{
+  "restart": {
+    "observedMs": 8201.100000000093,
+    "count": 490,
+    "deviations": [],
+    "state": {
+      "minute": 510,
+      "budget": 1000000,
+      "inventory": {
+        "fuel": 120000,
+        "oxygen": 30000,
+        "water": 10000,
+        "food": 2000,
+        "parts": 50
+      },
+      "cargo": {
+        "fuel": 0,
+        "oxygen": 0,
+        "water": 0,
+        "food": 0
+      },
+      "profile": null,
+      "trajectory": false,
+      "weatherConsulted": false,
+      "repairs": {
+        "pump": false,
+        "antenna": false
+      },
+      "loaded": false,
+      "angle": 72,
+      "angleConfirmed": false,
+      "verified": false,
+      "launched": false,
+      "result": null
+    },
+    "busy": false,
+    "warning": false,
+    "active": [
+      "BaseScene",
+      "UIScene"
+    ],
+    "cleanup": [
+      {
+        "key": "LaunchScene",
+        "tweens": 0,
+        "activeTimers": 0,
+        "pendingTimers": 0
+      },
+      {
+        "key": "UIScene",
+        "tweens": 0,
+        "activeTimers": 0,
+        "pendingTimers": 0
+      },
+      {
+        "key": "BaseScene",
+        "tweens": 0,
+        "activeTimers": 0,
+        "pendingTimers": 0
+      },
+      {
+        "key": "ResultScene",
+        "tweens": 0,
+        "activeTimers": 0,
+        "pendingTimers": 0
+      }
+    ],
+    "ui": {
+      "draft": 72,
+      "room": null,
+      "pending": null,
+      "progress": 0
+    },
+    "rocketVisible": true
+  },
+  "errors": []
+}

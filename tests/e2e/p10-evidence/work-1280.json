@@ -1,0 +1,1878 @@
+{
+  "mode": "work",
+  "width": 1280,
+  "events": [
+    {
+      "label": "initial",
+      "elapsed": 0,
+      "state": {
+        "minute": 510,
+        "budget": 1000000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ]
+    },
+    {
+      "label": "repair-pump-preview",
+      "text": "Confirmar acción\n\n20 min de juego · $60.000 · 10 repuestos\n\nBomba al 100 %.\n\nCancelarConfirmar"
+    },
+    {
+      "label": "repair-pump-before",
+      "elapsed": 0,
+      "state": {
+        "minute": 510,
+        "budget": 1000000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ]
+    },
+    {
+      "label": "repair-pump-start",
+      "elapsed": 87,
+      "state": {
+        "minute": 510,
+        "budget": 1000000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931
+      },
+      "progress": "3%"
+    },
+    {
+      "label": "repair-pump-middle",
+      "elapsed": 464,
+      "state": {
+        "minute": 510,
+        "budget": 1000000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931
+      },
+      "progress": "21%"
+    },
+    {
+      "label": "repair-pump-disabled",
+      "antenna": true,
+      "wait": true,
+      "index": 3
+    },
+    {
+      "label": "repair-pump-second-attempt",
+      "elapsed": 551,
+      "state": {
+        "minute": 510,
+        "budget": 1000000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931
+      },
+      "progress": "25%"
+    },
+    {
+      "label": "repair-pump-complete",
+      "elapsed": 2350,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931,
+        "end": 2780.100000000093,
+        "duration": 2013.5
+      }
+    },
+    {
+      "label": "repair-pump-stable",
+      "elapsed": 2664,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931,
+        "end": 2780.100000000093,
+        "duration": 2013.5
+      }
+    },
+    {
+      "label": "repair-antenna-preview",
+      "text": "Confirmar acción\n\n20 min de juego · $40.000 · 5 repuestos\n\nAntena al 100 %.\n\nCancelarConfirmar"
+    },
+    {
+      "label": "repair-antenna-before",
+      "elapsed": 0,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 766.6000000000931,
+        "end": 2780.100000000093,
+        "duration": 2013.5
+      }
+    },
+    {
+      "label": "repair-antenna-start",
+      "elapsed": 69,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466
+      },
+      "progress": "2%"
+    },
+    {
+      "label": "repair-antenna-middle",
+      "elapsed": 444,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466
+      },
+      "progress": "20%"
+    },
+    {
+      "label": "repair-antenna-disabled",
+      "antenna": true,
+      "wait": true,
+      "index": 3
+    },
+    {
+      "label": "repair-antenna-second-attempt",
+      "elapsed": 517,
+      "state": {
+        "minute": 530,
+        "budget": 940000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 40
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466
+      },
+      "progress": "23%"
+    },
+    {
+      "label": "repair-antenna-complete",
+      "elapsed": 2312,
+      "state": {
+        "minute": 550,
+        "budget": 900000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466,
+        "end": 5529.5,
+        "duration": 2013.1999999999534
+      }
+    },
+    {
+      "label": "repair-antenna-stable",
+      "elapsed": 2628,
+      "state": {
+        "minute": 550,
+        "budget": 900000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": null,
+        "trajectory": false,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466,
+        "end": 5529.5,
+        "duration": 2013.1999999999534
+      }
+    },
+    {
+      "label": "load-preview",
+      "text": "Confirmar acción\n\n30 min de juego · $30.000\n\nTransferir a bordo 100.000 L combustible, 6.000 L O₂, 2.000 L agua y 400 kg alimentos.\n\nCancelarConfirmar"
+    },
+    {
+      "label": "load-before",
+      "elapsed": 0,
+      "state": {
+        "minute": 570,
+        "budget": 680000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 3516.3000000000466,
+        "end": 5529.5,
+        "duration": 2013.1999999999534
+      }
+    },
+    {
+      "label": "load-start",
+      "elapsed": 73,
+      "state": {
+        "minute": 570,
+        "budget": 680000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549
+      },
+      "progress": "1%"
+    },
+    {
+      "label": "load-middle",
+      "elapsed": 455,
+      "state": {
+        "minute": 570,
+        "budget": 680000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549
+      },
+      "progress": "20%"
+    },
+    {
+      "label": "load-disabled",
+      "antenna": true,
+      "wait": true,
+      "index": 4
+    },
+    {
+      "label": "load-second-attempt",
+      "elapsed": 555,
+      "state": {
+        "minute": 570,
+        "budget": 680000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549
+      },
+      "progress": "25%"
+    },
+    {
+      "label": "load-complete",
+      "elapsed": 2367,
+      "state": {
+        "minute": 600,
+        "budget": 650000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549,
+        "end": 8562.899999999907,
+        "duration": 2013.8999999999069
+      }
+    },
+    {
+      "label": "load-stable",
+      "elapsed": 2718,
+      "state": {
+        "minute": 600,
+        "budget": 650000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 0,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549,
+        "end": 8562.899999999907,
+        "duration": 2013.8999999999069
+      }
+    },
+    {
+      "label": "astronaut-work-TECHNICAL-PROBE",
+      "elapsed": 0,
+      "state": {
+        "minute": 600,
+        "budget": 650000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 35
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": true,
+          "antenna": true
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "warning": false,
+      "characters": [
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "technician-idle",
+          "frame": 1,
+          "playing": true
+        },
+        {
+          "key": "astronaut-work",
+          "frame": 2,
+          "playing": true
+        },
+        {
+          "key": "astronaut-idle",
+          "frame": 1,
+          "playing": true
+        }
+      ],
+      "launch": [],
+      "active": [
+        "BaseScene",
+        "UIScene"
+      ],
+      "timing": {
+        "start": 6549,
+        "end": 8562.899999999907,
+        "duration": 2013.8999999999069
+      }
+    }
+  ],
+  "errors": []
+}

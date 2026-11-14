@@ -1,0 +1,17 @@
+
+Running 4 tests using 1 worker
+
+{"id":"repair-pump","minutes":20,"cost":60000,"parts":10,"durationMs":2079.8000000000466,"frames":[2,3],"transitions":1}
+{"id":"repair-antenna","minutes":20,"cost":40000,"parts":5,"durationMs":1997.5,"frames":[2,3],"transitions":1}
+{"id":"load","minutes":30,"cost":30000,"parts":0,"durationMs":2014.5,"frames":[2,3],"transitions":1}
+  ✓  1 tests/e2e/p10a-work.spec.ts:64:67 › P10a work 1600 pump-true (11.5s)
+{"id":"load","minutes":40,"cost":30000,"parts":0,"durationMs":2047.5,"frames":[2,3],"transitions":1}
+  ✓  2 tests/e2e/p10a-work.spec.ts:64:67 › P10a work 1600 pump-false (4.5s)
+{"id":"repair-pump","minutes":20,"cost":60000,"parts":10,"durationMs":2013.1000000000931,"frames":[2,3],"transitions":1}
+{"id":"repair-antenna","minutes":20,"cost":40000,"parts":5,"durationMs":1997.6999999999534,"frames":[2,3],"transitions":1}
+{"id":"load","minutes":30,"cost":30000,"parts":0,"durationMs":2014.3000000000466,"frames":[2,3],"transitions":1}
+  ✓  3 tests/e2e/p10a-work.spec.ts:64:67 › P10a work 1280 pump-true (10.8s)
+{"id":"load","minutes":40,"cost":30000,"parts":0,"durationMs":2013.1000000000931,"frames":[2,3],"transitions":1}
+  ✓  4 tests/e2e/p10a-work.spec.ts:64:67 › P10a work 1280 pump-false (4.3s)
+
+  4 passed (33.6s)

@@ -1,0 +1,621 @@
+# Matriz de aceptación — issue-6, PR #7
+
+## P3: estado, costos y reloj (R1–R3)
+
+- Base contrastada: `spec-solucion`, versión `aprobada-original`, completa (API reglas v1, balance, R1–R3). La adenda vigente conserva esas reglas y tablas; no se modifican balance, contratos ni dependencias. Se respetan C-2–C-5 y C-7.
+- Punto de partida informado por Core: `da92b9e00ca37820e825b92971ba6b8cae694885`, rama `foundry/issue-6`.
+- Implementación leída, no modificada: `src/rules/index.ts`. Pruebas contra el motor real de reglas, sin dobles ni Phaser.
+- Archivo de matriz inexistente al comenzar, tanto en la rama como en la sesión; se crea esta sección sin sustituir informes previos. Los 26 casos originales de `tests/rules/rules.test.ts` se conservan; se añaden 81 casos (107 en total).
+- Comando de cada fila: `npm test -- tests/rules/rules.test.ts`. Resultado observado tras ajustar dos expectativas incorrectas de las nuevas pruebas: código 0, **107 passed**, **1 passed** (archivo), Vitest **4.1.12**. Detalle temporal de las ejecuciones al final de esta sección.
+
+### R1 — Estado, inmutabilidad y recursos
+
+| Requisito | Implementación contrastada | Archivo / test | Resultado real |
+| --- | --- | --- | --- |
+| Estado inicial completo: reloj 510, presupuesto 1.000.000, todos los inventarios/carga, banderas, perfil, ángulo y resultado | `src/rules/index.ts:26` (`createInitialState`) | `tests/rules/rules.test.ts`, `estado y reinicio exactos después de preparación y cada terminación`; expectativa independiente `EXPECTED_INITIAL` | Verde. Igualdad exacta del estado serializable; objetos anidados nuevos. |
+| Reinicio exacto tras preparación, éxito, fallo de lanzamiento y tiempo | `createInitialState` | Mismo test; además se modifica una instancia inicial y se comprueba que las demás permanecen intactas | Verde. El reinicio de reglas consiste en crear el estado inicial; no acredita cancelación de animaciones del juego. |
+| Pureza de `previewAction` y `applyAction`, todas las ramas válidas | `src/rules/index.ts:44–84` | `previewAction/applyAction inmutables: $name` (12 casos), `freezeDeep` y copia previa | Verde. Estado y acción congelados; entrada intacta, salida nueva con inventario/carga/reparaciones independientes. |
+| Pureza de `getView`, `evaluateLaunch` y `getScore` | `src/rules/index.ts:31–43,87–98` | `getView/evaluateLaunch/getScore inmutables en inicio, preparación y resultados` | Verde. Inicio, preparación, éxito y dos fallos congelados; llamadas repetibles; modificar inventario/carga de la vista o métricas del puntaje no modifica el estado. |
+| Presupuesto insuficiente y exactamente suficiente | `previewAction` valida presupuesto; `applyAction` descuenta el costo | `presupuesto un peso insuficiente y exacto: $name` (8 casos: tres diseños, trayectoria, dos reparaciones, carga con/sin bomba) | Verde. Rechazo a costo−1 sin cambio; con presupuesto exacto termina en cero. |
+| Repuestos insuficientes para cada reparación; cada consumible de carga insuficiente | Validación `inventoryCosts` y descuento en `applyAction` | `inventario insuficiente y exacto: %s/%s` (bomba/repuestos 10, antena/repuestos 5, combustible 100.000, oxígeno 6.000, agua 2.000, alimentos 400) | Verde. Se prueban 0, costo−1 y costo exacto para cada recurso; razones específicas, sin mutación ni saldos negativos. |
+| Acciones completadas sin doble consumo | Casos de reparación/clima/trayectoria/ángulo en `previewAction` | `completada sin doble consumo: %o` (ambas reparaciones, clima, trayectoria, mismo ángulo confirmado), más tests originales | Verde. Tres repeticiones, costo/duración cero y estado igual. |
+| Carga única y rechazo sin cambios | `previewAction`, caso `load` | `carga repetida rechazada sin doble consumo`, helper `expectRejected` | Verde. Tres rechazos, misma referencia y contenido; razón `loaded`. Puede incluir además insuficiencia del inventario ya transferido. |
+
+### R2 — Tablas, fórmulas y prerrequisitos
+
+| Requisito | Implementación contrastada | Archivo / test | Resultado real |
+| --- | --- | --- | --- |
+| Todas las acciones: duración, presupuesto e inventario tanto en previsualización como en transición | `src/rules/index.ts:16–25,44–84` | `tests/rules/rules.test.ts`, `costo/duración/inventario preview y transición: $name` (12 casos, tabla `costCases`) | Verde. Diseños 10 min/200.000, 260.000, 240.000; trayectoria 10/20.000; clima 5/0; bomba 20/60.000/10 repuestos; antena 20/40.000/5; carga 40 o 30/30.000; ángulo 5/0; verificar 10/10.000; lanzar 0/0. Efectos presentes y descuentos comprobados para los cinco inventarios. |
+| Tres perfiles completos | `PROFILES`, `getView` | `perfil completo y fórmulas confirmadas/borrador: %s` (3 casos) | Verde. Nombre, costo, masa, potencia, resistencia, estado nave, combustible base y órbita coinciden con la tabla aprobada; expectativas no importan constantes del motor. |
+| Ángulos 45, 70, 72, 74 y 90; combustible y órbita | `estimates`, `getView`, `applyAction` caso `angle` | Mismo test de perfiles y tests originales `perfil %s` / `ángulo entero y confirmación idempotente` | Verde para los 15 cruces perfil/ángulo. Borrador no confirma ni altera estado; estimación confirmada permanece en 72 hasta confirmar; tolerancia 70–74 inclusiva. |
+| Rechazo de fraccionarios/fuera de rango; reconfirmar gratis, cambiar cobra tiempo | `previewAction`, caso `angle` | `ángulo rechazado sin cambios: %s` (44, 91, 45.5, 72.5, 89.5, NaN, ±Infinity); `cambiar ángulo confirmado cobra cinco minutos; reconfirmar es gratis` | Verde. Rechazos con razón `angle-value`, entrada intacta; cambiar 72 a 74 lleva el reloj a 520 y reconfirmar no lo altera. |
+| Trayectoria requiere diseño; carga exige diseño y trayectoria válida | Casos `trajectory`, `load` | `prerrequisitos trayectoria/carga/verificaciones y rediseño` | Verde. Rechazos sin cambios por ausencia de cada prerrequisito; se conserva cobertura original. |
+| Rediseño antes de carga paga de nuevo e invalida trayectoria; después de carga se rechaza | Casos `design`, `trajectory`, `load` | Mismo test y tests originales de perfiles/carga | Verde. Equilibrada con trayectoria a 530/780.000; rediseño Potente a 540/520.000 invalida; recalcular a 550/500.000 permite cargar. Rediseño posterior rechazado con `loaded`. |
+| Carga 30/40 y transferencia, no desaparición de consumibles | Casos `load` en `previewAction`/`applyAction` | `carga conserva almacén+a bordo y duración con bomba %s` (2 casos) | Verde. Almacén final 20.000/24.000/8.000/1.600, carga 100.000/6.000/2.000/400; conservación de cada suma almacén+a bordo y repuestos según reparación. |
+| Verificaciones no exigen reparación, consulta de clima ni confirmación de ángulo; pueden repetirse pagando | Caso `verify` | `verificar puede repetirse pagando sin exigir reparación, clima ni ángulo`; fila de costos para verificaciones | Verde. Solo diseño/trayectoria/carga son prerrequisitos; repetir consume 10 minutos y 10.000. |
+
+### R3 — Reloj y clima deterministas
+
+| Requisito | Implementación contrastada | Archivo / test | Resultado real |
+| --- | --- | --- | --- |
+| Pronóstico completo y condiciones en 09:59, 10:00, 10:39, 10:40, 11:00 y 11:01 | `src/rules/index.ts:27–43,91–98` | `tests/rules/rules.test.ts`, `pronóstico/bloqueos completos %s %s` (6 casos), expectativa independiente `EXPECTED_FORECAST` | Verde. Viento/lluvia/nubosidad 12/0/18, 20/0/25, 45/0/40 y tabla completa con límites. En 11:01 el estado de prueba usa el último tramo meteorológico y el lanzamiento se bloquea por tiempo. |
+| Ventana inclusiva 600–660, riesgos separados de bloqueos | `evaluateLaunch`, caso `launch` | Mismo test y originales `lanzamiento aplicado en límite inclusivo %i` | Verde. 599 bloqueado por `early`; 600 y 639 éxito; 640 y 660 fallo meteorológico sin bloqueo; 661 bloqueado por `time`. Lanzamientos aplicados a 600 y 660 sin avance del reloj. |
+| Leer vista/borrador/pronóstico no avanza reloj; consultar primera vez sí consume 5 | `getView`, `previewAction`, caso `weather` | `lectura de vista y pronóstico ya consultado no avanza reloj`; pruebas de inmutabilidad y límites | Verde. Diez lecturas y previsualizaciones conservan estado inicial; primera consulta termina en 515; diez relecturas/reaplicaciones de consulta completada sin avance. |
+| Esperar 5, 10 o 20 sin costo material | Caso `wait` | `espera %i minutos sin costo material` (3 casos) | Verde. Estado exacto igual salvo reloj; duración previsualizada y presupuesto/inventario intactos. |
+| Viento >40 o lluvia >30, comparaciones estrictas | `isUnfavorable` | `umbrales estrictos viento %s lluvia %s` (6 casos), además del test original de umbrales | Verde. 40/30 favorable; 40.001/0 y 0/30.001 desfavorables; se prueban también 41/30, 40/31 y 0/0. |
+| Fallo inmediato al superar 660, advertencia sin impedir confirmar, estado terminal | `previewAction` y `applyAction:83` | `660 no termina; 661 produce fallo inmediato, advertido e irreversible` | Verde. Esperar de 650 a 660 no termina; de 656 a 661 sí, sin despegue, causa/hora/snapshot exactos y puntaje 0. Todas las ramas de acciones y esperas 5/10/20 rechazadas después por partida terminada, sin mutación. |
+| Una reparación que sobrepasa la ventana también termina al completar | Mismas funciones | `una tarea no espera sobre ventana también termina al completarse` | Verde. Reparar bomba desde 655 termina a 675, paga 60.000/10 repuestos, conserva reparación y genera fallo por tiempo con métricas finales. |
+
+### Evidencia real de esta ejecución
+
+1. Antes de modificar pruebas: `npm test -- tests/rules/rules.test.ts`, **código 127**, `sh: 1: vitest: not found`. Es un problema de instalación de la sesión, no un rojo de aceptación.
+2. `node --version && npm --version && npm ci`, **código 0**: Node **v22.23.5**, npm **10.9.9**, `added 48 packages`, `found 0 vulnerabilities`. No se resolvieron nuevas versiones ni se actualizó el lockfile.
+3. Baseline: `npm test -- tests/rules/rules.test.ts && git status --short && ls tests/e2e`. Vitest mostró **26 passed / 1 passed**; el comando compuesto terminó en **128** por `fatal: not a git repository`. La sesión no contiene `.git`; no se usa este resultado como evidencia de un fallo de reglas ni como comprobación de cambios de rama.
+4. Con las 81 pruebas añadidas: `npm test -- tests/rules/rules.test.ts`, **código 1**, **105 passed / 2 failed**. Fallaron expectativas de lista de motivos excesivamente restrictivas: la carga repetida devuelve `loaded` y `inventory-fuel`; en estado terminado también devuelve `finished`. La spec no exige omitir razones adicionales ni una lista única mínima.
+5. Se corrigieron únicamente las pruebas nuevas: el helper comprueba presencia de las causas exigidas, mensajes, igualdad entre razones de preview/aplicación y rechazo sin cambio; no exige ausencia de otras razones válidas. El test terminal exige `finished` en cada acción, sin fijar duplicados ni el orden de causas adicionales. Se añadieron las tres esperas al rechazo terminal. **No se modificó el motor ni se redujo ninguna comprobación original.** La ejecución siguiente de `npm test -- tests/rules/rules.test.ts` terminó con **código 0, 107 passed / 1 passed**.
+6. Regresión Vitest completa: `npm test`, **código 0**, **116 passed / 4 passed** (reglas 107, assets 2, juego 6, dependencias 1).
+
+**Rojo/verde:** hubo rojo real por errores de expectativas de las pruebas nuevas, corregidos en los tests, no por una carencia funcional del motor. No se presenta como ciclo TDD de implementación. Las demás pruebas añadidas pasaron contra la implementación existente desde la primera ejecución. No se fabricó un rojo modificando el motor, el balance o las expectativas aprobadas.
+
+### Límites y pendientes
+
+- No se encontró un defecto funcional de implementación en las comprobaciones R1–R3 ejecutadas. No se necesita ampliar la corrección del motor para este paso.
+- R1–R3 quedan trazados a reglas puras y pruebas automatizadas. El control de tarea en curso, doble clic, cierre/apertura de paneles y limpieza de animaciones al reiniciar pertenece al juego y exige pruebas de navegador; este paso no las revalida.
+- No se ejecutaron build ni pruebas de navegador en P3. No se presenta esta matriz como verificación independiente, aprobación de entrega ni evidencia visual.
+- R4/R5, A1–A4, J1–J7 y D1–D4 mantienen los requisitos de las specs aprobadas. Los tests originales R4/R5 y las otras suites Vitest sí se ejecutaron como regresión, pero su trazabilidad integral y las verificaciones de los pasos P4–P9 quedan pendientes; esta sección no los cierra ni sustituye sus informes existentes.
+- No hay SQL, migraciones ni servicios externos en estas pruebas de reglas.
+
+
+## P4: derivados, riesgos, resultados y puntaje (R4–R5)
+
+- Base leída completa: `spec-solucion`, `aprobada-original`; adenda `vigente` leída. La vigente conserva balance, API reglas v1 y R4/R5. Decisiones C-2–C-5 y C-7 respetadas; este paso no cambia fuentes, dependencias ni contratos.
+- Punto de partida de Core: `bddb3fa47177327bace7179f385c248999e2aa8d`, rama `foundry/issue-6`, PR #7.
+- Fuentes contrastadas: `src/rules/index.ts` y `src/game/Session.ts`. Las pruebas importan esas implementaciones reales. No hay mocks del motor; Session se prueba sin renderizador ni temporizadores reales de Phaser.
+- Cambios exclusivos: `tests/rules/rules.test.ts` (+29 casos; 136 totales), `tests/game/game.test.ts` (+18 casos; 24 totales), esta matriz. Se conservan todas las pruebas anteriores y la sección P3.
+- Comando por fila: `npm test -- tests/rules/rules.test.ts tests/game/game.test.ts`, resultado final código **0**, **160 passed / 2 passed**. Regresión unitaria completa: `npm test`, código **0**, **163 passed / 4 passed**. Evidencia temporal detallada debajo.
+
+### R4 — Derivados sin barreras de fase
+
+| Balance / contrato | Implementación | Test en `tests/rules/rules.test.ts` | Resultado |
+| --- | --- | --- | --- |
+| Ocho objetivos exactos: diseño, trayectoria, clima, reparaciones, carga, ángulo, revisión, ejecución de despegue | `getView`, `src/rules/index.ts:91–98`; `applyAction:68–84` | `ocho objetivos en cada transición, reparaciones 0/2→2/2 y fases completadas por objetivos` | Verde. Igualdad de los ocho booleanos en inicio y cada transición de la ganadora, contador 0/1/2 y marca final de ejecución. Las nueve referencias también comprueban la marca de despegue en fallos y su ausencia en fallo por tiempo. |
+| Fases orientativas Planificación, Preparación, Verificaciones y Lanzamiento; completadas solo por sus objetivos | `getView` | Mismo test; `éxito con clima, ángulo inicial y revisión omitidos, sin riesgos inventados ni barreras de fase` | Verde. Tabla completa de fase y cuatro marcas en cada paso. El éxito desde Planificación con objetivos incompletos no marca falsamente las fases previas como completas. |
+| Rediseño invalida trayectoria y su objetivo/sistema | `applyAction`, caso `design`; `getView` | `rediseño invalida objetivo y sistema de trayectoria y devuelve guía a planificación` | Verde. Conserva diseño/clima, anula trayectoria/navegación, vuelve a Planificación y añade bloqueo de trayectoria. |
+| Nave inicial 86 y perfiles 86/88/92; Sistemas 90+5 por reparación | `getView`; `PROFILES` | `barra Nave %s, independiente de verificaciones` (3 casos), tabla de objetivos y `reparación aislada %s y revisión no esconden los cinco sistemas` (2 casos) | Verde. Sistemas 90/95/100, incluidas ambas reparaciones aisladas. |
+| Recursos: promedio de cinco fracciones del inventario inicial, por 100, redondeado; no incluye presupuesto ni carga | `getView` | `Recursos promedia cinco fracciones, redondea y excluye presupuesto/carga` | Verde. Fracciones distintas 0.5/0.25/0.75/0.1/0.4 producen 40; variaciones de presupuesto/carga no afectan. Casos 0.4→0 y 0.8→1; preparación ganadora 65. |
+| Cinco sistemas actualizados sin esperar revisión: propulsión/bomba, comunicación/antena, energía siempre OK, soporte vital/carga, navegación/trayectoria | `getView` | Tabla de objetivos, rediseño y dos reparaciones aisladas | Verde. Igualdad exacta de los cinco indicadores; verificar con ambas averías conserva los indicadores visibles y registra revisión, sin esconder riesgos. |
+
+### R5 — Nueve referencias del balance
+
+- Prueba de reglas: `P4 R5 nueve secuencias, causas completas, instantánea y reinicio`, caso parametrizado `$name: reloj de cada acción, evaluación, consumo, causas, diagnóstico y reinicio` (9 casos).
+- Prueba de Session: `P4 R5 Session referencia $name y reset terminal exacto` (10 casos: la referencia 7 incluye fallo y éxito sin revisión). Se ejecutan acciones por `begin/complete` reales; no son controles de navegador.
+- Las reglas comparan **cada hora intermedia**, inventario/carga, causas exhaustivas y fragmentos explicativos, métricas congeladas y los cuatro componentes de puntaje con tablas independientes, no con constantes importadas del motor.
+
+| Ref. | Horas al completar acciones de preparación / espera | Resultado y causas completas | Componentes presupuesto/repuestos/tiempo/precisión; total | Session |
+| --- | --- | --- | --- | --- |
+| 1 Ganadora | 08:40, 08:50, 08:55, 09:15, 09:35, 10:05, 10:10, 10:20 | Éxito; ninguna causa | 256+140+166+150; **712** | Directo, sin aviso |
+| 2 Ángulo 80 | Como ganadora | Fallo `angle`; explica 80° frente a 72° | 256+140+166+83; **0** | Aviso, cancelar sin cambio y confirmar |
+| 3 Bomba omitida | 08:40, 08:50, 08:55, 09:15, 09:55, 10:00, 10:10 | Fallo solo `pump`, eficiencia 76 % | 280+180+208+150; **0** | Aviso y confirmación |
+| 4 Antena omitida | 08:40, 08:50, 08:55, 09:15, 09:45, 09:50, 10:00 | Fallo solo `antenna`, señal 68 % | 272+160+250+150; **0** | Aviso y confirmación |
+| 5 Clima | Ganadora más espera a 10:40 | Fallo solo `weather`; hora 10:40, viento 45 km/h y lluvia 0 % | 256+140+83+150; **0** | Aviso y confirmación |
+| 6 Ventana perdida | Ganadora, 10:40, 11:00, 11:20 | Fallo automático `time`; hora final 11:20 y cierre 11:00; no despegue | 256+140+0+150; **0** | Launch bloqueado por partida terminada |
+| 7 Sin revisión, antena omitida | 08:40, 08:50, 08:55, 09:15, 09:45, 09:50, espera a 10:00 | Fallo solo `antenna` | 276+160+250+150; **0** | Directo, sin aviso |
+| 7 Sin revisión, reparaciones completas | Ganadora hasta 10:10, omitiendo verificar | Éxito, ninguna causa | 260+140+208+150; **758** | Directo, sin aviso |
+| 8 Ángulo 90 y antena omitida | Como ref. 4 | Fallo `angle`, `antenna`, `fuel`; 90°/72°, señal 68 %, requerido 110.000 frente a 100.000 L | 272+160+250+0; **0** | Aviso enumera los tres riesgos actuales |
+| 9 Carga antes de reparar | 08:40, 08:50, 08:55, 09:35, 09:55, 10:15, 10:20, 10:30 | Éxito; carga tarda 40, no 30; margen reducido | 256+140+125+150; **671** | Directo, acciones secuenciales y tokens no duplicables |
+
+- Ref. 1: presupuesto 640.000, repuestos 35, combustible de almacén 20.000 y a bordo 100.000 antes / 8.000 después; márgenes meteorológico 20 min y de ventana 40 min.
+- En todas las nueve referencias se comprueban los consumibles a bordo restantes: oxígeno 6.000, agua 2.000, alimentos 400. Combustible termina en 8.000, salvo ángulo 80/90 (0) y fallo por tiempo (100.000).
+- Los fallos conservan componentes diagnósticos y total cero. Se cambia reloj, presupuesto, repuestos, ángulo y carga del estado terminal de prueba y el puntaje continúa usando su instantánea. Alterar la copia de métricas expuesta por `getScore` no modifica el puntaje posterior.
+- Reinicio: cada referencia comprueba `createInitialState` contra `EXPECTED_INITIAL` independiente y rechazo terminal sin mutación. Cada terminación de Session comprueba `reset`, igualdad exacta, objetos anidados nuevos, aviso/tarea/resultados eliminados y nueva reparación funcional. Prueba adicional de token anterior al reset rechazado mientras la nueva tarea permanece en curso.
+
+### API reglas v1 y códigos R4/R5
+
+| Exportación contractual | Fuente | Pruebas vinculadas |
+| --- | --- | --- |
+| `createInitialState(): GameState` | `src/rules/index.ts:26` | P3 estado exacto; P4 reinicio de cada referencia de reglas y Session, tabla independiente `EXPECTED_INITIAL`. |
+| `previewAction(state, action): ActionPreview` | `src/rules/index.ts:44` | P3 costos y pureza; P4 referencias verifican lanzamiento permitido con riesgos, bloqueos separados y rechazo terminal idéntico a razones de aplicación. |
+| `applyAction(state, action): ActionResult` | `src/rules/index.ts:68` | P3 transición inmutable y rechazo con misma referencia; P4 todas las referencias, consumo limitado a carga y resultados completos. |
+| `getView(state, draftAngle?): GameView` | `src/rules/index.ts:91` | P3 borrador frente a ángulo confirmado y pureza; P4 objetivos/fases/barras/sistemas, trayectoria invalidada y éxito con checklist incompleto. |
+| `evaluateLaunch(state): LaunchEvaluation` | `src/rules/index.ts:31` | P3 límites de ventana; P4 listas exactas de bloqueos/riesgos, nueve referencias y omisiones; Session consume evaluación real al solicitar y confirmar aviso. |
+| `getScore(state): ScoreBreakdown` | `src/rules/index.ts:87` | P4 componentes independientes por referencia, 712, fallos cero, copia de métricas y snapshot; siete filas `floor/round/clamp minute %i budget %i parts %i angle %i`. |
+
+- **Códigos de riesgos estables del contrato**: `angle`, `pump`, `antenna`, `weather`, `fuel`. Los cuatro primeros se prueban aisladamente con referencias jugables. `fuel` aislado se comprueba con un **estado sintético** con 91.999 L a bordo y ángulo 72 (requerido 92.000); no se afirma que esa carga parcial sea una acción jugable. La referencia 8 prueba combustible insuficiente por decisiones reales. Otro caso prueba exhaustividad/determinismo de los cinco riesgos simultáneos, repetido tres veces.
+- **Bloqueos separados**: ausencia de diseño, trayectoria ausente/invalidada, carga ausente, antes de ventana, fuera de ventana y partida terminada. Los códigos usados por la implementación son `design`, `trajectory`, `load`, `early`, `time`, `finished`; API v1 fija la semántica de bloqueos, no declara estos nombres como nuevos códigos estables. Test `bloqueos contractuales separados de riesgos, sin códigos de omisiones` compara listas exactas de evaluación y rechazos sin mutación. Los riesgos pueden coexistir con bloqueos; no se mezclan las listas.
+- `busy` pertenece a **Session**, no a riesgos del motor. Test `busy es bloqueo del juego, no riesgo de reglas; reset invalida token y aviso` comprueba rechazo mutante, estado intacto y que las reglas no agregan ese riesgo.
+- Omisiones de clima, confirmación del 72 inicial y revisión no añaden códigos de riesgo ni bloqueos; se prueba éxito omitiendo las tres tanto en reglas como en Session. Las fases no son bloqueos.
+- Aviso: referencias de Session comprueban lista actual, Cancelar con misma referencia/contenido, confirmación única y lanzamiento directo sin revisión o sin riesgos. Tests `aviso recalculado al cambiar clima y ángulo después de revisar`, `reparación después de revisión elimina riesgo; aviso viejo no autoriza` y `reemplazar estado invalida aviso` verifican invalidación y evaluación nueva. El test `confirmar revalida bloqueos actuales incluso si la referencia del aviso permanece` usa mutación sintética de trayectoria para comprobar defensa de `confirmLaunch`; no sustituye pruebas de cambios jugables por `begin/complete`, que producen estados nuevos.
+- Puntaje: `floor` de presupuesto/repuestos/tiempo, `round` de precisión, límites temporales 599/600/660/661 y ángulos 45/70/71/72/90; tiempo y precisión clamp 0–1 y total limitado a 1.000. El caso de presupuesto/repuestos superiores al inicial es **sintético** para probar clamp del total, no una victoria alcanzable. Cada fila comprueba también total 0 si el resultado es fallo.
+
+### Evidencia temporal P4 (Core conserva las salidas completas)
+
+1. `npm test -- tests/rules/rules.test.ts tests/game/game.test.ts`, código **127**, `vitest: not found`. Falta instalación de la sesión, **no rojo funcional**.
+2. `node --version && npm --version && npm ci && npm test -- tests/rules/rules.test.ts tests/game/game.test.ts`, código **0**. Node **v22.23.5**, npm **10.9.9**; instalación del lockfile sin actualización; baseline **113 passed / 2 passed** (107 reglas, 6 juego), Vitest **4.1.12**.
+3. Primera ejecución con 45 casos nuevos, antes de corregir nada: comando dirigido, código **1**, **157 passed / 1 failed**, reglas **134 passed**, juego **23 passed / 1 failed**. Único fallo: la expectativa nueva de éxito sin revisión decía **752**; motor devolvió **758**. La fórmula aprobada da presupuesto 650.000 → 260, repuestos 35 → 140, minuto 610 → floor(250×50/60)=208, precisión 150: **758**. Es error aritmético del test nuevo, **no discrepancia funcional ni regresión del motor**.
+4. Se corrigió solo esa expectativa nueva a 758 y se añadió comprobación explícita de sus cuatro componentes. Comando dirigido más `npm test`, código **0**: **158 passed / 2 passed**, después **161 passed / 4 passed**. Los otros 44 casos nuevos fueron cobertura verde desde su primera ejecución; no se fabricó rojo alterando producción.
+5. Se añadieron dos casos de reparación aislada y revisión sin ocultar indicadores. Primera ejecución de esos casos, mismo comando dirigido más suite completa, código **0**: **160 passed / 2 passed** (136 reglas, 24 juego), después **163 passed / 4 passed** (además assets 2 y dependencias 1). Son cobertura nueva verde, no TDD rojo/verde de implementación.
+6. Búsqueda de ubicaciones con `grep -nE` en las dos fuentes y las dos suites, código **0**; las ubicaciones de las seis exportaciones y de `requestLaunch`, `cancelWarning`, `confirmLaunch`, `reset` se contrastaron con las pruebas. No se editó ninguna fuente.
+
+### Límites del cierre P4
+
+- R4/R5 quedan trazados y verdes en pruebas de reglas puras y Session real. No se detectó discrepancia funcional que requiera modificar fuentes, contrato o balance.
+- No se ejecutaron build, Chromium, controles DOM, animaciones ni inspección visual en este paso. La confirmación visual de que el diálogo muestra la lista y el reinicio limpia tweens/callbacks reales permanece en los pasos de integración/verificación; estas pruebas no acreditan motor Phaser ni sustituyen J4/J5 de navegador.
+- No hay SQL, migraciones o servicios externos. No se usan mocks como evidencia de motor real.
+- P5–P9, gráficos, dependencias exactas/auditoría final y verificación independiente permanecen pendientes; esta sección no pide transición ni aprueba la entrega.
+
+
+## P5: manifiesto, frames y procedencia declarada (A1/A3)
+
+- Base contrastada: `spec-solucion`, `aprobada-original`, contrato Assets v1 y A1/A3 completos; adenda vigente conserva estos criterios. C-2–C-5 y C-7 intactas. Punto de partida de Core: `e9b65dfd0117525e8bbb83212de2e0e859d2e210`, rama `foundry/issue-6`, PR #7.
+- Archivos leídos sin modificar: `public/assets/manifest.json`, los nueve PNG locales, `scripts/assets/generate.mjs`, `docs/assets.md`. `package.json` se consultó para contrastar el comando documentado `npm run assets`; no se ejecutó ese comando ni el generador.
+- Cambios exclusivos: `tests/assets/assets.test.ts` (se conservan las dos pruebas originales y se añaden 58 casos: 60 totales), esta matriz (se conservan P3/P4). No se regeneró ni modificó arte, fuentes, documentación de arte, dependencias o configuración.
+- Pruebas sobre los archivos PNG reales, no imágenes simuladas: descompresión zlib, verificación de CRC y reconstrucción de píxeles RGBA. Fixtures negativos solo en memoria; no se alteran archivos PNG. No hay SQL, migraciones ni servicios externos.
+- Comando de todas las filas: `npm test -- tests/assets/assets.test.ts`, resultado final **código 0, 60 passed / 1 passed**, Vitest **4.1.12**. Regresión `npm test`: **código 0, 221 passed / 4 passed** (136 reglas, 24 juego, 60 assets, 1 dependencias).
+
+### A1 — Assets v1 y fondos
+
+| Requisito | Ubicación contrastada | Prueba / resultado real |
+| --- | --- | --- |
+| Versión 1 y nueve claves mínimas | `public/assets/manifest.json:2–154`; generación del manifiesto en `scripts/assets/generate.mjs:39` | `tests/assets/assets.test.ts:98`, `P5 A1 contrato mínimo y nueve claves exactas de salas`. Versión 1 y claves base-rooms, rocket, tower, terrain, technician, astronaut, smoke, flame, resource-icons presentes. Verde desde primera ejecución. |
+| Rutas PNG locales, existencia y dimensiones reales | Rutas/tamaños de cada entrada de manifiesto; nueve archivos en `public/assets/`; `docs/assets.md:8–17` | Test parametrizado `P5 A1 PNG local %s` en `tests/assets/assets.test.ts:103`, helper `localPath:25`, `decodePng:53`. Nueve PNG leídos y decodificados; dimensiones coinciden. Rechazo de traversal, URL, rutas absolutas, data URL, separadores, query y escape porcentual en `:175` (8 fixtures). Verde desde primera ejecución para PNG/rutas. |
+| PNG decodificables, no solo cabecera o longitud comprimida | `scripts/assets/generate.mjs:12`: perfil RGBA8 y PNG zlib; los nueve PNG almacenados | Decoder independiente: firma, límites de chunks, CRC de cada chunk, IHDR/IEND, RGBA8 no entrelazado, tamaño exacto de scanlines y reconstrucción de filtros 0–4. `P5 decodificador rechaza PNG en memoria: %s` (`:178`, 3 fixtures) rechaza truncado, firma y CRC alterados; comprueba archivo original intacto. Verde desde primera ejecución. No es un decoder universal para otros perfiles PNG. |
+| Dimensiones/recortes enteros positivos, coordenadas enteras no negativas y límites inclusivos | `manifest.json:5–65`, mapa de nueve recortes; `generate.mjs:16–18`; docs `:8` | `validateGeometry` (`tests/assets/assets.test.ts:31`) valida tamaños de todos los assets y cada recorte. Fixtures negativos (`:135–169`) ejercitan geometría/índices; `P5 límites válidos` (`:170`) admite x/y cero, recorte completo e índices 0 y frames−1. Hubo rojo real del helper antes de fortalecerlo; verde final. |
+| Nueve claves de salas y datos diferenciados | Mapa `crops`: design, control, weather, engineering, fuel, systems, storage, airlock, observation; `generate.mjs:16–31`; inventario textual en docs `:8` | Tests `:98` y `P5 A1 nueve fondos con recortes y datos RGBA distintos` (`:109`). Conjunto exacto de claves; nueve geometrías diferentes y nueve hashes SHA-256 diferentes sobre los píxeles de los recortes decodificados, no sobre PNG comprimidos. Verde desde primera ejecución. La diferencia de datos no acredita identificación visual de cada sala (A2). |
+
+### A3 — Spritesheets e inventario de procedencia
+
+| Requisito | Ubicación contrastada | Prueba / resultado real |
+| --- | --- | --- |
+| Técnico y astronauta: al menos 2 idle y 2 work | `manifest.json:81–115`; `generate.mjs:36`; `docs/assets.md:12–13` | `P5 A3 geometría y contenido de todos los frames: %s` (`tests/assets/assets.test.ts:116`): cuatro frames 16×24 en sheet 64×24; idle [0,1], work [2,3]; mínimos de longitud e índices diferentes en cada animación. Límites enteros 0≤índice<frames por helper. PNG y mínimos verdes desde primera ejecución; fixtures fortalecen rechazo de índices negativos/fraccionarios/NaN/igual o mayor a frames. |
+| Humo y llama: al menos 3 frames y geometría válida | `manifest.json:117–145`; `generate.mjs:37`; `docs/assets.md:14–15` | Mismo parametrizado: sheets 96×32, tres frames 32×32, burn [0,1,2]; recortes implícitos dentro de imagen y alpha no vacío en cada frame. Se validan alto, ancho, frameWidth, frameHeight, frames e índices, también para humo/llama, no solo personajes. Verde final. La expectativa nueva de que todos los dibujos fueran únicos era más estricta que Assets v1 y se corrigió (detalle temporal debajo). |
+| Iconos: geometría completa, no excluidos del validador | `manifest.json:147–153`; `generate.mjs:38`; `docs/assets.md:16` | Mismo parametrizado: sheet 96×16, seis frames 16×16, todos con contenido alpha; geometría entera positiva y límites de todos los recortes implícitos. Verde desde primera ejecución. No se agrega un requisito contractual de animación de iconos. |
+| Dimensiones, recortes y animaciones documentados | `docs/assets.md:8–17`; datos del manifiesto y procedimiento en `generate.mjs:16–39` | `P5 A3 documentación: inventario dimensional, animaciones y procedencia declarada` (`tests/assets/assets.test.ts:184`): fila de cada clave con tamaño real del manifiesto, cantidad/tamaño de frames y arrays de cada animación; mapa crops y nueve recortes 128×64 documentados. Verde desde primera ejecución. |
+| Autoría y procedimiento original declarados, sin afirmar inspección del mockup | `docs/assets.md:3–5`; `manifest.json:3`; `generate.mjs:1–12,16–39` | Mismo test comprueba autoría, ausencia de terceros declarada, referencia textual y negación expresa de inspección del mockup; comando, script, Node.js 22, Buffer/zlib, raster entero RGBA y sin suavizado. Revisión de código: importa solo node:fs/node:zlib, dibuja rectángulos/líneas/círculos con paleta definida, construye los nueve recursos y escribe PNG/manifiesto localmente; no hay descargas de imágenes de terceros en el procedimiento leído. `package.json` confirma script assets. Verde desde primera ejecución; es trazabilidad de documentación/procedimiento, no garantía jurídica de autoría. |
+
+### Evidencia temporal P5 (salidas conservadas por Core)
+
+1. Antes de modificar: `npm test -- tests/assets/assets.test.ts`, **código 127**, `vitest: not found`. Falta de instalación en sesión, no rojo de aceptación.
+2. `node --version && npm --version && npm ci && npm test -- tests/assets/assets.test.ts`, **código 0**. Node **v22.23.5**, npm **10.9.9**, instalación del lockfile existente: `added 48 packages`, `found 0 vulnerabilities`; baseline **2 passed / 1 passed**. No se cambiaron versiones ni se resolvió un nuevo lockfile; este resultado no sustituye P7/D4.
+3. Se escribieron primero los 58 casos adicionales y un helper geométrico que reproducía las comprobaciones antiguas (límites superiores, ancho de sheet). `npm test -- tests/assets/assets.test.ts`, **código 1, 36 passed / 24 failed**. **23 fallos** de fixtures del helper: algunos inválidos no se rechazaban y otros devolvían un diagnóstico insuficiente (`ancho spritesheet` en vez de dimensión inválida). El fallo restante fue una expectativa nueva demasiado estricta sobre dibujos únicos de llama. Los tests de manifiesto/PNG/rutas/docs y nueve fondos fueron cobertura verde desde primera ejecución.
+4. Se fortaleció solo `validateGeometry`: enteros positivos en todas las dimensiones/cantidad de frames, coordenadas no negativas, alto y ancho de todos los spritesheets e índices enteros dentro de ambos límites. Nueva ejecución del comando dirigido, **código 1, 59 passed / 1 failed**: todos los fixtures ya rechazados; únicamente seguía fallando el requisito nuevo de dibujos únicos de llama. El `&& npm test` del comando compuesto no se ejecutó por ese fallo.
+5. Se revisó `generate.mjs:37`: llama usa f%2 y, por tanto, frames 0 y 2 tienen el mismo dibujo. **Assets v1 exige >=3 frames, no tres dibujos únicos**; un ciclo puede volver al dibujo inicial. Se corrigió únicamente esa sobreexigencia del test nuevo: se mantiene mínimo de tres frames, burn con tres índices válidos distintos, contenido en cada frame y al menos dos dibujos diferentes. No se cambió arte ni se debilitó una prueba original o un mínimo contractual. Comando dirigido y regresión, **código 0**: **60 passed / 1 passed**, después **221 passed / 4 passed**.
+6. `nl -ba`, `grep -nE` y lectura de `package.json`/listado de PNG, **código 0**, contrastan ubicaciones del manifiesto, suite, documentación y procedimiento. Sin ejecución del generador, build, Chromium o inspección visual.
+
+**Rojo/verde:** ciclo real para el validador de pruebas con fixtures inválidos en memoria, no implementación de arte faltante ni rojo productivo. No se presenta el error de sobreexigencia de dibujos únicos como defecto contractual. No se encontró defecto real que exija editar arte/docs fuera de P5.
+
+### Límites del cierre P5
+
+- A1 queda trazado a archivos reales y pruebas automatizadas. A3 queda trazado a geometría/mínimos animables y documentación de procedencia declarada; no se garantiza jurídicamente la originalidad por una prueba de texto o lectura de código.
+- Los hashes prueban diferenciación de datos de salas, no estética, significado visual o legibilidad. El decoder cubre el perfil RGBA8 no entrelazado del inventario, no todos los formatos posibles de PNG; los PNG actuales usan filtro 0, por lo que esta ejecución no acredita por fixtures los filtros 1–4.
+- Validar sheets de una fila es comprobación del inventario actual documentado, no cambio del contrato que también permite atlas u otros spritesheets.
+- No se inspeccionó el mockup ni se observaron animaciones, integración Phaser o capturas reales. **A2, A4 y P6 siguen pendientes**; P5 no los cierra ni sustituye revisión visual. Tampoco acredita reinicios en navegador, build, infraestructura final P7, documentación integral P8 o verificación independiente P9.
+- No se pide transición ni aprobación de entrega en este paso.
+
+
+## P6: arte integrado y animaciones (A2/A4/J6), cierre parcial con defecto visual
+
+- Base completa leída: spec `aprobada-original` (A2/A4/J6, contratos y secuencias) y adenda vigente; cerebro C-2–C-5/C-7. Punto de partida informado por Core: `c3c63ec83af1c9b6695b54e7f8c92dfe1fb99f3d`, PR #7. No se modifica implementación, assets, dependencias ni evidencia P3–P5.
+- Nuevos tests: `tests/e2e/game.spec.ts:60–106`, prefijo P6. HTTP `http://127.0.0.1:4173`, Chromium headless 158.0.8127.18 / Playwright v1254; 1600×900 y FIT 1280×720. Nueve salas por controles reales; idle de nueve personajes, trabajo del técnico en reparación, éxito con preparación completa, fallo por ángulo 80°, humo/llama activos, ascenso por comparación de posición, anomalía/interrupción y reinicios con lectura posterior. Se añade escucha de console.error/requestfailed a los pageerror/HTTP >=400 existentes.
+- Sonda explícita: `astronaut-work-probe-*` llama `Sprite.play('astronaut-work')` en los dos astronautas reales, sin cambiar reglas. No es una acción de juego: el código actual solo activa trabajo de técnicos en Ingeniería/Combustible. No se afirma que se haya observado astronaut-work iniciado por una acción del jugador. No se añadió captura dedicada de carga/trabajo en Combustible antes de detener el cierre por el defecto visual.
+
+### Comandos y resultados reales
+
+1. Lecturas de fuentes y versiones: Node **v22.23.5**, npm **10.9.9**. `npm ci` código 0, 48 paquetes añadidos, sin cambios de versiones/lockfile. Instalación necesaria para poder probar, no validación P7.
+2. `npm run test:e2e -- --grep 'J1/J2/A4/J6'`: código 1 por Chromium no instalado, **no rojo funcional**. `npx playwright install chromium` instala Chromium v1254; baseline del mismo test **1 passed (4.8 s)**, antes de las nuevas pruebas.
+3. `npm run test:e2e -- --grep P6` tras añadir cobertura: **2 passed / 1 failed**. Falló medición exitosa (15752 ms) porque se consultó `LaunchScene.time.startTime` antes de que Phaser creara la escena encolada. Segundo intento `--grep 'P6 J6'`: **1 passed / 1 failed**, mismo problema de sincronización: Sprite smoke aún ausente al muestrear. Son errores de instrumentación nuevos, **no defectos productivos ni TDD rojo de arte**. Se corrige únicamente el test: esperar creación del sprite real antes de muestrear y usar performance.now en ambos extremos.
+4. `npm run test:e2e -- --grep P6` corregido: **código 0, 3 passed (42.2 s)**. Primera observación de animación a creación del resultado: éxito **6915.9 ms**, fallo **3902.2 ms**, dentro de 6–8 / 3–5 s. No es tiempo exacto desde el clic (incluye sincronización inicial no medida); código fuente confirma timers 7000/4000. Sin console.error, pageerror, requestfailed o HTTP >=400 en los tres recorridos. Reinicio de ambos con estado inicial y espera de 2200 ms sin callbacks tardíos observados.
+5. Regresión `npm test`: **código 0, 221 passed / 4 files**. Se intentó `npm test && npm run test:e2e` por herramienta paralela: error de herramienta sin salida final, aunque quedó un proceso ejecutándose. Reintento registrado: Vitest 221 passed y e2e **código 1 por puerto 4173 ocupado**, no fallo funcional. Un comando de espera y reejecución también terminó con error de herramienta y dejó otra suite ejecutándose; se detuvo su proceso Playwright y el servidor temporal para no dejar ejecuciones sin resultado registrado. **No se acredita regresión e2e integral en P6**; no se modificó configuración para evitar el conflicto. La suite P6 dirigida sí tiene salida final registrada. P9 no realizado.
+
+### Revisión de fuentes, sin modificarlas
+
+- `src/main.ts:5`: cinco escenas, 1600×900, pixelArt true, roundPixels y Phaser.Scale.FIT.
+- `src/game/scenes.ts:17–21`: manifiesto, NEAREST, creación `this.anims` a partir de metadatos. `:34–40`: nueve salas y personajes Sprite.play idle/work, cohete/torre/terreno.
+- `:168–172`: progreso de 2000 ms con `this.tweens` y `this.time.delayedCall`; `:178–190`: humo/llama Sprite.play, ascenso tween 6500/2200 ms, resultado this.time 7000/4000 ms, anomalía a 2200 ms. `:198–199`: reset y limpieza. La búsqueda `grep -Rn setInterval src` no devolvió coincidencias.
+
+### Inspección visual efectivamente realizada
+
+Herramienta **ver_captura**, no solo generación o geometría. Capturas P6 revisadas en `tests/e2e/rework-captures/` (prefijo `p6-`, extensión `.png`):
+
+- `base-idle-1600-a`, `base-idle-1600-b`, `base-idle-1280`.
+- `repair-work-a`, `repair-work-b`, `astronaut-work-probe-b`.
+- `success-launch-a`, `success-launch-b`, `success-ascent`.
+- `failure-launch-b`, `failure-anomaly`.
+- `success-result`, `success-restart`.
+- Además se vio `test-results/game-P6-J6-ascenso-exitoso-humo-llama-y-reinicio/test-failed-1.png` para diagnosticar el muestreo. No se conserva esa imagen fuera de la salida temporal ni se usa como aceptación.
+
+**Visto:** nueve salas completas y diferenciadas por plano, monitor orbital, nube/manga de viento, herramientas, depósitos, racks, estanterías, esclusa y ventanal; nueve figuras completas en reposo a ambos tamaños. Paleta navy/gris con cian/naranja/amarillo/verde y bordes pixelados; cohete blanco/naranja, torre roja, montañas y dos reflectores amarillos, sin afirmar haces de luz. Astronautas visibles en la sonda. Resultado de éxito completo, 712 y componentes 256/140/166/150, sin restos de animación; captura de reinicio con cohete, nueve personajes y 08:30.
+
+**Defecto bloqueante observado, no corregido por alcance:** panel inferior de Bloqueos/Riesgos tapa la zona bajo el cohete al iniciar y durante el ascenso, deja solo una franja de llama y no permite distinguir humo completo (`success-launch-a/b`, `success-ascent`, `failure-launch-b`). El aviso superior DESPEGUE EN CURSO superpone el encabezado/“Cohete Equilibrada”. Durante reparación, el panel de progreso tapa parte de las salas/personajes de la fila inferior (`repair-work-a/b`); el bloque de riesgos se corta por abajo. A4 exige ausencia de recortes/personajes invisibles y J6 inspección real de efectos: **no quedan aceptados** aunque las comprobaciones de Sprite/anims y los tiempos pasen.
+
+- Para corregir hay que editar layout/renderizado en `src/game/scenes.ts` y/o `src/styles/game.css`, fuera de los tres destinos permitidos para P6. Se detiene la corrección productiva y se devuelve al manager para decisión; no se oculta el panel mediante el test ni se cambia arte o contrato.
+- El visor también señala glifo vacío antes del título y mensajes “DESPEGUE EN CURSO” / “La partida terminó” simultáneos durante la animación. Se registran como observaciones, no como nuevos requisitos inventados. La salida superior del cohete durante el ascenso no se toma por sí sola como recorte defectuoso; la obstrucción inferior sí está comprobada.
+- Las imágenes individuales revisadas no acreditan continuidad temporal ni comparación automática entre dos posturas: el visor no tuvo ambas imágenes simultáneamente. Ciclos activos y desplazamiento se comprueban con Phaser real; **suavidad/continuidad visual de las animaciones no verificada por vídeo**. No se presenta la estética como validada por hashes o geometría.
+- Hay 27 capturas P6 generadas; las nueve `room-*`, `astronaut-work-probe-a`, `failure-launch-a`, `failure-ascent`, `failure-result` y `failure-restart` no fueron abiertas con el visor. Sus controles/recorridos sí se ejecutaron; no se declaran inspeccionadas. A2 tiene evidencia visual de contenido en la base, pero **P6 no está completamente verde**: A4/J6 visuales pendientes de corrección y nueva inspección. Sin trabajo P7–P9 ni solicitud de transición/entrega.
+
+### P6 — Recomprobación desde `4e8a4dd` (esta ejecución)
+
+- Solo P6, PR #7, `foundry/issue-6`. Spec base completa y vigente consultadas; se conservan P3–P5 y la evidencia P6 anterior. No se modifican fuentes, arte, versiones, configuración ni contratos.
+- **A4 y parte visual J6 no aceptados**: se confirma la obstrucción documentada anteriormente. Para corregirla hacen falta `src/game/scenes.ts` y/o `src/styles/game.css`, fuera de los archivos autorizados en este paso. No se ocultan paneles desde las pruebas ni se altera el render para fabricar una captura verde. Se devuelve el bloqueo al manager antes de tocar esos archivos.
+
+#### Cobertura real y resultados
+
+| Criterio | Test / evidencia | Resultado de esta ejecución |
+| --- | --- | --- |
+| A2/A4: nueve salas, idle/work, integración a 1600×900 y 1280×720 | Tres tests P6 existentes de `tests/e2e/game.spec.ts`, conservados; capturas regeneradas por Chromium mediante controles reales | Baseline `npm run test:e2e -- --grep P6`: código 0, 3 passed; éxito 6917.9 ms y fallo 3918.9 ms desde primera observación de animación hasta resultado. No certifica ausencia de obstrucciones. |
+| J6: frames efectivos, no solo `isPlaying` | Nuevo `P6 J6 frames reales idle, reparación y carga; configuración FIT`; `expect.poll` observa frames 0/1 técnico y astronauta idle, 2/3 técnico durante reparación y carga y retorno a idle | Primera ejecución `npm run test:e2e -- --grep 'P6 J6 frames'`: código 0, 1 passed. Trabajo activado por botones reales. Astronaut-work continúa siendo la sonda explícita existente, no una acción jugable. |
+| J6: humo/llama y ascenso 6–8 s / 3–5 s | Los dos tests de ascenso conservan sus comprobaciones; se añade observación de frames 0/1/2 para ambos efectos con Phaser real | `npm run test:e2e -- --grep P6 && npm test`: código 0, 4 e2e passed; éxito 6918.8 ms, fallo 3901.5 ms. Humo/llama activos y posiciones de ascenso, apagado de llama en fallo y reinicios pasan. |
+| Regresión unitaria | Mismo comando compuesto | Código 0, 221 passed / 4 archivos: reglas 136, juego 24, assets 60, dependencias 1. |
+| Consola/red/reinicio | Listeners existentes de `pageerror`, `console.error`, `requestfailed` y HTTP >=400, lista vacía en afterEach | Sin errores observados en las cuatro pruebas P6, incluidas preparación/lanzamiento/reinicio. No es una garantía para todos los navegadores. |
+
+- **TDD honesto:** las nuevas comprobaciones pasan contra la implementación existente desde su primera ejecución; cobertura ya verde, no ciclo rojo/verde de corrección. No se fabrica rojo. La discrepancia visual sigue abierta aunque los tests automatizados pasen.
+- Preparación de sesión: Node v22.23.5, npm 10.9.9; `npm ci` instaló 48 paquetes desde el lockfile; `npx playwright install chromium` instaló Chromium 158.0.8127.18, v1254. No se actualizaron dependencias. El primer comando compuesto terminó con código 1 porque `--grep '^P6'` no encontró tests (el título completo incluye archivo); no fue un rojo funcional. Se corrigió el filtro a `P6`.
+- Se intentó además `npm run test:e2e` sin filtro: la herramienta devolvió `Error: Function failed` sin resultado final, aunque el proceso seguía ejecutándose al consultarlo. No se inventa código de salida ni se declara verde la suite completa a partir de ese intento.
+
+#### Inspección VISUAL REAL: herramienta `ver_captura`
+
+- Se abrió realmente cada imagen citada abajo, no solo se generó. Las imágenes son screenshots completos de Chromium por HTTP; no se usaron geometría ni hashes como sustituto de estética.
+- De las capturas previas a la regeneración se abrieron `p6-base-idle-1600-a.png` y `p6-success-launch-b.png`: nueve salas con nueve personajes visibles; paleta azul marino/gris con cian/naranja/amarillo/verde, cohete blanco/naranja, torre roja, montañas y reflectores pequeños. El panel inferior obstruye terreno/escape y el aviso superior obstruye encabezados.
+- De las capturas regeneradas se abrieron las nueve `p6-room-{design,control,weather,engineering,fuel,systems,storage,airlock,observation}.png`: paneles completos y textos legibles, cohete/plataforma a la derecha. Los paneles de detalle ocultan temporalmente la cuadrícula/personajes; son cerrables y el recorrido no consume minutos. No se confunde esa ocultación temporal con un asset ausente.
+- `p6-base-idle-1280.png`: nueve salas y un personaje distinguible por sala; no se aprecian recortes de viewport, pixel art coherente. El panel de mensajes cubre la zona inferior de la plataforma. A2 tiene evidencia visual de contenido/paleta; A4 integral no queda aceptado.
+- `p6-repair-work-a.png`, `p6-repair-work-b.png`: aviso/barra de progreso visibles pero tapan parte de la fila inferior y personajes; texto de riesgos cortado por abajo. Los frames de técnico pasan en navegador, pero no se afirma que todas las posturas sean visualmente distinguibles detrás del aviso.
+- `p6-astronaut-work-probe-a.png`, `p6-astronaut-work-probe-b.png`: personajes visibles y distinguibles sobre interiores oscuros, sin recortes importantes; es sonda de animación de los astronautas del pasillo/observación, no astronautas dentro del cohete.
+- `p6-success-launch-a.png`, `p6-success-launch-b.png`, `p6-success-ascent.png`, `p6-failure-launch-a.png`: solo franja de llama distinguible, humo no claramente visible; panel inferior tapa escape/base de torre/terreno. «DESPEGUE EN CURSO» tapa parte del encabezado y «Cohete Equilibrada». También se lee «La partida terminó» durante despegue, observación ya registrada, no una nueva modificación autorizada.
+- **Límite real del visor:** tras 20 aperturas, Core rechazó las solicitudes de `p6-failure-launch-b.png`, `p6-failure-ascent.png` y `p6-failure-anomaly.png` con «ya se miraron 20 capturas en esta ejecución». No se reintenta ni se rodea el límite. Esas tres imágenes y `p6-success-result.png`, `p6-failure-result.png`, `p6-success-restart.png`, `p6-failure-restart.png` **no fueron inspeccionadas visualmente en esta ejecución**, aunque se generaron y sus estados se comprobaron por tests. Tampoco se abrieron las dos capturas idle 1600 regeneradas. La evidencia visual anterior se conserva, no se atribuye a esta ejecución.
+- No hay vídeo ni inspección continua de movimiento: se observaron fotogramas estáticos, frames activos y posición con Phaser real. Suavidad temporal y parte visual de resultado/reinicio quedan pendientes; no se sustituye por geometría ni aserciones.
+
+#### Contraste de código sin modificaciones
+
+- `src/main.ts:5`: `pixelArt:true`, `roundPixels:true`, resolución 1600×900 y `Phaser.Scale.FIT`; el nuevo test comprueba resolución/pixelArt/modo FIT en Chromium.
+- `src/game/scenes.ts:20`: registros de `this.anims` a partir de frames del manifiesto, repeat −1; `:34,40` sprites idle/work. `:171–172`: tween de progreso y `this.time.delayedCall(2000,finish)`. `:183–189`: sprites smoke/flame con animaciones, tweens de ascenso y humo, temporizadores de anomalía/resultado 7000/4000 ms. Shutdown elimina tweens y eventos (`:38,101,190,199`).
+- `grep -R -n 'setInterval' src/`: ninguna coincidencia. No se introduce reloj paralelo ni lógica de reglas en el renderer.
+- Causa de layout contrastada: `.launch-reasons` en `src/styles/game.css` ocupa top 550, left 1130, ancho 450 y altura 105 sobre la zona de escape; `.progress` ocupa top 606 sobre la fila inferior; `.animation-label` ocupa top 180 sobre el encabezado. Hace falta una corrección productiva fuera de los tres destinos de P6, seguida de nuevas pruebas e inspección visual. **P6 permanece parcial/bloqueado; no se solicita transición ni entrega ni se ejecutan P7–P9.**
+
+- Seguimiento del intento e2e completo: el proceso terminó posteriormente; `test-results/.last-run.json` contiene `{"status":"passed","failedTests":[]}`. Es evidencia del artefacto Playwright, **no un código de salida recuperado**: la invocación original de la herramienta sigue sin salida final disponible. La suite completa volvió a generar capturas P6; las observaciones visuales anteriores corresponden a las versiones abiertas después de la ejecución dirigida, no se afirma haber abierto las versiones finales regeneradas por la suite completa (límite del visor). La verificación independiente y la nueva inspección posterior a una eventual corrección siguen pendientes.
+
+
+## P6/J2 vigente: distribución de paneles en escritorio
+
+- Base consultada: spec `aprobada-original`, J2; contexto vigente de Core, commit inicial `168b0ad48e1322d7053299ee83dbf86b9361d68c`, REWORK, rama `foundry/issue-6`, PR #7. Se reutiliza el CSS y los tests existentes. No se cambian reglas, arquitectura, Phaser FIT, dependencias ni otros pasos.
+- Cambios: `src/styles/game.css`, `tests/e2e/game.spec.ts`, esta matriz y 26 PNG `tests/e2e/rework-captures/p6-layout-*.png`.
+- CSS: objetivos conservan espacio para todos sus textos; mensajes/progreso tienen zona propia a la izquierda; motivos de lanzamiento pasan debajo del marco de la base/plataforma; paneles inferiores empiezan en y=730 y terminan en y=895 dentro de 1600×900. Detalle dispone de margen para su sombra, sin suprimir contenido ni controles. Modal de confirmación/aviso conserva superposición intencional.
+- Tests nuevos `P6/J2 distribución y textos 1600` y `1280`: Chromium real por HTTP local; viewport 1600×900 y 1280×720; límites de botones/ancestros, rangos de texto, scrollWidth/scrollHeight, paneles/sombras y zona Phaser reservada hasta y=650. Nueve detalles, costos/confirmación, progreso mientras se leen sistemas y aviso con tres riesgos mediante controles reales. No se inyecta estado ni se duplican reglas.
+
+### Evidencia de comandos (salidas completas registradas por Core)
+
+1. Instalación de sesión: `npm ci` y `npx playwright --version`, código 0, 48 paquetes, 0 vulnerabilidades, Playwright 1.65.0. `npx playwright install chromium`, código 0. No se modifica package.json ni lockfile.
+2. Baseline anterior a CSS: `npm run test:e2e -- --grep 'J2 todos los controles esenciales'`, código 0, **1 passed**. Los cambios existentes ya resolvían límites de botones; no se fabrica un rojo de esa prueba.
+3. Rojo real de las dos nuevas regresiones, **antes de editar CSS**: `npm run test:e2e -- --grep 'P6/J2 distribución'`, código 1, **2 failed**. En ambas resoluciones: `plataforma tapada: launch-reasons panel` y `contenido recortado: launch-reasons panel`.
+4. Iteraciones CSS, mismo comando, código 1: detectaron altura insuficiente de objetivos/mensaje y motivos durante confirmación. Una ejecución posterior falló por timeout del test nuevo: intentaba reparar dos veces la bomba al reutilizar `prepare` después de la captura de progreso. Se corrigió solo el montaje del test con recarga real antes de esa segunda preparación; no se cambia la semántica ni las expectativas de aceptación.
+5. Regresión dirigida final: `npm run test:e2e -- --grep 'P6/J2 distribución|J2 todos los controles esenciales|J1/J2/A4/J6|J3 progreso exclusivo'`, **código 0, 5 passed (1.3m)**. Incluye los dos tests nuevos y tres tests anteriores sin eliminar aserciones. No se ejecuta suite integral, build ni P7–P12.
+6. Tras el primer verde se inspeccionaron imágenes con `ver_captura`; se detectó proximidad de la sombra y del marco exterior Phaser a los avisos. Se separó el detalle y, finalmente, se trasladaron los avisos a y=660 y los paneles inferiores a y=730. Se agregó comprobación del margen del marco exterior. La regresión dirigida final vuelve a pasar con el CSS definitivo; los 26 PNG se regeneraron en esa ejecución.
+
+### Capturas y revisión visual real: alcance y límite
+
+- Capturas finales: `p6-layout-{base,design,control,weather,engineering,fuel,systems,storage,airlock,observation,confirmation,progress,warning}-{1600,1280}.png`, todas bajo `tests/e2e/rework-captures/`.
+- Herramienta efectivamente utilizada: `ver_captura` de Core. Se abrieron dos capturas anteriores (`p6-base-idle-1280.png`, `p6-room-design.png`) para reproducir visualmente el problema de avisos sobre la plataforma.
+- Primera versión corregida vista: base, diseño y confirmación, en ambas resoluciones (seis imágenes). Se observaron textos/controles completos y plataforma libre; el visor señaló sombra/borde de diseño demasiado próximo a motivos.
+- Segunda versión corregida vista: diseño y progreso, en ambas resoluciones (cuatro imágenes). Progreso separado de Sistemas, textos/control visibles; el visor señaló el marco exterior Phaser todavía próximo a motivos. Se corrigió después con el margen y=660 descrito arriba.
+- **Límite explícito:** Core rechazó abrir las dos imágenes de warning porque el constructor ya había visto 12 capturas y reservó las 8 restantes al probador. No se reintentó ni se usó otro visor para rodear el rechazo. **Las capturas definitivas regeneradas después del último ajuste no fueron abiertas por el constructor. La legibilidad visual final queda pendiente de verificación independiente; geometría verde no sustituye esa revisión.** Tampoco se afirma haber visto los avisos de riesgos ni los otros siete detalles finales.
+- Recomendación al probador para las ocho vistas disponibles: `p6-layout-{base,design,progress,warning}-{1600,1280}.png`. Reejecutar las pruebas dirigidas y evaluar especialmente separación del marco exterior, textos secundarios y paneles inferiores a y=730.
+- Observaciones fuera de P6/J2, no corregidas: duración repetida en botones Esperar, redacción de ángulo inicial y puntuación textual en sistemas; se reportan como existentes, no se altera src/game/ fuera de los destinos de este paso.
+- J2 tiene rojo/verde automatizado y revisión visual parcial real, **no cierre visual definitivo ni verificación independiente**. No se solicita transición ni aprobación. No se presenta esta sección como cumplimiento de arte, animaciones o entrega integral.
+
+
+## P6 retomado: regresión dirigida y capturas de escritorio (J2 parcial)
+
+- Base vigente de Core: `5745122513e95765f99381f51d82dbf539eb2980`, rama `foundry/issue-6`, PR #7. Spec consultada: `aprobada-original`, J2 (pantalla legible, FIT, botones sin recortes, paneles sin superposición y nueve salas). Se conserva la evidencia histórica anterior; este apartado registra una nueva ejecución, no vuelve a declarar correcciones.
+- Se reutilizan sin modificaciones CSS y `tests/e2e/game.spec.ts` de la base. No se detecta necesidad de corregir fuentes ni tests. Únicas escrituras de este paso: esta matriz y regeneración de los 26 PNG existentes `p6-layout-*.png`.
+- Preparación operativa de una sesión sin node_modules ni Chromium instalado: `npm ci && npx playwright install chromium && npm run test:e2e -- --grep 'P6/J2 distribución y textos'`, **código 0**. Instalación desde lockfile (48 paquetes), Chromium 158.0.8127.18 / v1254. No es una revalidación de dependencias de P10 ni un rojo funcional.
+- Regresión seleccionada únicamente: `npm run test:e2e -- --grep 'P6/J2 distribución y textos'`. **2 passed (46.6s)**: `P6/J2 distribución y textos 1600` (23.0s) y `1280` (20.8s), `tests/e2e/game.spec.ts:162`. Navegador Chromium real, servidor Vite por HTTP en `http://127.0.0.1:4173`; viewports **1600×900** y **1280×720**.
+- Aserciones reutilizadas: `essentialBounds` y `desktopContent` comprueban botones visibles dentro del viewport/ancestros con overflow, texto dentro de paneles, ausencia de contenido desbordado y de intersecciones entre paneles no modales (con margen para sombra), separación de motivos respecto del marco y zona de plataforma. Nueve salas abren su detalle; se prueban además confirmación con costo 60.000, progreso con lectura de Sistemas y aviso de riesgos por controles reales, sin iniciar despegue. Los diálogos modales conservan la superposición intencional; estas comprobaciones no acreditan por sí solas legibilidad visual, exactitud exhaustiva del contenido de cada sala ni cierre completo J2. Los hooks de errores de navegador/HTTP pasan.
+- Capturas regeneradas: `tests/e2e/rework-captures/p6-layout-{base,design,control,weather,engineering,fuel,systems,storage,airlock,observation,confirmation,progress,warning}-{1600,1280}.png`: **13 por resolución, 26 en total**. Conservan nombres/rutas existentes; no se afirma identidad binaria, pues el render incluye personajes animados.
+- Verificación de dimensiones: comando Node sobre `fs.readdirSync`, firma PNG y cabecera IHDR (`readUInt32BE(16/20)`); **código 0**, **26 PNG, dimensiones verificadas; sin inspección visual**. Cada archivo terminado en `-1600.png` mide 1600×900 y cada `-1280.png` mide 1280×720. Las rutas y dimensiones individuales constan en la salida registrada por Core. Es comprobación de cabecera, no inspección visual ni nuevo decoder de assets.
+- Rojo histórico conservado, **no reejecutado ni fabricado**: apartado anterior `P6/J2 vigente`, evidencia 3 (línea 287 en la base), origen inicial `168b0ad48e1322d7053299ee83dbf86b9361d68c`, antes de editar CSS: `npm run test:e2e -- --grep 'P6/J2 distribución'`, **código 1, 2 failed**, `plataforma tapada: launch-reasons panel` y `contenido recortado: launch-reasons panel`. El verde histórico consta en evidencia 5–6 y quedó guardado en la base 5745122. Esta ejecución es regresión verde de una corrección existente, no un nuevo ciclo TDD. La referencia histórica se contrastó mediante lectura de la matriz; no se recuperaron en esta ejecución las salidas crudas originales del issue.
+- **Límites:** ejecución del Constructor, no del Probador independiente. El Manager debe encargar al Probador repetir estas dos regresiones y registrar su evidencia propia. No se utilizó `ver_captura`, no se declara inspección visual nueva (P7), revisión de arte/salas (P8), animaciones/despegues (P9), auditoría de dependencias (P10), suite integral (P12), aprobación ni cierre J2. Las menciones de inspección anteriores pertenecen al historial conservado, no a este paso.
+
+## P7: inspección visual real de distribución — Constructor, parcial
+
+- Base indicada por Core: `639d5636d372b4df34e7a95ae90ae5c720dfc582`, rama `foundry/issue-6`, PR #7. Spec base `aprobada-original` y adenda vigente leídas; J2 conserva las dos resoluciones. Se mantiene íntegra la matriz anterior.
+- Evidencia P6 consultada: apartado de verificación de paneles y regeneración de 26 PNG; esa evidencia automatizada no sustituye inspección visual. Lecturas en sesión: `sed -n '/## P6/,$p' tests/e2e/acceptance-traceability.md` y `tail -n 19 tests/e2e/acceptance-traceability.md`, ambas código 0. No se ejecutaron pruebas, build ni generación de capturas en P7.
+- Herramienta visual disponible y utilizada: `functions.ver_captura`. Abrió y devolvió observaciones visuales de **12 imágenes existentes de P6**. No se utilizó geometría, OCR ni lectura de CSS como sustituto.
+- Archivos efectivamente vistos: `tests/e2e/rework-captures/p6-layout-base-1600.png`, `p6-layout-base-1280.png`, `p6-layout-design-1600.png`, `p6-layout-design-1280.png`, `p6-layout-control-1600.png`, `p6-layout-control-1280.png`, `p6-layout-weather-1600.png`, `p6-layout-weather-1280.png`, `p6-layout-engineering-1600.png`, `p6-layout-engineering-1280.png`, `p6-layout-fuel-1600.png`, `p6-layout-fuel-1280.png`; todos los nombres abreviados pertenecen a `tests/e2e/rework-captures/`. Resoluciones de P6: sufijo 1600 = 1600×900; sufijo 1280 = 1280×720.
+
+### Hallazgos de las imágenes realmente vistas
+
+| Vista (ambas resoluciones) | Observación visual de distribución/contenido/controles |
+| --- | --- |
+| Base | Cabecera, seis recursos, ocho objetivos, cuadrícula central, plataforma, franja de motivos y tres paneles inferiores separados. Ángulo, esperas, reparaciones y lanzamiento íntegros. Objetivos largos se envuelven dentro de su marco. No se ven recortes ni solapamientos de paneles. |
+| Diseño | Tres perfiles con precios/tiempos y estadísticas legibles; Equilibrada resaltada coherentemente con el resumen. Cerrar y Confirmar diseño completos. Panel separado de plataforma, objetivos y controles inferiores. |
+| Control | Explicación, esquema TIERRA/ÓRBITA, trayectoria pendiente y Calcular trayectoria con 10 min/$20.000 visibles. Cerrar completo; sin invasión de motivos ni controles inferiores. |
+| Meteorología | Estado favorable 08:30, 12 km/h, 0 % lluvia, 18 % nubes; tabla de tres franjas alineada y notas de umbrales/ausencia de azar legibles. Cerrar y Consultar clima completos. |
+| Ingeniería | Bomba 76 %, antena 68 %, instrucciones hacia controles inferiores y nota de 2 segundos reales visibles. Botones inferiores con duración/costo/repuestos íntegros y separados. No se evalúa movimiento ni duración observada. |
+| Combustible | Almacén 120.000 L/a bordo 0 L, transferencia de consumibles, tiempos con/sin bomba y prerrequisitos visibles. Texto envuelto dentro del marco; Cerrar y Cargar nave (40 min/$30.000) completos. |
+
+- En estas doce imágenes no se reprodujo un defecto de recorte o solapamiento no intencional que requiera otra corrección CSS. El texto secundario es pequeño, especialmente a 1280×720, pero el visor lo describió legible; no se generaliza a otras pantallas ni a personas con necesidades de accesibilidad distintas. Lanzar aparece atenuado con bloqueos visibles; una imagen no comprueba funcionamiento ni foco de teclado.
+- Observaciones de contenido para el Manager, sin cambios funcionales: en las vistas 1600 se repite duración en espera (`5 min 5 min · $0`, y equivalentes 10/20); la línea `Confirmado: 72° (inicial, no confirmado)` resulta ambigua; el símbolo rectangular amarillo anterior al título no es reconocible y su intención no se puede determinar por captura. No son recortes ni justifican repetir P1/P2. Ingeniería distingue segundos reales de minutos; la captura no verifica la ejecución temporal. Cualquier ajuste de etiquetas exige valorar el alcance específico del paso antes de tocar su fuente, no corregirlo mediante CSS.
+
+### Límite impuesto por Core y pendientes
+
+- Al solicitar `p6-layout-systems-1600.png` y `p6-layout-systems-1280.png`, Core rechazó ambas aperturas: **«ya miraste 12 capturas; las 8 que quedan son del probador, para que verifique por su cuenta»**. Esas dos imágenes **no se vieron**. No se reintentó ni se usó otro visor para rodear el rechazo; se detuvo la inspección.
+- Sin inspección P7 del Constructor: Systems, Storage, Airlock, Observation, Confirmation, Progress y Warning, cada una a ambas resoluciones (14 imágenes). Tampoco se inspeccionó arte/nueve salas como A2/A4, ni animaciones/despegues; P8/P9 permanecen intactos.
+- Para las ocho aperturas reservadas al Probador, se recomienda priorizar `p6-layout-{systems,confirmation,progress,warning}-{1600,1280}.png` y registrar su evidencia visual propia. Storage/Airlock/Observation quedarían pendientes si Core no ofrece más aperturas; el Manager debe resolver la cobertura restante sin sustituirla por geometría ni afirmar cierre.
+- **J2 no se declara cerrado**: falta inspección independiente y cobertura visual restante. No se modificaron CSS, tests ni PNG; únicamente se añade esta sección. No hubo regresión roja/verde nueva porque no se reprodujo un defecto de distribución; no se fabricó rojo ni se volvió a aplicar una corrección existente.
+
+## P7: reanudación — seis vistas restantes, Constructor
+
+- Punto de partida de Core: `0af4f42c700365e3d6615549414a9a925c7f1786`, REWORK, rama `foundry/issue-6`, PR #7. Spec `aprobada-original` y adenda `vigente` consultadas: J2 se conserva. Cerebro vigente respetado; no se cambian reglas, tecnología ni alcance.
+- Se abrieron con `ver_captura` **solo las seis imágenes de la tabla**, existentes al inicio. La inspección visual no se sustituye por geometría. Se conserva el historial previo, incluido el rechazo de aperturas de otra ejecución; el contexto vigente autoriza esta reanudación. Las otras veinte vistas y su evidencia previa no se reabrieron ni se sustituyeron.
+- Prefijo de rutas de la tabla: `tests/e2e/rework-captures/`. Cada fila corresponde a una apertura real del visor en esta ejecución.
+
+| Imagen | Resolución | Hallazgos visuales del Constructor |
+| --- | --- | --- |
+| `p6-layout-storage-1600.png` | 1600×900 | «Almacén y Recursos», encabezado inventario/carga, cinco filas y nota completos; valores alineados (combustible 120.000/0, oxígeno 30.000/0, agua 10.000/0, alimentos 2000/0, repuestos 50/—). Cerrar separado del título. HUD, objetivos, avisos y controles inferiores legibles, sin recortes ni solapamientos. Encabezado conjunto, no individual por columna. Duración repetida en espera. |
+| `p6-layout-storage-1280.png` | 1280×720 | Tabla, título, nota y Cerrar completos y alineados. HUD y paneles inferiores contenidos; margen inferior reducido, sin cortar bordes. Texto secundario pequeño pero legible. Inventario/carga se distingue por encabezado conjunto. Lanzar atenuado. |
+| `p6-layout-airlock-1600.png` | 1600×900 | «Pasillo / Esclusa», rótulo y descripción completos, sin superposición; Cerrar visible separado. No hay botón mutante propio: «Usa Lanzar misión cuando estés listo» es instrucción descriptiva, no acción del panel ni incumplimiento de la spec. HUD y controles inferiores íntegros. Duración repetida en espera; Lanzar atenuado. |
+| `p6-layout-airlock-1280.png` | 1280×720 | Título, descripción y Cerrar legibles y dentro del marco. Sin botón mutante propio. Recursos, objetivos, avisos y tres paneles inferiores completos, sin solapamientos. Textos secundarios pequeños distinguibles; Lanzar atenuado. |
+| `p6-layout-observation-1600.png` | 1600×900 | «Sala de Observación», rótulo y descripción en dos líneas completos, con espacio libre; solo Cerrar como control propio. HUD y paneles inferiores completos, sin recortes ni cruces. Espera repite duración; «Confirmado: 72° (inicial, no confirmado)» es ambiguo. Lanzar atenuado. |
+| `p6-layout-observation-1280.png` | 1280×720 | Título, rótulo, descripción en dos líneas y Cerrar completos y separados. Panel no tapa objetivos/HUD/controles inferiores. Avisos de bloqueos y riesgos completos. Objetivos y verificaciones usan dos líneas sin perder texto. Controles completos, poco margen inferior; duración repetida en espera, Lanzar atenuado. |
+
+### Resultado y límites visuales
+
+- No se reprodujo en estas seis vistas un defecto de **distribución J2** (recorte, texto tapado o solapamiento no intencional). No se modifica CSS ni se fabrica una regresión roja. Se reutilizan las correcciones existentes.
+- Se conservan como observaciones para el Manager las etiquetas ya señaladas anteriormente: duración duplicada en espera y ambigüedad de «Confirmado … no confirmado». El encabezado conjunto de inventario/carga podría ser más explícito, pero el contenido está completo. Estas observaciones no justifican una corrección CSS; no se toca su fuente fuera de los archivos de P7 autorizados.
+- Los textos secundarios son pequeños, especialmente a 1280×720, aunque el visor los describe legibles. Lanzar tiene menor contraste y apariencia deshabilitada en el estado inicial con bloqueos visibles. Las capturas estáticas no acreditan funcionalidad, foco ni accesibilidad general. No se repite P1/P2 ni se inspeccionan arte/animaciones (P8/P9).
+
+### Regresión dirigida y conservación de evidencia
+
+1. Lectura de matriz, tests y configuración: comandos `sed`, `tail`, `grep`, `cat`, código 0. Node **v22.23.5**, npm **10.9.9**. Faltaba `node_modules`.
+2. `npm ci`: código **0**, **48 packages added**, **0 vulnerabilities**; instalación del lockfile existente, no actualización ni verificación integral P10.
+3. `npm run test:e2e -- --grep 'P6/J2 distribución y textos'`: código **1**, dos tests sin poder iniciar Chromium (`Executable doesn't exist`, headless shell v1254). Es fallo de preparación de sesión, **no rojo funcional/TDD**.
+4. `npx playwright install chromium`: código **0**, Chrome/Headless Shell **158.0.8127.18**, Playwright Chromium **v1254**, FFmpeg v1013 instalados en la sesión.
+5. Mismo comando dirigido: código **0**, **2 passed (46.7s)**; `P6/J2 distribución y textos 1600` **24.3s**, `1280` **20.8s**. Motor real en Chromium por HTTP con configuración existente. No se eliminan ni debilitan aserciones.
+6. Antes de cada regresión se copiaron los PNG `p6-layout-*.png` a un respaldo temporal y se restauraron al terminar: el test existente escribe capturas, pero esta ejecución no las entrega ni afirma haberlas inspeccionado. En la ejecución verde se verificó SHA-256 de las **26 imágenes restauradas**, todas **OK**, preservando tanto las seis inspeccionadas como las veinte previas.
+
+- Cambio entregable exclusivo: `tests/e2e/acceptance-traceability.md`. CSS, tests, PNG, dependencias y lockfile quedan sin cambios entregables.
+- **Pendiente:** el Probador debe abrir de forma independiente, como mínimo, estas mismas seis imágenes y registrar hallazgos por resolución. Se utilizaron seis aperturas del Constructor, sin consumir aperturas del Probador. **J2 no se declara cerrado ni P7 independientemente verificado**; no se solicita transición ni aprobación. P8–P12 no se ejecutan en este paso.
+
+
+## P7: cierre del registro con informe independiente recibido
+
+- Punto de partida informado por Core: `0af4f42c700365e3d6615549414a9a925c7f1786`, rama `foundry/issue-6`, PR #7. Este añadido conserva la historia de P7 y actualiza únicamente el pendiente de revisión independiente de las seis vistas restantes indicado en la sección anterior.
+- **Procedencia:** informe del Probador recibido a través del Manager de producto. Sus aperturas, comandos y resultados se registran como evidencia reportada, no como ejecuciones propias del Constructor en este cierre documental. Aquí no se abrieron imágenes, no se ejecutaron pruebas ni se avanzó a P8–P12.
+
+### Seis capturas contrastadas por ambos roles
+
+El Probador informó haber abierto con visor real las siguientes imágenes de `tests/e2e/rework-captures/`, previamente inspeccionadas por el Constructor en la reanudación de P7:
+
+| Sala | 1600×900 | 1280×720 | Resultado independiente recibido |
+| --- | --- | --- | --- |
+| Almacén | `p6-layout-storage-1600.png` | `p6-layout-storage-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. A 1280 las columnas del inventario carecen de encabezados explícitos, pero sus valores son distinguibles. |
+| Pasillo | `p6-layout-airlock-1600.png` | `p6-layout-airlock-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. |
+| Observación | `p6-layout-observation-1600.png` | `p6-layout-observation-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. |
+
+- Observaciones del Probador: a 1280 los objetivos tienen salto de línea sin truncarse; textos auxiliares pequeños y Lanzar atenuado permanecen legibles. La duración duplicada de Esperar y la etiqueta «confirmado» son ambigüedades de redacción, no defectos bloqueantes de distribución. No se corrigen textos ni CSS en este registro.
+- **Cobertura visual acumulada de P7: 26 capturas**, según las inspecciones históricas del Constructor más las seis de su reanudación. Las seis restantes fueron verificadas por ambos roles en la ejecución de revisión que se documenta; este cierre solo incorpora el informe. El Probador leyó la evidencia histórica de las otras veinte y **no las abrió nuevamente**. No se afirma inspección independiente de las 26.
+
+### Comandos y conservación reportados por el Probador
+
+- `npm run test:e2e -- --grep 'P6/J2 distribución y textos'`: código **0**, **2 passed**; duraciones reportadas **23,2 s** y **20,7 s**, Chromium real por HTTP. No es una ejecución del Constructor en este cierre.
+- Respaldo y restauración de los **26 PNG**, comprobación SHA-256: **26 OK**, código **0**, según el informe recibido. No se presenta esta comprobación como inspección visual de las veinte imágenes históricas.
+- El Probador no modificó producción ni tests y no generó un rojo nuevo: no se reprodujo un defecto de distribución que requiriera regresión roja y corrección. Este añadido documental tampoco constituye un ciclo TDD de implementación.
+
+### Estado y límites del registro P7
+
+- El pendiente de revisión independiente de las seis capturas restantes queda resuelto por el informe recibido; **P7 queda completo en su cobertura visual acumulada y registro**, con la limitación explícita de independencia descrita arriba. Se conservan los informes parciales anteriores como historia, no como pendientes vigentes de esas seis vistas.
+- **No se declara cierre integral de J2**, verificación independiente de las 26 capturas, accesibilidad general, funcionalidad de controles ni aprobación de entrega. Los requisitos de los otros pasos permanecen pendientes; P8–P12 no se ejecutaron en este cierre.
+- Único cambio entregable: `tests/e2e/acceptance-traceability.md`. Sin cambios de producción, tests, capturas, dependencias, contratos, alcance o presupuesto; sin solicitud de transición.
+
+## P8 parcial: nueve salas y arte integrado (A2/A4/J2)
+
+- Base Core: `6e03112c646f588f9175339fe79b1fcdc2bc041e`, PR #7, `foundry/issue-6`. Leídas spec `aprobada-original`, adenda `vigente` y matriz P3–P7; decisiones vigentes de Core C-2–C-5/C-7/C-8 conservadas.
+- **No se certifica P8 completo:** el visor permitió 12 imágenes y rechazó las ocho restantes con «ya miraste 12 capturas; las 8 que quedan son del probador, para que verifique por su cuenta». No se intentó rodear esa restricción. Las ocho vistas requieren inspección independiente del probador.
+- Integración real: Chromium 158.0.8127.18 instalado por `npx playwright install chromium` (código 0), Playwright 1.65.0, Vite por HTTP `http://127.0.0.1:4173`. Node v22.23.5; `npm ci` código 0, 48 paquetes, cero vulnerabilidades informadas en esa instalación (no sustituye P10).
+- Cambios: dos casos nuevos en `tests/e2e/game.spec.ts`, 20 PNG en `tests/e2e/rework-captures/`, esta sección. No se modificaron fuentes, PNG originales, manifiesto, generador, dependencias ni contratos. Consultados `src/game/scenes.ts` y `docs/assets.md` para ubicar integración/inventario; no se regeneró arte.
+
+### Controles reales y evidencia automatizada
+
+- `npm run test:e2e -- --grep 'P8 A2'`: código **0, 2 passed** (8,7 s). Nueve salas abiertas/cerradas mediante botones DOM en cada escritorio, detalle visible y contenido propio comprobado; reloj permanece Día 1, 08:30. No se confirma ninguna acción mutante ni se inicia despegue. Capturas completas 1600×900 y 1280×720.
+- `npm test`: **221 passed / 4 passed**. Comando compuesto posterior con filtro `'^J1/J2/A4/J6'` terminó en **1** por `No tests found` (el título completo incluye ruta); no fue una regresión del juego. Corregido únicamente el filtro: `npm run test:e2e -- --grep 'J1/J2/A4/J6'`, código **0, 1 passed** (4,5 s), prueba anterior conservada de nueve salas/FIT/recursos y nueve sprites activos. Su aserción de animaciones no constituye inspección de P9.
+- Las pruebas nuevas pasaron desde la primera ejecución sobre código existente. **No hay rojo TDD ni corrección de producción**; no se fabricó un fallo para juicios visuales o comportamiento ya correcto. No se ejecutó la regresión e2e integral, reservada para P12.
+
+### Archivos inspeccionados realmente con `ver_captura`
+
+Todas las rutas siguientes son relativas a `tests/e2e/rework-captures/`; cada archivo se abrió individualmente en el visor, no se dedujo su aspecto de coordenadas o del test.
+
+| Archivos vistos | Hallazgos visuales |
+| --- | --- |
+| `p8-base-1600.png`, `p8-base-1280.png` | Cuadrícula 3×3 completa; nueve personajes visibles, sin recortes de cabeza/cuerpo inequívocos. Equipamiento distingue Diseño (plano), Control (pantalla circular), Meteorología (nube/manga de viento), Ingeniería (herramientas), Combustible (depósitos), Sistemas (servidores), Almacén (estantes), Pasillo (puerta) y Observación (ventanas). Paredes comparten azul oscuro, diferenciación por objetos y rótulos. Personajes superponen parte del equipamiento, especialmente Ingeniería y Meteorología, pero conservan siluetas reconocibles. |
+| `p8-room-design-1600.png`, `p8-room-design-1280.png` | Panel Diseño completo: perfiles Equilibrada/Potente/Reforzada, ficha visible Equilibrada, costo 200.000/10 min y controles Cerrar/Confirmar sin cortes. No se seleccionaron otros perfiles en P8. |
+| `p8-room-control-1600.png`, `p8-room-control-1280.png` | Control completo: TIERRA/ÓRBITA y puntos de trayectoria, estado pendiente, botón Calcular 10 min/20.000. Sin cortes en gráfico o contenido. |
+| `p8-room-weather-1600.png`, `p8-room-weather-1280.png` | Meteorología: condiciones iniciales, tres filas de pronóstico completas y alineadas; viento 45 desde 10:40 y aviso favorable hasta 10:39 coherentes. Cerrar/Consultar visibles. |
+| `p8-room-engineering-1600.png`, `p8-room-engineering-1280.png` | Ingeniería: bomba 76 %, antena 68 %, instrucciones de progreso; reparaciones inferiores y costos completos. 2 segundos reales frente a 20 min de juego son escalas distintas aprobadas, no un defecto de duración demostrado por la imagen. |
+| `p8-room-fuel-1600.png`, `p8-room-fuel-1280.png` | Combustible: almacén 120.000 y bordo 0, transferencia de cuatro consumibles, 40/30 min y requisitos legibles. Cargar 40 min/30.000 visible aunque faltan requisitos; esta apariencia no demuestra aceptación de acción inválida. |
+
+### Arte y observaciones transversales
+
+- Base abierta: cohete blanco/crema y naranja, torre roja con travesaños/diagonales, dos cabezales amarillos de reflectores y montañas en capas visibles dentro de la plataforma. Torre/cohete y disco amarillo del cielo se solapan parcialmente, sin recorte accidental inequívoco. Soportes de reflectores y montañas oscuras tienen contraste limitado; no se distinguen haces de luz (la spec exige reflectores, no haces).
+- Contornos escalonados y paleta azul marino/gris con cian/naranja/amarillo/verde/rojo coherentes. Seis recursos HUD con iconos, nombres, cantidades y unidades visibles en ambos escritorios. No se encontró PNG integrado ausente ni recorte roto claro en las vistas revisadas. Los paneles descriptivos ocultan temporalmente la cuadrícula/personajes; las dos capturas de base sí permiten revisar los nueve. No se interpreta esa ocultación por panel como sprite invisible.
+- Observaciones para el manager, **no corregidas ni usadas como bloqueo nuevo de contrato**: pequeño rectángulo amarillo vacío junto al título (posible glifo no representado; intención no confirmada); texto «Confirmado: 72° (inicial, no confirmado)» ambiguo; etiquetas de espera duplican «5 min 5 min», equivalentes para 10/20; tipografía secundaria pequeña a 1280. «Cohete sin diseñar» con ilustración genérica presente no prueba contradicción funcional: el estado inicial aprobado carece de diseño y el arte puede ser representativo. No se alteró UX fuera de esta comprobación ni se fabricó un rojo estético.
+
+### Capturas creadas pero NO vistas: entrega al probador
+
+- `tests/e2e/rework-captures/p8-room-systems-1600.png`
+- `tests/e2e/rework-captures/p8-room-systems-1280.png`
+- `tests/e2e/rework-captures/p8-room-storage-1600.png`
+- `tests/e2e/rework-captures/p8-room-storage-1280.png`
+- `tests/e2e/rework-captures/p8-room-airlock-1600.png`
+- `tests/e2e/rework-captures/p8-room-airlock-1280.png`
+- `tests/e2e/rework-captures/p8-room-observation-1600.png`
+- `tests/e2e/rework-captures/p8-room-observation-1280.png`
+
+Los controles reales de estas cuatro salas se ejecutaron y sus contenidos se comprobaron automáticamente; sus paneles NO tienen inspección visual en esta ejecución. Los fondos y personajes correspondientes sí aparecen en las dos bases vistas. El probador debe abrir las ocho imágenes y contrastar contenidos/recortes/arte a ambas escalas antes de cerrar la cobertura visual P8. Esta sección no sustituye esa inspección con geometría ni con el resultado verde. P9 (trabajo/humo/llama/ambos despegues), P10–P12, aprobación de entrega y referencia mockup no inspeccionada permanecen fuera de este paso. No se solicita transición.
+
+
+## P8 vigente: lote de seis salas — inspección del constructor
+
+- Base Core: `83b0c5a42ab3805412192d3e04f7d67dfeb73c05`, REWORK, `foundry/issue-6`, PR #7. Spec `aprobada-original` y `vigente` leídas; matriz P6/P7 y sección P8 parcial conservadas íntegramente. C-2/C-3/C-4/C-5/C-7/C-8 respetadas; sin cambio de contratos, reglas, arte, dependencias o renderizado.
+- Se ejecuta únicamente el P8 vigente: Diseño, Control, Meteorología, Ingeniería, Combustible y Sistemas, a 1600×900 y 1280×720. La sección anterior llamaba P8 a nueve salas; ese nombre histórico no amplía esta ejecución. Almacén, Pasillo, Observación, plataforma y animaciones no se trabajan aquí.
+- Evidencia reutilizada del commit base: diez vistas de las primeras cinco salas ya abiertas por `functions.ver_captura` en P8 parcial, además de las bases que documentan fondos/personajes. No se regeneran PNG válidos ni se presenta su lectura documental como nueva inspección independiente.
+- Inspección faltante realizada ahora: `functions.ver_captura` abrió individualmente `p8-room-systems-1600.png` y `p8-room-systems-1280.png`. Es el visor real de imágenes de la sesión; no se usó OCR, DOM ni geometría para decidir su aspecto. No hay herramienta de navegación visual interactiva en este rol: Chromium real se controla con Playwright por HTTP y la inspección visual se hace en ese visor de capturas. No se afirma inspección visual de una ventana Chromium interactiva.
+
+### Tabla de las 12 vistas
+
+Rutas relativas a `tests/e2e/rework-captures/`. Todas se reabrieron por controles reales en Chromium en esta ejecución (sin generar capturas nuevas); la columna visual distingue observación reutilizada de observación nueva.
+
+| Sala / resolución | PNG conservado | Evidencia visual / resultado |
+| --- | --- | --- |
+| Diseño 1600×900 | `p8-room-design-1600.png` | Reutilizada: tres perfiles, ficha Equilibrada y costo/duración; Cerrar/Confirmar completos. |
+| Diseño 1280×720 | `p8-room-design-1280.png` | Reutilizada: mismo contenido, sin cortes de controles. |
+| Control 1600×900 | `p8-room-control-1600.png` | Reutilizada: TIERRA/ÓRBITA, trayectoria punteada y cálculo 10 min/$20.000 completos. |
+| Control 1280×720 | `p8-room-control-1280.png` | Reutilizada: gráfico y contenido sin cortes. |
+| Meteorología 1600×900 | `p8-room-weather-1600.png` | Reutilizada: condiciones y tres filas del pronóstico legibles, Cerrar/Consultar visibles. |
+| Meteorología 1280×720 | `p8-room-weather-1280.png` | Reutilizada: tabla alineada y completa, viento 45 desde 10:40. |
+| Ingeniería 1600×900 | `p8-room-engineering-1600.png` | Reutilizada: bomba/antena y controles de reparación/costos completos. |
+| Ingeniería 1280×720 | `p8-room-engineering-1280.png` | Reutilizada: contenido y controles sin recorte claro. |
+| Combustible 1600×900 | `p8-room-fuel-1600.png` | Reutilizada: almacén 120.000/bordo 0, cuatro transferencias y carga 40/30 min legibles. |
+| Combustible 1280×720 | `p8-room-fuel-1280.png` | Reutilizada: requisitos y Cargar 40 min/$30.000 completos. |
+| Sistemas 1600×900 | `p8-room-systems-1600.png` | Nueva: cinco indicadores completos en dos columnas; Energía verde, cuatro cruces naranja; revisión pendiente y riesgos legibles; Verificar 10 min/$10.000 y Cerrar íntegros. |
+| Sistemas 1280×720 | `p8-room-systems-1280.png` | Nueva: mismos cinco indicadores y controles sin superposición/corte; texto ajustado dentro del panel. Se observa puntuación doble `68 %..`, sin afectar lectura. |
+
+- A2/A4: las bases ya inspeccionadas `p8-base-1600.png`/`p8-base-1280.png` muestran fondos diferenciados por equipamiento (plano, pantalla circular, nube/manga, herramientas, depósitos y servidores) y personajes visibles. Los detalles abiertos ocultan temporalmente la cuadrícula: en las dos vistas nuevas de Sistemas no se ven personajes, lo que no prueba assets ausentes. No se encontró recorte roto o marcador de imagen rota inequívoco en Sistemas. No se vuelve a certificar plataforma ni animaciones desde estas imágenes.
+- J2: Sistemas conserva visibles objetivos, ilustración lateral y controles inferiores. Tipografía secundaria pequeña; no se aprecia foco inequívoco en estas imágenes estáticas (no se revalida P2). Rectángulo amarillo vacío junto al título ya registrado; intención sin confirmar. Estos detalles y la puntuación doble son observaciones, no defectos funcionales demostrados ni correcciones realizadas.
+
+### Comandos y resultados reales
+
+1. Preparación necesaria de la sesión: `node --version && npm --version && npm ci && npx playwright install chromium`, código 0. Node v22.23.5, npm 10.9.9, 48 paquetes; Chromium 158.0.8127.18. No se modifica lockfile ni se presenta la salida de instalación como auditoría final P11.
+2. Replay dirigido: `npm run dev -- --host 127.0.0.1 --port 4173` y `node --input-type=module` con script Playwright registrado íntegramente por Core, código 0. Chromium real 158.0.8127.18 en `http://127.0.0.1:4173`; seis botones `room-*` abiertos/cerrados en cada escritorio. **12 PASS**: detalle visible, contenido propio, botones dentro del viewport y reloj fijo Día 1, 08:30. Sistemas comprueba además los cinco nombres y Verificar. **Dos PASS** de errores: cero pageerror, consola error, HTTP >=400 y requests fallidos. No se confirmó ninguna acción mutante. Esta geometría es evidencia funcional complementaria, no juicio visual.
+3. `npm test`, código 0: Vitest 4.1.12, **221 passed / 4 passed** (136 reglas, 60 assets, 24 juego, 1 versiones). Baseline existente en verde; sin pruebas nuevas ni producción modificada. No hay rojo TDD porque no se detectó defecto funcional a corregir y no se fabrica rojo estético.
+4. `sha256sum tests/e2e/rework-captures/p8-room-{design,control,weather,engineering,fuel,systems}-{1600,1280}.png`, código 0; doce hashes en evidencia Core. Sistemas: 1600 `dffbd9f978b0c13da1eb1a1861fd8f7460455081c8d10b861fc7f27fefe8c6e3`; 1280 `ea39de0766ed1d1735c43637ed9a6fa60f43f0dc3a5602a3d4d075daee4cb38d`. No se sobrescribieron capturas.
+
+### Límites / entrega al manager
+
+- Cobertura visual del constructor del lote vigente: 12/12, diez reutilizadas y dos inspecciones faltantes completadas. Único archivo cambiado: esta matriz, mediante adición sin alterar secciones anteriores.
+- **No se declara P8 cerrado:** falta comprobación independiente del probador, exigida por el plan; este constructor no puede acreditarla por él. El manager debe distinguir cobertura del constructor de cierre independiente. Si se exige visor Chromium interactivo, no está disponible en estas herramientas y ese requisito queda pendiente; no se sustituye con DOM.
+- No se ejecutan P9–P12, suite e2e integral, build, auditoría final, animaciones/despegues ni aprobación de entrega. No se solicita transición.
+
+## P9: Almacén, Pasillo, Observación y plataforma — Constructor
+
+- Base Core: `d44434dfa151c48c50bc52b30523342a37e7c7b5`, `foundry/issue-6`, PR #7, REWORK. Leídas memoria discovery, spec `aprobada-original` A2/A4/J2, adenda vigente, conversación y secciones P7/P8; se conservan íntegras mediante adición. El registro solicitado como `eventos` no existe; el estado usado es el contexto vigente de Core.
+- Integración real por HTTP `http://127.0.0.1:4173`: Playwright 1.65.0, Chromium 158.0.8127.18 / v1254, Vite y motor Phaser del proyecto. Visor real disponible: `functions.ver_captura`, diez PNG abiertos y dos revisiones focales adicionales de las bases (12 aperturas). No se usa geometría como sustituto de inspección.
+- Cambios exclusivos: dos casos P9 añadidos a `tests/e2e/game.spec.ts:195`, diez PNG nuevos `tests/e2e/rework-captures/p9-*.png`, esta sección. No se editaron escenas, arte original, manifiesto, documentación de arte, dependencias, balance ni contratos. C-2–C-5/C-7/C-8 respetadas.
+
+### Evidencia automatizada y rojo/verde honesto
+
+| Criterio | Prueba / comando | Resultado real |
+| --- | --- | --- |
+| A2/A4/J2: tres salas mediante controles reales y base completa, ambos escritorios | `P9 A2/A4/J2 almacén, esclusa, observación y plataforma 1600` y `1280`; `npm run test:e2e -- --grep 'P9 A2'` | Código 0; **2 passed (20.4 s)**, casos 9.8 / 8.7 s. Canvas visible, botones esenciales sin recortes, diez capturas completas. Inspección visual separada debajo. |
+| Almacén inicial y posterior a carga: cinco filas y dos columnas | Mismos casos, helper local `inventory`; diseño Equilibrada, trayectoria y carga mediante confirmaciones reales | Inicio: 120.000/0 combustible, 30.000/0 oxígeno, 10.000/0 agua, 2000/0 alimentos, 50/— repuestos. Después: 20.000/100.000, 24.000/6000, 8000/2000, 1600/400, 50/—. Carga sin reparar dura 40 min; reloj 09:30, presupuesto 750.000. |
+| Pasillo/Observación descriptivos, lectura sin gasto ni tiempo ficticio | Mismos casos: solo un botón `Cerrar`, sin input/select; tres rondas de apertura/cierre y nueva lectura tras carga | Estado visible inicial sigue en 08:30 y 1.000.000; inventario inicial exacto tras rondas. Tras cargar y leer las salas decorativas, 09:30 y 750.000 estables. Sin inicio de lanzamiento. |
+| Errores HTTP y de navegador | Hooks existentes `beforeEach/afterEach`: `pageerror`, consola error, `requestfailed`, respuestas >=400 | Lista vacía en ambos casos verdes. No se debilitaron estos hooks. |
+| Regresión unitaria | `npm test` | Código 0, Vitest 4.1.12: **221 passed / 4 passed** (136 reglas, 60 assets, 24 juego, 1 dependencias). No es cierre de P11. |
+
+1. Preparación de la sesión: `npm ci`, código 0, 48 paquetes; Node v22.23.5, npm 10.9.9. No se regeneró el lockfile. `npx playwright install chromium`, código 0. La instalación informó cero vulnerabilidades; no sustituye auditoría ni instalación limpia final P11.
+2. Primera ejecución de los dos casos nuevos: comando P9, **código 1, 2 failed**. Ambas expectativas exigían `2.000` para alimentos, mientras la UI muestra `2000`. Fuente consultada: `src/game/scenes.ts:8`, `n.toLocaleString('es-ES')`; esa convención española no agrupa cuatro cifras. No es déficit de inventario ni defecto demostrado de implementación.
+3. Se corrigieron únicamente expectativas nuevas de cuatro cifras (2000, 6000, 8000, 1600), conservando cantidades, unidades y columnas exactas. Segunda ejecución: código 0, dos casos verdes, diez capturas generadas. **No se presenta este rojo de expectativa como TDD de corrección funcional.** No se encontró defecto funcional que necesitara editar fuentes; no se fabricó rojo estético.
+4. `npm test` terminó en código 0. Comprobación por `find`: exactamente diez archivos `p9-*.png`. No se ejecutaron tests generadores P6/P8, ni se sobrescribieron sus capturas.
+
+### Inspección visual real por imagen
+
+Todas las rutas siguientes son relativas a `tests/e2e/rework-captures/`. Cada par se abrió en el visor en ambas resoluciones, no solo se generó. La plataforma permanece visible junto a los paneles de sala.
+
+| Imágenes vistas | Hallazgos visibles y límites |
+| --- | --- |
+| `p9-base-1600.png`, `p9-base-1280.png` | Base 3×3 completa, nueve rótulos completos. Revisión focal de fila inferior: Almacén con estante de tres niveles y cajas naranjas/amarillas/gris azuladas, tres depósitos verdes y técnico naranja delante; puerta cerrada de dos hojas oscuras con marcas cian y banda de umbral en Pasillo, astronauta claro a su derecha; ventanal ancho dividido por montantes, relieve azul/violeta de bajo contraste y astronauta claro delante del extremo derecho en Observación. Cabezas/cuerpos/pies sin cortes evidentes. Los personajes ocluyen pequeñas zonas de depósitos, umbral y ventanal, sin ocultar su identidad. |
+| Mismas dos bases: plataforma | Cohete blanco con franjas naranjas, visor cian y dos cuerpos/propulsores laterales; torre roja con travesaños/diagonales a su izquierda, dos reflectores con trípodes, montañas en varios planos y cielo cálido con disco amarillo. Elementos dentro del encuadre y sin cortes importantes. Torre con contraste menor frente al cielo cálido. Bajo el cuerpo central hay una pieza oscura separada por un espacio: observación visual a revisar independientemente, no defecto demostrado ni cambio de arte realizado. |
+| Mismas bases: personajes | A 1600 el visor distinguió siete figuras naranjas y dos claras. La primera lectura de 1280 contó solo cinco naranjas y dos claras; la revisión focal identificó explícitamente **una naranja en cada una de las siete primeras salas**, y las dos claras en Pasillo/Observación. Se registra la discrepancia del primer conteo; no se sustituye visibilidad con `isPlaying` ni se certifican animaciones. |
+| `p9-room-storage-1600.png`, `p9-room-storage-1280.png` | Cinco filas iniciales completas, unidades en etiquetas y números alineados, explicación de transferencia/conservación y significado de barra Recursos completa en dos líneas. Cerrar completo, sin solapamiento con título. No hay recortes internos; objetivos/plataforma/controles inferiores permanecen visibles. Columnas interpretables por título conjunto, pero sin encabezados individuales: oportunidad de claridad, no requisito adicional decidido por este constructor. El panel oculta la sala; su arte se revisó en las bases, no aquí. |
+| `p9-room-storage-loaded-1600.png`, `p9-room-storage-loaded-1280.png` | Cinco filas transferidas completas con cantidades de la tabla automatizada, reloj 09:30 y presupuesto $750.000 visibles. Cerrar y explicación íntegros. Dos columnas separadas, sin textos montados ni cortes; misma limitación de encabezados conjuntos. Cuatro cifras sin punto y cinco/seis con punto corresponden a `es-ES`, no a pérdida de valor. |
+| `p9-room-airlock-1600.png`, `p9-room-airlock-1280.png` | Título Pasillo/Esclusa y ESCLUSA / ACCESO A PLATAFORMA completos; descripción tripulación esperando autorización, explorar sin tiempo/recursos y uso de Lanzar misión legible en dos líneas. Solo Cerrar dentro del panel. Título/recuadro/párrafo alineados, contraste cian/claro sobre fondo oscuro, sin recortes ni invasión de plataforma/avisos. No se afirma que el panel muestre el arte que tapa. |
+| `p9-room-observation-1600.png`, `p9-room-observation-1280.png` | Título y HORIZONTE / VENTANA DE OBSERVACIÓN completos, texto explícito sin acciones ficticias/avance de reloj y recomendación de pronóstico visible en dos líneas; solo Cerrar. Área inferior vacía, coherente con sala descriptiva. Sin cortes/superposiciones; el recuadro es texto, no una segunda vista del horizonte. El ventanal real se revisó en las bases. |
+
+### Observaciones y límites que conserva el Manager
+
+- El visor señaló símbolo amarillo rectangular vacío antes del título (posible glifo), duplicación de duración en botones Esperar y etiqueta `Confirmado: 72° (inicial, no confirmado)` en el estado inicial. Son observaciones externas a los tres paneles P9, no regresiones introducidas aquí; no se ocultan ni se expandió este paso para corregirlas. La plataforma representa un cohete aun con estado textual `Cohete sin diseñar`, que es el estado jugable inicial. El signo `!` de Ingeniería corresponde a alerta, no se contó como personaje.
+- Texto secundario y avisos son pequeños a 1280×720; el visor los describe legibles, con menor contraste. Ninguna captura acredita foco/teclado; no se repiten P1/P2. No se usan etiquetas A2/A4/J2 en pantalla: son ids de la spec/matriz, no contenido requerido del juego.
+- **Constructor: lote P9 generado, visto y funcionalmente comprobado. Pendiente: verificación visual independiente del Probador**, al menos estas ocho vistas (base y tres salas a ambas resoluciones), más los dos Almacenes cargados para validar lectura posterior. Sus aperturas/resultados deben registrarse como propios; este informe no los inventa ni aprueba por él. P9 no se declara independientemente cerrado ni J2/A4 integralmente aprobados.
+- No hay visor Chromium interactivo manual en estas herramientas: se usó Chromium real conducido por Playwright, capturas reales de ese navegador y visor real de imágenes. Si se exige interacción humana directa, queda pendiente; no se sustituye con geometría ni una captura sin abrir.
+- Carga real usada solo para verificar inventario P9; no se inspeccionó su animación. No se ejecutan P10 (trabajo/despegues), P11 (dependencias/auditoría final), P12 (manual/cierre integral), build ni suite e2e integral. Sin SQL, migraciones o servicios externos. Sin petición de transición ni aprobación de entrega.
+
+### P9 retomado: Observación, personajes y esclusa — Constructor
+
+- Base vigente informada por Core: `6735bb87d64d9f10323f963d760905452ca1138b`, PR #7, `foundry/issue-6`, REWORK. Leídas sección P9 completa, spec `aprobada-original` A2/A4/J2 y conversación #173–#181. No se rehacen P1–P8 ni se avanza P10–P12. Decisiones vigentes de Core conservadas.
+- **Evidencia previa, no atribuida a esta ejecución:** sección P9 Constructor registra diez imágenes y pruebas de los dos escritorios. Core en #173 registra ocho aperturas del Probador (bases, Almacenes iniciales/cargados y Pasillos en ambos tamaños). #174/#178 dejan pendiente Observación y confirmación focal de personajes/esclusa. Esa revisión del Probador no aparece añadida en la sección P9 del archivo; se cita la conversación, no se inventa su informe.
+- **Evidencia visual nueva:** exactamente cuatro aperturas propias en `functions.ver_captura`, sobre PNG ya guardados en el commit base; no se infieren resultados de coordenadas, frames o código. Son revisión focal nueva del Constructor, no actuación ni aprobación por el Probador.
+
+| Imagen efectivamente abierta (en `tests/e2e/rework-captures/`) | Hallazgos nuevos A2/A4/J2 |
+| --- | --- |
+| `p9-room-observation-1600.png` | Título Sala de Observación, encabezado HORIZONTE / VENTANA DE OBSERVACIÓN y descripción completos en dos líneas; Cerrar separado, sin cortes ni solapamientos. Plataforma visible al lado: cohete blanco/naranja con laterales, torre roja con diagonales parcialmente ocluidas, dos reflectores y montañas. El panel tapa el fondo de la sala, no se afirma verlo aquí. |
+| `p9-room-observation-1280.png` | Mismo panel y Cerrar completos; controles inferiores dentro del encuadre, textos secundarios pequeños pero sin recortes. Plataforma y montañas visibles, torre parcialmente ocluida por lateral del cohete. El visor transcribió «acciones físicas»; no se usa esa transcripción como comprobación literal: el caso automatizado y la fuente contienen «acciones ficticias». |
+| `p9-base-1600.png` | Conteo explícito: un técnico naranja completo en Diseño, Control, Meteorología, Ingeniería, Combustible, Sistemas y Almacén; un astronauta claro completo en Pasillo y otro en Observación. Nueve figuras con cabeza/cuerpo/pies, sin recortes evidentes. Esclusa: dos hojas oscuras, división central, marcas cian y umbral amarillo/claro parcialmente tapado por astronauta. Observación: ventanal con dos montantes visibles y paisaje en tres paños, astronauta tapa esquina inferior derecha. Almacén: estantes/cajas naranja, amarillo y gris azulado, tres depósitos verdes parcialmente ocluidos por técnico. |
+| `p9-base-1280.png` | Confirma independientemente del primer conteo previo siete técnicos y dos astronautas, uno por sala, con cabeza/cuerpo/pies visibles. Dos paneles de esclusa, marcas cian y umbral; dos divisiones del ventanal; estantes/cajas y tres depósitos verdes. Cohete blanco/naranja con dos laterales, torre roja con travesaños, dos reflectores y siluetas montañosas dentro del panel. Detalles finos menos reconocibles, no personajes invisibles. |
+
+- Pieza oscura bajo el cohete: la base 1600 muestra rectángulo horizontal separado del cuerpo; su función no se identifica visualmente. A 1280 se percibe zona oscura en la base. Se conserva como incertidumbre de detalle, no como recurso ausente ni recorte roto demostrado; no se cambia arte ni se inventa intención. El posible glifo rectangular del título sigue siendo observación previa fuera del lote de salas P9.
+- No se observó defecto funcional nuevo ni corte que requiera corregir escenas o assets. No se añade test redundante ni se fabrica rojo estético. Las pruebas existentes pasan contra implementación real sin cambios; **no es un ciclo TDD rojo/verde nuevo**.
+
+#### Comandos nuevos y resultados reales
+
+1. Consulta de `tests/e2e/game.spec.ts`, Node/npm y disponibilidad local: código 2 porque no estaba instalado Chromium en la sesión; Node `v22.23.5`, npm `10.9.9`. No es rojo de aceptación.
+2. `npm ci && npx playwright install chromium`: código 0, 48 paquetes, Chromium `158.0.8127.18` / v1254. Preparación del navegador para P9, no cierre de instalación/auditoría P11.
+3. `npm run test:e2e -- --grep 'P9 A2'`: código 0, **2 passed (22.1 s)**, casos 1600 **10.2 s** y 1280 **8.9 s**. HTTP local por Vite, Phaser y reglas reales, clics y confirmaciones reales. Hooks de errores intactos y listas vacías. Para conservar las imágenes efectivamente inspeccionadas, se respaldaron los diez PNG antes del comando y se restauraron después; `sha256sum -c` confirmó **10 OK**. Las capturas regeneradas en esta ejecución no se presentan como imágenes vistas.
+4. `npm test`: código 0, **221 passed / 4 passed** (136 reglas, 60 assets, 24 juego, 1 dependencias), Vitest `4.1.12`.
+
+#### Inventario, interacción y límites de este paso
+
+- Prueba P9 en `tests/e2e/game.spec.ts:195`: Almacén inicial almacén/a bordo: combustible 120.000/0 L; oxígeno 30.000/0 L; agua 10.000/0 L; alimentos 2000/0 kg; repuestos 50/— u. Después de diseño Equilibrada, trayectoria y carga sin reparar: 20.000/100.000 L, 24.000/6000 L, 8000/2000 L, 1600/400 kg y 50/— u. Reloj 09:30 y presupuesto 750.000. Lecturas repetidas no alteran 08:30/1.000.000 antes ni 09:30/750.000 después. Pasillo/Observación solo Cerrar, sin input/select ni acciones ficticias. Inspección visual de los cuatro Almacenes y ambos paneles Pasillo se conserva como evidencia **previa**; no se afirma haber reabierto esas seis imágenes ahora.
+- Retoma visual del Constructor completada sin cambios funcionales; al Manager le corresponde obtener/registrar la comprobación independiente del Probador de estas cuatro vistas pendientes. No se declara cierre independiente de P9 ni aprobación integral A4/J2 por este rol.
+- Solo cambia esta matriz. PNG originales, tests, escenas, assets, contrato y dependencias se conservan. No se inspeccionaron animaciones ni despegues; no se ejecutaron build, suite e2e integral ni auditoría final. Sin SQL, migraciones o servicios externos. P10–P12 y entrega siguen pendientes; no se pide transición.
+
+## P10 parcial — trabajo y despegues (J3/J5/J6)
+
+- Base Core: `c7fd6d6`, PR #7. Specs `aprobada-original` y `vigente` leídas; C-2/3/4/5/7/8 respetadas. Solo fuentes de juego y evidencia/pruebas de navegador. Sin entrenamiento, cambios de contratos, arte, dependencias o manual.
+- **Paso cortado por cuota de capturas:** el Constructor inspeccionó 12 imágenes; Core rechazó las siguientes y reservó 8 al Probador. No se declara P10 terminado ni verificación independiente. P11/P12 no se ejecutan.
+
+### J3: tareas reales y medición
+
+- Pruebas existentes, sin modificar: `npm run test:e2e -- --grep 'J3 progreso|P6 J6 frames'`, código 0, **2 passed (13.7 s)**. Doble confirmación de bomba, exclusión de otras tareas, lectura estable, costos finales; frames reales idle/work de técnico en reparación y carga, configuración FIT.
+- Sonda reproducible nueva `tests/e2e/p10-observe.mjs`, no suite de aceptación ni sustituto del Probador: con Vite HTTP local en 4173, `node tests/e2e/p10-observe.mjs work`. Tres ejecuciones código 0; primero se descubrió que el panel descriptivo ocultaba al técnico. Se cerró mediante control real durante la tarea para tomar nuevas imágenes `*-base-a/b`; se conservaron las imágenes anteriores del panel abierto. Cerrar no cancela ni cambia el tiempo.
+- Medición final desde el clic de confirmación hasta el cambio del reloj mediante MutationObserver del navegador: a 1600, bomba **2011.6 ms**, antena **2012.8 ms**, carga **2013.3 ms**; a 1280, **2013.5/2013.2/2013.9 ms**. El sondeo desde Node informa 2.31–2.47 s por capturas/esperas; no es la duración de la tarea. Fuente: `tests/e2e/p10-evidence/work-{1600,1280}.json`.
+- Telemetría antes/durante/final/estable: bomba 510→530, presupuesto 1.000.000→940.000, repuestos 50→40; antena 530→550, 940.000→900.000, repuestos 40→35. Tras diseño/trayectoria, carga 570→600, 680.000→650.000; almacén 20.000 L combustible, 24.000 L O₂, 8000 L agua, 1600 kg alimentos, 35 repuestos; a bordo 100.000/6000/2000/400. Durante cada tarea reloj/recursos intactos; doble clic y evento adicional sobre Esperar no consumen ni generan otra tarea. `busy` vuelve a false y personaje a idle; muestra estable posterior sin segundo descuento. Evidencia de resumen: comando Node registrado por Core; los JSON contienen datos completos.
+- `astronaut-work` se reproduce **solo como sonda técnica**, con `Sprite.play`, en la sala Pasillo. `BaseScene.work` no asocia astronaut-work a ninguna acción jugable. Capturas generadas, **no inspeccionadas**; no se atribuye ese trabajo al jugador.
+
+### Defectos visuales encontrados y TDD real
+
+- Inspección de ascenso original a ambos tamaños: encabezado plataforma/cohete superpuesto al cohete. Avisos durante despegue decían «La partida terminó» y mostraban riesgo de combustible insuficiente al reevaluar la carga ya consumida. No es un defecto de reglas: la instantánea ganadora sigue dando 712.
+- Test nuevo `tests/e2e/p10-launch.spec.ts`, 2 tamaños, flujo ganador completo por controles reales, sin dobles del motor. Tres comprobaciones: no mostrar diagnóstico terminal, no mostrar riesgo de combustible recalculado durante la animación y ocultar el rótulo que cruza la trayectoria. Verifica 712 y retorno del rótulo/bloqueos iniciales al reiniciar.
+- Rojo **antes de producción**: `npm run test:e2e -- --grep 'P10 lanzamiento'`, código 1, **2 failed**. Primera ejecución tenía timeout de 5 s y el resultado sustituía el DOM entre aserciones; se ajustó únicamente el timeout de las tres aserciones a 500 ms, manteniendo los requisitos. Segundo rojo código 1, **2 failed (36 s aproximadamente)**, con los tres defectos presentes: texto terminal, combustible insuficiente y `.platform-label` visible.
+- Mínimo en `src/game/scenes.ts:128,133`: ocultar rótulo solo durante animación; aviso «Despegue en curso. El diagnóstico se mostrará al finalizar.» en vez de reevaluar bloqueos/riesgos terminales. Reglas, resultados y valores no cambian.
+- Verde mismo comando, código 0, **2 passed (34.7 s)**. Regresión `npm test`, código 0, **221 passed / 4 passed**. No se presenta el trabajo ya correcto como TDD rojo/verde; solo estos defectos tienen rojo funcional real.
+
+### J5/J6: lotes separados contra Phaser real
+
+| Lote | Comando | Salida real |
+| --- | --- | --- |
+| Ganadora y reinicio | `npm run test:e2e -- --grep 'J4/J5 ganadora'` | Código 0, 1 passed (20.9 s), 712 y desglose 256/140/166/150 |
+| Cinco fallos jugables | `npm run test:e2e -- --grep 'J4/J5 fallo por'` | Código 0, 5 passed (1.2 m): ángulo, bomba, antena, clima, múltiples/combustible; causas, cancelación del aviso, total 0 y reinicio |
+| Humo/llama/ascenso éxito | `npm run test:e2e -- --grep 'P6 J6 ascenso exitoso'` | Código 0, 1 passed (20.9 s), primera observación hasta resultado 6917.0 ms |
+| Humo/llama/anomalía fallo | `npm run test:e2e -- --grep 'P6 J6 ascenso fallido'` | Código 0, 1 passed (18.3 s), primera observación hasta resultado 4006.4 ms |
+
+- Las capturas P6 se respaldaron antes de ejecutar sus dos lotes y se restauraron después; no se presentan las regeneradas como las imágenes previas inspeccionadas.
+- Capturas/telemetría finales tras corregir: `P10_OUTPUT=tests/e2e/p10-evidence/final node tests/e2e/p10-observe.mjs success` y mismo comando `failure`, ambos código 0, cada lote a 1600 y 1280. Duración navegador clic→resultado éxito **7033.4/7032.2 ms**, fallo **4011.6/4016.4 ms**. Telemetría antes de corregir queda en la raíz `p10-evidence/`; no se mezcla con la final.
+- Éxito real 10:20, $640.000, 35 repuestos, 8000 L a bordo, **712**. Fallo real de ángulo 80° (aviso y confirmación), 10:20, misma reserva/piezas, 0 L a bordo; diagnóstico **256/140/166/83**, total **0** y causa 80° frente a 72°.
+- JSON de fases registran frames humo/llama 0→1 y ascenso cohete desde y=570; fallo se detiene en y=430, tinte 0xff9955, llama invisible y texto ANOMALÍA DETECTADA. Son mediciones técnicas, **no inspección visual final**.
+- Reinicio y 2400 ms posteriores en ambos tamaños y ambos resultados: igualdad serializada exacta con estado inicial, `busy=false`, `warning=false`, solo BaseScene/UIScene activas y cero objetos en LaunchScene. Errores de consola/pageerror/requestfailed y respuestas HTTP >=400: listas vacías en los seis flujos finales de sonda (trabajo + ambos resultados, a dos tamaños).
+- Código contrastado: `scenes.ts:20` crea animaciones con `this.anims`; `:41` trabajo/idle mediante Sprite.play; `:171–172` tween/timer de 2000 ms; `:183–190` humo/llama animados, ascenso 6500 ms éxito y 2200 ms fallo, anomalía a 2200 ms, resultado a 7000/4000 ms; shutdown limpia tweens y eventos en Base/UI/Launch/Result. Búsqueda sin coincidencias de `setInterval` en ese archivo. Ninguna regla de negocio se duplica.
+
+### Imágenes efectivamente inspeccionadas y corte
+
+Las doce imágenes vistas por el Constructor, todas en `tests/e2e/p10-evidence/`:
+
+1. `work-1600-repair-pump-a.png` y `work-1600-repair-pump-b.png`: progreso visible, técnico oculto por panel descriptivo; no se afirma trabajo visible en estas imágenes.
+2. `work-1280-load-a.png` y `work-1280-load-b.png`: carga con panel abierto, barra avanza, técnico oculto.
+3. `work-1600-repair-pump-base-a.png` y `work-1600-repair-pump-base-b.png`: técnico Ingeniería completo, herramienta amarilla visible, barra pasa de inicio a aproximadamente un cuarto; ambas poses capturadas se parecen y no bastan por sí solas para afirmar cambio de frame.
+4. `work-1280-load-base-a.png` y `work-1280-load-base-b.png`: técnico Combustible completo, herramienta pequeña cambia de disposición, barra avanza. La identificación de la herramienta es poco definida en pixel art; sin recortes.
+5. `success-1600-ignition-a.png`, `success-1600-ignition-b.png`, `success-1600-ascent.png`, `success-1280-ascent.png`: llama/humo presentes; humo tapa parcialmente la llama al inicio, luego llama completa y cohete elevado. Ascenso cruza el rótulo y avisos eran contradictorios; motivan el TDD descrito. **Son imágenes antes de corregir**, no acreditan la corrección visual final.
+
+**Pendiente por cuota, sin intentar rodearla:** el Constructor no pudo ver ninguna imagen `final/`. Quedan por inspeccionar las fases de éxito corregidas, anomalía/fallo a ambos tamaños, resultados y reinicios; además trabajo de reparación a 1280, carga a 1600, antena e idle y sonda astronaut-work. Core reservó 8 capturas al Probador; el Manager debe dividir lo restante. Recomendación para sus ocho primeras: `final/success-{1600,1280}-ascent.png`, `final/failure-{1600,1280}-anomaly.png`, `work-1600-load-base-b.png`, `work-1280-repair-pump-base-b.png`, `final/success-1280-result.png`, `final/failure-1280-result.png`. No se declara inspección independiente de ningún lote.
+
+### Otros límites
+
+- Preparación de sesión: Node v22.23.5/npm 10.9.9, `npm ci && npx playwright install chromium`, código 0; necesaria para P10, no revalidación de P11 ni auditoría final. No se tocó lockfile/package.json.
+- Un intento de rojo no arrancó por puerto 4173 ocupado; se identificó y detuvo el proceso Vite propio antes del rojo efectivo. No es fallo de aceptación. No se alteró configuración Playwright.
+- No hay build/preview, suite e2e integral, entrenamiento, medición humana de duración de partida, SQL o servicios externos en este paso. No se avanzan P11/P12 ni se pide VERIFYING.

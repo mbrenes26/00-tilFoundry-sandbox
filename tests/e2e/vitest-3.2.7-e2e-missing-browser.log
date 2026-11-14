@@ -1,0 +1,206 @@
+
+> nivel-1-despegue@1.0.0 test:e2e
+> playwright test
+
+
+Running 14 tests using 1 worker
+
+  ✘  1 tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio (4ms)
+  ✘  2 tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo (4ms)
+  ✘  3 tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio (5ms)
+  ✘  4 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo (4ms)
+  ✘  5 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba (4ms)
+  ✘  6 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena (5ms)
+  ✘  7 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima (4ms)
+  ✘  8 tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible (31ms)
+  ✘  9 tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito (4ms)
+  ✘  10 tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento (4ms)
+  ✘  11 tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 (4ms)
+  ✘  12 tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera (7ms)
+  ✘  13 tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 10:00 inclusivo (4ms)
+  ✘  14 tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 11:00 inclusivo (4ms)
+
+
+  1) tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  2) tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo ──────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  3) tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio ───────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  4) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo ────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  5) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba ─────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  6) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena ────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  7) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima ─────────────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  8) tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible ───────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  9) tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  10) tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento ─────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  11) tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 ─────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  12) tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera 
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  13) tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 10:00 inclusivo ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  14) tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 11:00 inclusivo ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /home/sandbox/.cache/ms-playwright/chromium_headless_shell-1161/chrome-linux/headless_shell
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+  14 failed
+    tests/e2e/game.spec.ts:11:1 › J1/J2/A4/J6 nueve salas, FIT, assets, animaciones y capturas en escritorio 
+    tests/e2e/game.spec.ts:12:1 › J3 progreso exclusivo y lectura sin tiempo ───────────────────────
+    tests/e2e/game.spec.ts:13:1 › J4/J5 ganadora, componentes, animación y reinicio ────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por ángulo ─────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por bomba ──────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por antena ─────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por clima ──────────────────────────────────────────
+    tests/e2e/game.spec.ts:14:268 › J4/J5 fallo por múltiples y combustible ────────────────────────
+    tests/e2e/game.spec.ts:15:1 › J5 omisión de verificaciones falla directo, también permite éxito 
+    tests/e2e/game.spec.ts:16:1 › J5 ventana perdida sin iniciar lanzamiento ───────────────────────
+    tests/e2e/game.spec.ts:29:1 › J2 todos los controles esenciales caben a 1280x720 ───────────────
+    tests/e2e/game.spec.ts:36:1 › J4 aviso se invalida y revalida tras controles reales de espera ──
+    tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 10:00 inclusivo ──────────────────────────
+    tests/e2e/game.spec.ts:48:37 › R3 lanzamiento real en 11:00 inclusivo ──────────────────────────
