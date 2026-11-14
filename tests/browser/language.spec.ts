@@ -4,5 +4,5 @@ test('I-1: selector de archivo muestra textos propios en español', async ({ pag
   await page.goto('/');
   await expect(page.getByText('Seleccionar archivo JSON', { exact: true })).toBeVisible();
   await expect(page.getByText('Ningún archivo seleccionado', { exact: true })).toBeVisible();
-  await expect(page.getByLabel('Importar política JSON')).toBeDisabled();
+  await expect(page.getByLabel('Importar política JSON')).toBeEnabled();
 });

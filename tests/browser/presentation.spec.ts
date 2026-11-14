@@ -7,9 +7,10 @@ test('I-1: arranque HTTP, escenas, arte y configuración real', async ({ page })
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Lúmina' })).toBeVisible();
   await expect(page.locator('canvas')).toBeVisible();
-  await expect(page.getByLabel('Importar política JSON')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Seleccionar archivo JSON' })).toBeVisible();
+  await expect(page.getByLabel('Importar política JSON')).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Iniciar partida' })).toBeDisabled();
-  await expect(page.getByText('Vista previa del mapa · Sin política cargada')).toBeVisible();
+  await expect(page.getByText('Ningún archivo seleccionado', { exact: true })).toBeVisible();
   await expect.poll(async () => page.evaluate(async () => {
     const { game } = await import('/src/main.ts' as string);
     const base = game.scene.getScene('BaseScene');

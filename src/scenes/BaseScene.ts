@@ -30,7 +30,7 @@ export class BaseScene extends Phaser.Scene {
     this.ready = true;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { this.stopRhythm(); this.ready = false; });
   }
-  present(state: GameState, animate = true): void {
+  present(state: GameState, animate = true, duration = STEP_MS * 0.8): void {
     this.state = structuredClone(state);
     this.objects.clear(true, true);
     state.pills.forEach(p => { const c = this.cellCenter(p); this.objects.add(this.add.image(c.x, c.y, 'tiles', 2).setScale(2)); });
@@ -38,7 +38,7 @@ export class BaseScene extends Phaser.Scene {
     const move = (sprite: Phaser.GameObjects.Sprite, position: Position) => {
       this.tweens.killTweensOf(sprite);
       const center = this.cellCenter(position);
-      if (animate) this.tweens.add({ targets: sprite, ...center, duration: STEP_MS * 0.8 });
+      if (animate) this.tweens.add({ targets: sprite, ...center, duration });
       else sprite.setPosition(center.x, center.y);
     };
     move(this.playerSprite, state.player.position);

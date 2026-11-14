@@ -31,3 +31,11 @@ footer { padding: 12px 4%; }
   }
   .panel h2 { font-size: 18px; }
 }
+
+/* Playback controls remain readable and contained at FIT sizes. */
+.panel { max-height: 74%; overflow-y: auto; overscroll-behavior: contain; }
+.panel button, .panel select { margin-bottom: 10px; }
+select { width: 100%; font: inherit; padding: 8px; color: #e7f4f3; background: #28394b; border: 1px solid #90dabb; border-radius: 6px; }
+#policy-message, #seed-message { overflow-wrap: anywhere; }
+#seed-message:empty { display: none; }
+@media (max-width: 760px) { .panel { max-height: 70%; } }
