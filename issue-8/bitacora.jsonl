@@ -1,1 +1,2 @@
 {"actor": "process:core", "aprobacion": null, "desde": null, "fecha": "2026-11-14T04:30:52Z", "hacia": "REQUESTED", "motivo": "Pedido con /factory de human:mbrenes26", "riesgo": "medium", "tipo": "evento", "trabajo": "issue-8"}
+{"fase": "inicio", "fecha": "2026-11-14T04:30:54Z", "id": "c60bbbf3c881", "rol": "manager-producto", "tipo": "ejecucion"}
