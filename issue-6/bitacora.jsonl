@@ -121,3 +121,4 @@
 {"completado": true, "costo_usd": 0.062846, "fase": "fin", "fecha": "2026-11-14T14:33:59Z", "id": "90ecdf740335", "rol": "manager-producto", "tipo": "ejecucion"}
 {"enlace": "https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/6#issuecomment-6879359508", "fecha": "2026-11-14T15:04:43Z", "monto": 6.0, "por": "human:mbrenes26", "tipo": "presupuesto"}
 {"fase": "inicio", "fecha": "2026-11-14T15:13:17Z", "id": "2abe1f32a8ff", "rol": "manager-producto", "tipo": "ejecucion"}
+{"completado": true, "costo_usd": 0.077996, "fase": "fin", "fecha": "2026-11-14T15:14:01Z", "id": "2abe1f32a8ff", "rol": "manager-producto", "tipo": "ejecucion"}
