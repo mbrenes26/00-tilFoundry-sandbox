@@ -49,3 +49,4 @@
 {"alerta": "manager-sin-avance", "detalle": "manager-producto terminó sin pedir una transición, sin comentar ni registrar", "fecha": "2026-11-14T16:43:10Z", "rol": "manager-producto", "tipo": "alerta"}
 {"fase": "inicio", "fecha": "2026-11-14T16:43:12Z", "id": "aed11b53f98f", "rol": "feedback-loop", "tipo": "ejecucion"}
 {"completado": true, "costo_usd": 0.606656, "fase": "fin", "fecha": "2026-11-14T16:44:38Z", "id": "aed11b53f98f", "rol": "feedback-loop", "tipo": "ejecucion"}
+{"fase": "inicio", "fecha": "2026-11-14T16:44:39Z", "id": "877a9527eb4c", "rol": "manager-producto", "tipo": "ejecucion"}
