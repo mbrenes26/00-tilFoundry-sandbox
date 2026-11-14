@@ -100,3 +100,4 @@
 {"completado": false, "costo_usd": 0.411891, "fase": "fin", "fecha": "2026-11-14T05:56:46Z", "id": "cf544c6c5fb0", "rol": "manager-producto", "tipo": "ejecucion"}
 {"accion": "aviso", "fecha": "2026-11-14T06:33:30Z", "motivo": "mensaje fijo al cliente", "tipo": "guardia", "traba": "2026-11-14T05:05:35Z"}
 {"accion": "retomar", "fecha": "2026-11-14T06:33:33Z", "motivo": "Últimas dos ejecuciones de manager-producto incompletas tras ~20 min cada una (05:36:39 y 05:56:46 UTC), compatible con tope de tiempo; sin errores de Core en 30 min. No hay retoma desde la transición BLOCKED→REWORK de las 05:05:35 UTC.", "tipo": "guardia", "traba": "2026-11-14T05:05:35Z"}
+{"fase": "inicio", "fecha": "2026-11-14T06:33:34Z", "id": "c86b6ff243ed", "rol": "manager-producto", "tipo": "ejecucion"}
