@@ -133,3 +133,4 @@
 {"completado": true, "costo_usd": 0.105143, "fase": "fin", "fecha": "2026-11-14T16:37:31Z", "id": "e8ce5d8de080", "rol": "manager-producto", "tipo": "ejecucion"}
 {"alerta": "bloqueo-repetido", "detalle": "el trabajo pasó a BLOCKED 6 veces", "fecha": "2026-11-14T16:37:33Z", "rol": "manager-producto", "tipo": "alerta"}
 {"fase": "inicio", "fecha": "2026-11-14T16:37:35Z", "id": "d78b46334d23", "rol": "feedback-loop", "tipo": "ejecucion"}
+{"completado": true, "costo_usd": 1.014221, "fase": "fin", "fecha": "2026-11-14T16:39:34Z", "id": "d78b46334d23", "rol": "feedback-loop", "tipo": "ejecucion"}
