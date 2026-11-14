@@ -1,9 +1,11 @@
 import { MAP_VERSION, RULES_VERSION, type Action, type GameState, type GuardianId, type Position, type StepResult } from './contracts';
 import { GUARDIAN_STARTS, HEIGHT, PLAYER_START, POWER_STARTS, WIDTH, isWalkable } from './map';
 import { nextRandom, normalizeSeed } from './random';
-import { CHASE_STEPS, POWER_STEPS, SCATTER_STEPS, chooseGuardianAction, destination, guardianActions, guardianTarget } from './guardians';
+import { CHASE_STEPS, POWER_STEPS, RESPAWN_STEPS, SCATTER_STEPS, chooseGuardianAction, destination, guardianActions, guardianTarget } from './guardians';
 
 const samePosition = (a: Readonly<Position>, b: Readonly<Position>) => a.x === b.x && a.y === b.y;
+const CAPTURE_POINTS = [200, 400, 800, 1600] as const;
+const MAX_STEPS = 3000;
 
 export function createGame(seed: number): GameState {
   const normalized = normalizeSeed(seed);
@@ -33,22 +35,44 @@ export function legalActions(state: GameState): Action[] {
   return ([0, 1, 2, 3] as Action[]).filter(a => isWalkable(destination(state.player.position, a)));
 }
 
-/** Motor puro: jugador, poder, guardianes, [colisiones/final pendientes M-3], temporizadores. */
+/** Reinicia solo el estado de la vida; conserva objetos, puntaje, reloj y PRNG. */
+function resetLife(state: GameState): void {
+  state.player = { position: { ...PLAYER_START }, direction: 1 };
+  for (const guardian of state.guardians) {
+    guardian.position = { ...GUARDIAN_STARTS[guardian.id - 1] };
+    guardian.direction = 0;
+    guardian.active = true;
+    guardian.respawnRemaining = 0;
+  }
+  state.powerRemaining = 0;
+  state.captureChain = 0;
+  state.phase = 'scatter';
+  state.phaseRemaining = SCATTER_STEPS;
+}
+
+/** Motor puro: jugador, objetos/poder, guardianes, colisiones, final, temporizadores. */
 export function step(state: GameState, action: Action): StepResult {
   const next = structuredClone(state);
   const events: StepResult['events'] = [];
+  if (state.status !== 'running') return { state: next, events };
   const target = destination(state.player.position, action);
   if (isWalkable(target)) {
     next.player.position = target;
     next.player.direction = action;
     events.push({ type: 'move', actor: 'player', from: { ...state.player.position }, to: { ...target } });
   }
+  const pillIndex = next.pills.findIndex(p => samePosition(p, next.player.position));
+  if (pillIndex >= 0) {
+    const [position] = next.pills.splice(pillIndex, 1);
+    next.points += 10;
+    events.push({ type: 'pill', position: { ...position }, points: 10 });
+  }
   const powerIndex = next.powers.findIndex(p => samePosition(p, next.player.position));
   if (powerIndex >= 0) {
     const [position] = next.powers.splice(powerIndex, 1);
+    next.points += 50;
     next.powerRemaining = POWER_STEPS;
     next.captureChain = 0;
-    // La aplicación de puntos, píldoras y capturas corresponde a M-3.
     events.push({ type: 'power', position: { ...position }, points: 50 });
   }
 
@@ -83,20 +107,54 @@ export function step(state: GameState, action: Action): StepResult {
     events.push({ type: 'move', actor: guardian.id, from, to: { ...guardian.position } });
   }
 
-  // M-3 insertará colisiones/final aquí. No decrementar guardianes recién capturados.
-  for (const guardian of next.guardians) {
-    if (!guardian.active && guardian.respawnRemaining > 0) guardian.respawnRemaining--;
+  // Solo los guardianes activos al entrar pueden colisionar (excluye reapariciones).
+  const collisions = next.guardians.filter(g => {
+    const previous = state.guardians.find(before => before.id === g.id)!;
+    return previous.active && g.active && (samePosition(g.position, next.player.position) ||
+      (samePosition(previous.position, next.player.position) && samePosition(g.position, state.player.position)));
+  });
+  // Vulnerabilidad es global para todos los activos; resolver mortalidad antes de cualquier captura.
+  const died = collisions.length > 0 && next.powerRemaining === 0;
+  const captured = new Set<GuardianId>();
+  if (died) {
+    next.lives--;
+    resetLife(next);
+    events.push({ type: 'death', lives: next.lives });
+  } else {
+    for (const guardian of collisions.sort((a, b) => a.id - b.id)) {
+      const points = CAPTURE_POINTS[Math.min(next.captureChain, CAPTURE_POINTS.length - 1)];
+      next.points += points;
+      next.captureChain++;
+      guardian.position = { ...GUARDIAN_STARTS[guardian.id - 1] };
+      guardian.direction = 0;
+      guardian.active = false;
+      guardian.respawnRemaining = RESPAWN_STEPS;
+      captured.add(guardian.id);
+      events.push({ type: 'capture', guardianId: guardian.id, points });
+    }
   }
-  if (next.powerRemaining > 0) {
-    next.powerRemaining--;
-    if (next.powerRemaining === 0) next.captureChain = 0;
-  }
-  next.phaseRemaining--;
-  if (next.phaseRemaining === 0) {
-    next.phase = next.phase === 'scatter' ? 'chase' : 'scatter';
-    next.phaseRemaining = next.phase === 'scatter' ? SCATTER_STEPS : CHASE_STEPS;
-    events.push({ type: 'phase', phase: next.phase });
-  }
+
   next.tick++;
+  if (next.lives === 0) next.status = 'lost';
+  else if (next.pills.length === 0 && next.powers.length === 0) next.status = 'won';
+  else if (next.tick >= MAX_STEPS) next.status = 'timeout';
+  if (next.status !== 'running') events.push({ type: 'end', status: next.status });
+
+  // Un reinicio deja la fase con sus 70 pasos completos. Capturas nuevas conservan los 20.
+  if (!died) {
+    for (const guardian of next.guardians) {
+      if (!guardian.active && guardian.respawnRemaining > 0 && !captured.has(guardian.id)) guardian.respawnRemaining--;
+    }
+    if (next.powerRemaining > 0) {
+      next.powerRemaining--;
+      if (next.powerRemaining === 0) next.captureChain = 0;
+    }
+    next.phaseRemaining--;
+    if (next.phaseRemaining === 0) {
+      next.phase = next.phase === 'scatter' ? 'chase' : 'scatter';
+      next.phaseRemaining = next.phase === 'scatter' ? SCATTER_STEPS : CHASE_STEPS;
+      events.push({ type: 'phase', phase: next.phase });
+    }
+  }
   return { state: next, events };
 }

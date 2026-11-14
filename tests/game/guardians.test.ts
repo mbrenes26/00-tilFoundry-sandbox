@@ -7,7 +7,7 @@ import type { Action, GameState, Position } from '../../src/game/contracts';
 
 function fixture(): GameState {
   const s = createGame(42);
-  s.pills = []; s.powers = [];
+  s.pills = [{ x: 17, y: 13 }]; s.powers = [];
   s.guardians.forEach(g => { g.active = false; g.respawnRemaining = 1000; });
   return s;
 }
@@ -77,9 +77,9 @@ describe('M-2: objetivos y elecciones', () => {
     actor(s, { x: 8, y: 7 }, 1);
     Object.assign(s.guardians[2], { position: { x: 13, y: 7 }, direction: 0, active: true });
     const result = step(s, 1);
-    expect(result.state.guardians[0].position).toEqual({ x: 9, y: 7 });
+    expect(result.events).toContainEqual({ type: 'move', actor: 1, from: { x: 8, y: 7 }, to: { x: 9, y: 7 } });
     // Objetivo 14,7 con id1 antiguo; secuencial daría objetivo 13,7 y empate hacia izquierda.
-    expect(result.state.guardians[2].position).toEqual({ x: 14, y: 7 });
+    expect(result.events).toContainEqual({ type: 'move', actor: 3, from: { x: 13, y: 7 }, to: { x: 14, y: 7 } });
     expect(result.events[0]).toMatchObject({ type: 'move', actor: 'player' });
   });
 });
@@ -99,11 +99,11 @@ describe('M-2: fronteras, vulnerabilidad y reaparición', () => {
     expect(phases).toEqual([70, 270, 340, 540]);
     const boundary = fixture(); boundary.tick = 70; boundary.phase = 'chase'; boundary.phaseRemaining = 200;
     boundary.player.position = { x: 8, y: 7 }; actor(boundary, { x: 9, y: 7 }, 1);
-    expect(step(boundary, 0).state.guardians[0].direction).toBe(3);
+    expect(step(boundary, 3).state.guardians[0].direction).toBe(3);
     boundary.phaseRemaining = 199;
-    expect(step(boundary, 0).state.guardians[0].direction).toBe(1);
+    expect(step(boundary, 3).state.guardians[0].direction).toBe(1);
     boundary.phase = 'scatter'; boundary.phaseRemaining = 1;
-    expect(step(boundary, 0).state.guardians[0].direction).toBe(1); // todavía dispersión
+    expect(step(boundary, 3).state.guardians[0].direction).toBe(1); // todavía dispersión
   });
 
   it('recoger antes de enemigos; 60 movimientos vulnerables; nuevo poder reinicia duración y cadena', () => {

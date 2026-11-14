@@ -63,6 +63,8 @@ describe('M-1: mapa e inicialización', () => {
 describe('M-1: acciones y pureza', () => {
   it('0 arriba/1 derecha/2 abajo/3 izquierda: legal una casilla, ilegal inmóvil, en todo el mapa', () => {
     const initial = createGame(123);
+    // Aislar movimiento de la resolución de colisiones (cubierta en M-3).
+    initial.guardians.forEach(g => { g.active = false; g.respawnRemaining = 1000; });
     for (let y = 0; y < HEIGHT; y++) for (let x = 0; x < WIDTH; x++) {
       if (!isWalkable({ x, y })) continue;
       const state: GameState = { ...initial, player: { position: { x, y }, direction: 1 } };
