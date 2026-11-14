@@ -65,3 +65,4 @@
 {"accion": "retomar", "fecha": "2026-11-14T17:51:49Z", "motivo": "Ejecución de manager-producto iniciada a las 17:43:22Z sin fin registrado; despliegue de Core arrancó a las 17:48:03Z. Posible corte pasajero por despliegue; sin retoma registrada en esta traba y sin errores de Core en 30 minutos.", "tipo": "guardia", "traba": "2026-11-14T15:01:01Z"}
 {"fase": "inicio", "fecha": "2026-11-14T17:51:50Z", "id": "1e850469a5f9", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "reanudada", "fecha": "2026-11-14T17:57:45Z", "id": "c172bbaa3586", "rol": "manager-producto", "tipo": "ejecucion"}
+{"completado": false, "costo_usd": 0.544974, "fase": "fin", "fecha": "2026-11-14T17:57:50Z", "id": "c172bbaa3586", "rol": "manager-producto", "tipo": "ejecucion"}
