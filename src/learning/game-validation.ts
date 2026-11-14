@@ -2,18 +2,22 @@ import type { GameState, Position } from '../game/contracts';
 import { createGame } from '../game/engine';
 import { CHASE_STEPS, POWER_STEPS, RESPAWN_STEPS, SCATTER_STEPS } from '../game/guardians';
 import { GUARDIAN_STARTS, isWalkable } from '../game/map';
-import { compatible, integer, object, requireValid } from './policy-format';
+import { compatible, exactKeys, integer, object, requireValid } from './policy-format';
 
 function position(value: unknown): asserts value is Position {
-  const p = object(value, 'posición'); integer(p.x, 0, 18, 'x'); integer(p.y, 0, 14, 'y');
+  const p = object(value, 'posición'); exactKeys(p, ['x', 'y'], 'posición'); integer(p.x, 0, 18, 'x'); integer(p.y, 0, 14, 'y');
   requireValid(isWalkable({ x: p.x, y: p.y }), 'posición transitable');
 }
-function actor(value: unknown): Record<string, unknown> {
-  const a = object(value, 'actor'); position(a.position); integer(a.direction, 0, 3, 'dirección'); return a;
+function actor(value: unknown, guardian = false): Record<string, unknown> {
+  const a = object(value, 'actor');
+  exactKeys(a, guardian ? ['position', 'direction', 'id', 'active', 'respawnRemaining'] : ['position', 'direction'], 'actor');
+  position(a.position); integer(a.direction, 0, 3, 'dirección'); return a;
 }
 /** Valida el contrato del motor, sin recrear movimientos, puntuación ni observación. */
 export function validateGame(value: unknown): asserts value is GameState {
-  const g = object(value, 'partida'); compatible(g);
+  const g = object(value, 'partida');
+  exactKeys(g, ['schemaVersion', 'rulesVersion', 'mapVersion', 'seed', 'rngState', 'tick', 'player', 'guardians', 'pills', 'powers', 'points', 'lives', 'phase', 'phaseRemaining', 'phaseChangePending', 'powerRemaining', 'captureChain', 'status'], 'partida');
+  compatible(g);
   integer(g.seed, 0, 0xffffffff, 'semilla de partida'); integer(g.rngState, 0, 0xffffffff, 'PRNG motor');
   integer(g.tick, 0, 3000, 'tick'); integer(g.lives, 0, 3, 'vidas');
   integer(g.points, 0, Number.MAX_SAFE_INTEGER, 'puntos'); requireValid(g.points % 10 === 0, 'puntos'); actor(g.player);
@@ -24,7 +28,7 @@ export function validateGame(value: unknown): asserts value is GameState {
   requireValid(g.powerRemaining !== 0 || g.captureChain === 0, 'cadena sin poder');
   requireValid(Array.isArray(g.guardians) && g.guardians.length === 4, 'guardianes');
   g.guardians.forEach((value, index) => {
-    const a = actor(value); requireValid(a.id === index + 1 && typeof a.active === 'boolean', 'id/actividad de guardián');
+    const a = actor(value, true); requireValid(a.id === index + 1 && typeof a.active === 'boolean', 'id/actividad de guardián');
     integer(a.respawnRemaining, a.active ? 0 : 1, a.active ? 0 : RESPAWN_STEPS, 'reaparición');
     if (!a.active) {
       const p = a.position as Position, start = GUARDIAN_STARTS[index];

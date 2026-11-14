@@ -99,6 +99,18 @@ export function validateCheckpoint(value: unknown): asserts value is CheckpointV
       for (let id = 0; id < 4; id++) requireValid(values[start + 5 + id * 4] <= values[start + 4 + id * 4], 'vulnerabilidad/actividad');
     }
   }
+  // legalActions/observe conservan la legalidad geométrica incluso en terminales.
+  // Cero solo es coherente sin alternativas: ReplayBuffer lo interpreta como fallback.
+  for (let slot = 0; slot < r.size; slot++) {
+    const start = slot * 36;
+    let currentMask = 0, nextMask = 0;
+    for (let action = 0; action < 4; action++) {
+      currentMask |= (r.observations as number[])[start + 22 + action] << action;
+      nextMask |= (r.nextObservations as number[])[start + 22 + action] << action;
+    }
+    requireValid((r.nextLegalMasks as number[])[slot] === nextMask, 'máscara legal/observación siguiente');
+    requireValid(currentMask === 0 || (currentMask & (1 << (r.actions as number[])[slot])) !== 0, 'acción/observación actual');
+  }
   // Slots no usados deben ser cero; evita convertir basura finita en transiciones al reanudar.
   if (r.size < capacity) for (const key of REPLAY_KEYS) {
     const values = r[key] as number[], width = key === 'observations' || key === 'nextObservations' ? 36 : 1;
