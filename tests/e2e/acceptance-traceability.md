@@ -190,3 +190,44 @@
 - Validar sheets de una fila es comprobación del inventario actual documentado, no cambio del contrato que también permite atlas u otros spritesheets.
 - No se inspeccionó el mockup ni se observaron animaciones, integración Phaser o capturas reales. **A2, A4 y P6 siguen pendientes**; P5 no los cierra ni sustituye revisión visual. Tampoco acredita reinicios en navegador, build, infraestructura final P7, documentación integral P8 o verificación independiente P9.
 - No se pide transición ni aprobación de entrega en este paso.
+
+
+## P6: arte integrado y animaciones (A2/A4/J6), cierre parcial con defecto visual
+
+- Base completa leída: spec `aprobada-original` (A2/A4/J6, contratos y secuencias) y adenda vigente; cerebro C-2–C-5/C-7. Punto de partida informado por Core: `c3c63ec83af1c9b6695b54e7f8c92dfe1fb99f3d`, PR #7. No se modifica implementación, assets, dependencias ni evidencia P3–P5.
+- Nuevos tests: `tests/e2e/game.spec.ts:60–106`, prefijo P6. HTTP `http://127.0.0.1:4173`, Chromium headless 158.0.8127.18 / Playwright v1254; 1600×900 y FIT 1280×720. Nueve salas por controles reales; idle de nueve personajes, trabajo del técnico en reparación, éxito con preparación completa, fallo por ángulo 80°, humo/llama activos, ascenso por comparación de posición, anomalía/interrupción y reinicios con lectura posterior. Se añade escucha de console.error/requestfailed a los pageerror/HTTP >=400 existentes.
+- Sonda explícita: `astronaut-work-probe-*` llama `Sprite.play('astronaut-work')` en los dos astronautas reales, sin cambiar reglas. No es una acción de juego: el código actual solo activa trabajo de técnicos en Ingeniería/Combustible. No se afirma que se haya observado astronaut-work iniciado por una acción del jugador. No se añadió captura dedicada de carga/trabajo en Combustible antes de detener el cierre por el defecto visual.
+
+### Comandos y resultados reales
+
+1. Lecturas de fuentes y versiones: Node **v22.23.5**, npm **10.9.9**. `npm ci` código 0, 48 paquetes añadidos, sin cambios de versiones/lockfile. Instalación necesaria para poder probar, no validación P7.
+2. `npm run test:e2e -- --grep 'J1/J2/A4/J6'`: código 1 por Chromium no instalado, **no rojo funcional**. `npx playwright install chromium` instala Chromium v1254; baseline del mismo test **1 passed (4.8 s)**, antes de las nuevas pruebas.
+3. `npm run test:e2e -- --grep P6` tras añadir cobertura: **2 passed / 1 failed**. Falló medición exitosa (15752 ms) porque se consultó `LaunchScene.time.startTime` antes de que Phaser creara la escena encolada. Segundo intento `--grep 'P6 J6'`: **1 passed / 1 failed**, mismo problema de sincronización: Sprite smoke aún ausente al muestrear. Son errores de instrumentación nuevos, **no defectos productivos ni TDD rojo de arte**. Se corrige únicamente el test: esperar creación del sprite real antes de muestrear y usar performance.now en ambos extremos.
+4. `npm run test:e2e -- --grep P6` corregido: **código 0, 3 passed (42.2 s)**. Primera observación de animación a creación del resultado: éxito **6915.9 ms**, fallo **3902.2 ms**, dentro de 6–8 / 3–5 s. No es tiempo exacto desde el clic (incluye sincronización inicial no medida); código fuente confirma timers 7000/4000. Sin console.error, pageerror, requestfailed o HTTP >=400 en los tres recorridos. Reinicio de ambos con estado inicial y espera de 2200 ms sin callbacks tardíos observados.
+5. Regresión `npm test`: **código 0, 221 passed / 4 files**. Se intentó `npm test && npm run test:e2e` por herramienta paralela: error de herramienta sin salida final, aunque quedó un proceso ejecutándose. Reintento registrado: Vitest 221 passed y e2e **código 1 por puerto 4173 ocupado**, no fallo funcional. Un comando de espera y reejecución también terminó con error de herramienta y dejó otra suite ejecutándose; se detuvo su proceso Playwright y el servidor temporal para no dejar ejecuciones sin resultado registrado. **No se acredita regresión e2e integral en P6**; no se modificó configuración para evitar el conflicto. La suite P6 dirigida sí tiene salida final registrada. P9 no realizado.
+
+### Revisión de fuentes, sin modificarlas
+
+- `src/main.ts:5`: cinco escenas, 1600×900, pixelArt true, roundPixels y Phaser.Scale.FIT.
+- `src/game/scenes.ts:17–21`: manifiesto, NEAREST, creación `this.anims` a partir de metadatos. `:34–40`: nueve salas y personajes Sprite.play idle/work, cohete/torre/terreno.
+- `:168–172`: progreso de 2000 ms con `this.tweens` y `this.time.delayedCall`; `:178–190`: humo/llama Sprite.play, ascenso tween 6500/2200 ms, resultado this.time 7000/4000 ms, anomalía a 2200 ms. `:198–199`: reset y limpieza. La búsqueda `grep -Rn setInterval src` no devolvió coincidencias.
+
+### Inspección visual efectivamente realizada
+
+Herramienta **ver_captura**, no solo generación o geometría. Capturas P6 revisadas en `tests/e2e/rework-captures/` (prefijo `p6-`, extensión `.png`):
+
+- `base-idle-1600-a`, `base-idle-1600-b`, `base-idle-1280`.
+- `repair-work-a`, `repair-work-b`, `astronaut-work-probe-b`.
+- `success-launch-a`, `success-launch-b`, `success-ascent`.
+- `failure-launch-b`, `failure-anomaly`.
+- `success-result`, `success-restart`.
+- Además se vio `test-results/game-P6-J6-ascenso-exitoso-humo-llama-y-reinicio/test-failed-1.png` para diagnosticar el muestreo. No se conserva esa imagen fuera de la salida temporal ni se usa como aceptación.
+
+**Visto:** nueve salas completas y diferenciadas por plano, monitor orbital, nube/manga de viento, herramientas, depósitos, racks, estanterías, esclusa y ventanal; nueve figuras completas en reposo a ambos tamaños. Paleta navy/gris con cian/naranja/amarillo/verde y bordes pixelados; cohete blanco/naranja, torre roja, montañas y dos reflectores amarillos, sin afirmar haces de luz. Astronautas visibles en la sonda. Resultado de éxito completo, 712 y componentes 256/140/166/150, sin restos de animación; captura de reinicio con cohete, nueve personajes y 08:30.
+
+**Defecto bloqueante observado, no corregido por alcance:** panel inferior de Bloqueos/Riesgos tapa la zona bajo el cohete al iniciar y durante el ascenso, deja solo una franja de llama y no permite distinguir humo completo (`success-launch-a/b`, `success-ascent`, `failure-launch-b`). El aviso superior DESPEGUE EN CURSO superpone el encabezado/“Cohete Equilibrada”. Durante reparación, el panel de progreso tapa parte de las salas/personajes de la fila inferior (`repair-work-a/b`); el bloque de riesgos se corta por abajo. A4 exige ausencia de recortes/personajes invisibles y J6 inspección real de efectos: **no quedan aceptados** aunque las comprobaciones de Sprite/anims y los tiempos pasen.
+
+- Para corregir hay que editar layout/renderizado en `src/game/scenes.ts` y/o `src/styles/game.css`, fuera de los tres destinos permitidos para P6. Se detiene la corrección productiva y se devuelve al manager para decisión; no se oculta el panel mediante el test ni se cambia arte o contrato.
+- El visor también señala glifo vacío antes del título y mensajes “DESPEGUE EN CURSO” / “La partida terminó” simultáneos durante la animación. Se registran como observaciones, no como nuevos requisitos inventados. La salida superior del cohete durante el ascenso no se toma por sí sola como recorte defectuoso; la obstrucción inferior sí está comprobada.
+- Las imágenes individuales revisadas no acreditan continuidad temporal ni comparación automática entre dos posturas: el visor no tuvo ambas imágenes simultáneamente. Ciclos activos y desplazamiento se comprueban con Phaser real; **suavidad/continuidad visual de las animaciones no verificada por vídeo**. No se presenta la estética como validada por hashes o geometría.
+- Hay 27 capturas P6 generadas; las nueve `room-*`, `astronaut-work-probe-a`, `failure-launch-a`, `failure-ascent`, `failure-result` y `failure-restart` no fueron abiertas con el visor. Sus controles/recorridos sí se ejecutaron; no se declaran inspeccionadas. A2 tiene evidencia visual de contenido en la base, pero **P6 no está completamente verde**: A4/J6 visuales pendientes de corrección y nueva inspección. Sin trabajo P7–P9 ni solicitud de transición/entrega.

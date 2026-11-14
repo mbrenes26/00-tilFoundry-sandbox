@@ -1,6 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 const errors=new WeakMap<Page,string[]>();
-test.beforeEach(async({page})=>{const list:string[]=[];errors.set(page,list);page.on('pageerror',e=>list.push(e.message));page.on('response',r=>{if(r.status()>=400)list.push(`${r.status()} ${r.url()}`);});await page.goto('http://127.0.0.1:4173');await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');});
+test.beforeEach(async({page})=>{const list:string[]=[];errors.set(page,list);page.on('pageerror',e=>list.push(e.message));page.on('console',m=>{if(m.type()==='error')list.push(m.text());});page.on('requestfailed',r=>list.push(`${r.method()} ${r.url()} ${r.failure()?.errorText}`));page.on('response',r=>{if(r.status()>=400)list.push(`${r.status()} ${r.url()}`);});await page.goto('http://127.0.0.1:4173');await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');});
 test.afterEach(async({page})=>{expect(errors.get(page)).toEqual([]);});
 async function room(page:Page,id:string){await close(page);await page.getByTestId('room-'+id).click();}
 async function close(page:Page){const b=page.getByTestId('close-panel');if(await b.isVisible())await b.click();}
@@ -55,4 +55,52 @@ for(const time of ['10:00','11:00'])test(`R3 lanzamiento real en ${time} inclusi
  await expect(page.getByTestId('result')).toContainText('Hora de preparación: '+time);
  await expect(page.getByTestId('result')).not.toContainText('Ventana perdida');
  await expect(page.getByTestId('result')).toContainText(time==='10:00'?'68 %':'45 km/h');
+});
+
+// P6: capturas para inspección visual; las aserciones no certifican estética.
+const captureRoot='tests/e2e/rework-captures';
+async function p6Capture(page:Page,name:string){await page.screenshot({path:`${captureRoot}/p6-${name}.png`});}
+async function characterState(page:Page){return page.evaluate(()=>{
+ const b=(window as any).__game.scene.getScene('BaseScene');
+ return b.characters.map((s:any)=>({key:s.texture.key,animation:s.anims.currentAnim.key,frame:s.frame.name,playing:s.anims.isPlaying,visible:s.visible}));
+});}
+test('P6 A2/A4/J6 salas y ciclos idle/work a escala de juego',async({page})=>{
+ await expect.poll(async()=> (await characterState(page)).length).toBe(9);
+ const idle=await characterState(page);expect(idle.every((s:any)=>s.playing&&s.visible&&s.animation.endsWith('-idle'))).toBe(true);
+ await p6Capture(page,'base-idle-1600-a');await page.waitForTimeout(270);await p6Capture(page,'base-idle-1600-b');
+ for(const id of ['design','control','weather','engineering','fuel','systems','storage','airlock','observation']){
+  await room(page,id);await expect(page.getByTestId('detail')).toBeVisible();await p6Capture(page,`room-${id}`);
+ }
+ await close(page);await page.setViewportSize({width:1280,height:720});await p6Capture(page,'base-idle-1280');await page.setViewportSize({width:1600,height:900});
+ await page.getByTestId('repair-pump').click();await page.getByTestId('confirm-action').click();
+ await expect(page.getByTestId('progress')).toBeVisible();
+ expect((await characterState(page))[3].animation).toBe('technician-work');
+ await p6Capture(page,'repair-work-a');await page.waitForTimeout(220);await p6Capture(page,'repair-work-b');
+ await expect(page.getByTestId('progress')).toBeHidden({timeout:5000});
+ expect((await characterState(page))[3].animation).toBe('technician-idle');
+ // La base solo activa trabajo de técnicos en reparación/carga. Sonda de render
+ // para astronaut-work: API real de animación, sin inyectar estado de reglas.
+ await page.evaluate(()=>{const b=(window as any).__game.scene.getScene('BaseScene');b.characters[7].play('astronaut-work');b.characters[8].play('astronaut-work');});
+ expect((await characterState(page))[7].animation).toBe('astronaut-work');
+ await p6Capture(page,'astronaut-work-probe-a');await page.waitForTimeout(220);await p6Capture(page,'astronaut-work-probe-b');
+ await page.evaluate(()=>{const b=(window as any).__game.scene.getScene('BaseScene');b.characters[7].play('astronaut-idle');b.characters[8].play('astronaut-idle');});
+});
+for(const success of [true,false])test(`P6 J6 ascenso ${success?'exitoso':'fallido'}, humo/llama y reinicio`,async({page})=>{
+ const label=success?'success':'failure';await prepare(page,success?{}:{angle:80});
+ await page.getByTestId('launch').click();if(!success)await page.getByTestId('launch-anyway').click();
+ await expect(page.getByTestId('launch-animation')).toBeVisible();
+ await expect.poll(()=>page.evaluate(()=>(window as any).__game.scene.getScene('LaunchScene').children.list.filter((o:any)=>o.texture?.key==='smoke').length)).toBe(1);
+ const start=await page.evaluate(()=>performance.now());
+ const sample=()=>page.evaluate(()=>{const s=(window as any).__game.scene.getScene('LaunchScene');return s.children.list.filter((o:any)=>['rocket','smoke','flame'].includes(o.texture?.key)).map((o:any)=>({key:o.texture.key,y:o.y,frame:o.frame.name,visible:o.visible,animation:o.anims?.currentAnim?.key,playing:o.anims?.isPlaying}));});
+ const first=await sample();expect(first.find((s:any)=>s.key==='smoke')).toMatchObject({animation:'smoke-burn',playing:true,visible:true});expect(first.find((s:any)=>s.key==='flame')).toMatchObject({animation:'flame-burn',playing:true,visible:true});
+ await p6Capture(page,`${label}-launch-a`);await page.waitForTimeout(350);await p6Capture(page,`${label}-launch-b`);
+ await page.waitForTimeout(850);const later=await sample();expect(later.find((s:any)=>s.key==='rocket')!.y).toBeLessThan(first.find((s:any)=>s.key==='rocket')!.y);await p6Capture(page,`${label}-ascent`);
+ if(!success){await page.waitForTimeout(1300);expect((await sample()).find((s:any)=>s.key==='flame')!.visible).toBe(false);await p6Capture(page,'failure-anomaly');}
+ // Timestamp DOM del resultado, independiente del intervalo de consulta de Playwright.
+ const end=await page.evaluate(()=>new Promise<number>(resolve=>{const check=()=>{if(document.querySelector('[data-testid=result]')){observer.disconnect();resolve(performance.now());}};const observer=new MutationObserver(check);observer.observe(document.body,{childList:true,subtree:true});check();}));
+ const duration=end-start;expect(duration).toBeGreaterThanOrEqual(success?6000:3000);expect(duration).toBeLessThanOrEqual(success?8000:5000);
+ console.log(`P6 ${label}: primera observación de animación a resultado ${duration.toFixed(1)} ms`);
+ await expect(page.getByTestId('result')).toContainText(success?'Misión completada':'Misión fallida');await p6Capture(page,`${label}-result`);
+ await reset(page);await p6Capture(page,`${label}-restart`);expect((await characterState(page)).every((s:any)=>s.animation.endsWith('-idle'))).toBe(true);
+ await room(page,'observation');await close(page);await expect(page.getByTestId('launch-animation')).toBeHidden();
 });
