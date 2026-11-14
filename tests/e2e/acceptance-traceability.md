@@ -373,3 +373,34 @@ Herramienta **ver_captura**, no solo generación o geometría. Capturas P6 revis
 
 - Cambio entregable exclusivo: `tests/e2e/acceptance-traceability.md`. CSS, tests, PNG, dependencias y lockfile quedan sin cambios entregables.
 - **Pendiente:** el Probador debe abrir de forma independiente, como mínimo, estas mismas seis imágenes y registrar hallazgos por resolución. Se utilizaron seis aperturas del Constructor, sin consumir aperturas del Probador. **J2 no se declara cerrado ni P7 independientemente verificado**; no se solicita transición ni aprobación. P8–P12 no se ejecutan en este paso.
+
+
+## P7: cierre del registro con informe independiente recibido
+
+- Punto de partida informado por Core: `0af4f42c700365e3d6615549414a9a925c7f1786`, rama `foundry/issue-6`, PR #7. Este añadido conserva la historia de P7 y actualiza únicamente el pendiente de revisión independiente de las seis vistas restantes indicado en la sección anterior.
+- **Procedencia:** informe del Probador recibido a través del Manager de producto. Sus aperturas, comandos y resultados se registran como evidencia reportada, no como ejecuciones propias del Constructor en este cierre documental. Aquí no se abrieron imágenes, no se ejecutaron pruebas ni se avanzó a P8–P12.
+
+### Seis capturas contrastadas por ambos roles
+
+El Probador informó haber abierto con visor real las siguientes imágenes de `tests/e2e/rework-captures/`, previamente inspeccionadas por el Constructor en la reanudación de P7:
+
+| Sala | 1600×900 | 1280×720 | Resultado independiente recibido |
+| --- | --- | --- | --- |
+| Almacén | `p6-layout-storage-1600.png` | `p6-layout-storage-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. A 1280 las columnas del inventario carecen de encabezados explícitos, pero sus valores son distinguibles. |
+| Pasillo | `p6-layout-airlock-1600.png` | `p6-layout-airlock-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. |
+| Observación | `p6-layout-observation-1600.png` | `p6-layout-observation-1280.png` | Contenido y Cerrar legibles, sin recortes ni superposiciones. |
+
+- Observaciones del Probador: a 1280 los objetivos tienen salto de línea sin truncarse; textos auxiliares pequeños y Lanzar atenuado permanecen legibles. La duración duplicada de Esperar y la etiqueta «confirmado» son ambigüedades de redacción, no defectos bloqueantes de distribución. No se corrigen textos ni CSS en este registro.
+- **Cobertura visual acumulada de P7: 26 capturas**, según las inspecciones históricas del Constructor más las seis de su reanudación. Las seis restantes fueron verificadas por ambos roles en la ejecución de revisión que se documenta; este cierre solo incorpora el informe. El Probador leyó la evidencia histórica de las otras veinte y **no las abrió nuevamente**. No se afirma inspección independiente de las 26.
+
+### Comandos y conservación reportados por el Probador
+
+- `npm run test:e2e -- --grep 'P6/J2 distribución y textos'`: código **0**, **2 passed**; duraciones reportadas **23,2 s** y **20,7 s**, Chromium real por HTTP. No es una ejecución del Constructor en este cierre.
+- Respaldo y restauración de los **26 PNG**, comprobación SHA-256: **26 OK**, código **0**, según el informe recibido. No se presenta esta comprobación como inspección visual de las veinte imágenes históricas.
+- El Probador no modificó producción ni tests y no generó un rojo nuevo: no se reprodujo un defecto de distribución que requiriera regresión roja y corrección. Este añadido documental tampoco constituye un ciclo TDD de implementación.
+
+### Estado y límites del registro P7
+
+- El pendiente de revisión independiente de las seis capturas restantes queda resuelto por el informe recibido; **P7 queda completo en su cobertura visual acumulada y registro**, con la limitación explícita de independencia descrita arriba. Se conservan los informes parciales anteriores como historia, no como pendientes vigentes de esas seis vistas.
+- **No se declara cierre integral de J2**, verificación independiente de las 26 capturas, accesibilidad general, funcionalidad de controles ni aprobación de entrega. Los requisitos de los otros pasos permanecen pendientes; P8–P12 no se ejecutaron en este cierre.
+- Único cambio entregable: `tests/e2e/acceptance-traceability.md`. Sin cambios de producción, tests, capturas, dependencias, contratos, alcance o presupuesto; sin solicitud de transición.
