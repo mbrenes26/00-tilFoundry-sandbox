@@ -449,3 +449,46 @@ Todas las rutas siguientes son relativas a `tests/e2e/rework-captures/`; cada ar
 - `tests/e2e/rework-captures/p8-room-observation-1280.png`
 
 Los controles reales de estas cuatro salas se ejecutaron y sus contenidos se comprobaron automáticamente; sus paneles NO tienen inspección visual en esta ejecución. Los fondos y personajes correspondientes sí aparecen en las dos bases vistas. El probador debe abrir las ocho imágenes y contrastar contenidos/recortes/arte a ambas escalas antes de cerrar la cobertura visual P8. Esta sección no sustituye esa inspección con geometría ni con el resultado verde. P9 (trabajo/humo/llama/ambos despegues), P10–P12, aprobación de entrega y referencia mockup no inspeccionada permanecen fuera de este paso. No se solicita transición.
+
+
+## P8 vigente: lote de seis salas — inspección del constructor
+
+- Base Core: `83b0c5a42ab3805412192d3e04f7d67dfeb73c05`, REWORK, `foundry/issue-6`, PR #7. Spec `aprobada-original` y `vigente` leídas; matriz P6/P7 y sección P8 parcial conservadas íntegramente. C-2/C-3/C-4/C-5/C-7/C-8 respetadas; sin cambio de contratos, reglas, arte, dependencias o renderizado.
+- Se ejecuta únicamente el P8 vigente: Diseño, Control, Meteorología, Ingeniería, Combustible y Sistemas, a 1600×900 y 1280×720. La sección anterior llamaba P8 a nueve salas; ese nombre histórico no amplía esta ejecución. Almacén, Pasillo, Observación, plataforma y animaciones no se trabajan aquí.
+- Evidencia reutilizada del commit base: diez vistas de las primeras cinco salas ya abiertas por `functions.ver_captura` en P8 parcial, además de las bases que documentan fondos/personajes. No se regeneran PNG válidos ni se presenta su lectura documental como nueva inspección independiente.
+- Inspección faltante realizada ahora: `functions.ver_captura` abrió individualmente `p8-room-systems-1600.png` y `p8-room-systems-1280.png`. Es el visor real de imágenes de la sesión; no se usó OCR, DOM ni geometría para decidir su aspecto. No hay herramienta de navegación visual interactiva en este rol: Chromium real se controla con Playwright por HTTP y la inspección visual se hace en ese visor de capturas. No se afirma inspección visual de una ventana Chromium interactiva.
+
+### Tabla de las 12 vistas
+
+Rutas relativas a `tests/e2e/rework-captures/`. Todas se reabrieron por controles reales en Chromium en esta ejecución (sin generar capturas nuevas); la columna visual distingue observación reutilizada de observación nueva.
+
+| Sala / resolución | PNG conservado | Evidencia visual / resultado |
+| --- | --- | --- |
+| Diseño 1600×900 | `p8-room-design-1600.png` | Reutilizada: tres perfiles, ficha Equilibrada y costo/duración; Cerrar/Confirmar completos. |
+| Diseño 1280×720 | `p8-room-design-1280.png` | Reutilizada: mismo contenido, sin cortes de controles. |
+| Control 1600×900 | `p8-room-control-1600.png` | Reutilizada: TIERRA/ÓRBITA, trayectoria punteada y cálculo 10 min/$20.000 completos. |
+| Control 1280×720 | `p8-room-control-1280.png` | Reutilizada: gráfico y contenido sin cortes. |
+| Meteorología 1600×900 | `p8-room-weather-1600.png` | Reutilizada: condiciones y tres filas del pronóstico legibles, Cerrar/Consultar visibles. |
+| Meteorología 1280×720 | `p8-room-weather-1280.png` | Reutilizada: tabla alineada y completa, viento 45 desde 10:40. |
+| Ingeniería 1600×900 | `p8-room-engineering-1600.png` | Reutilizada: bomba/antena y controles de reparación/costos completos. |
+| Ingeniería 1280×720 | `p8-room-engineering-1280.png` | Reutilizada: contenido y controles sin recorte claro. |
+| Combustible 1600×900 | `p8-room-fuel-1600.png` | Reutilizada: almacén 120.000/bordo 0, cuatro transferencias y carga 40/30 min legibles. |
+| Combustible 1280×720 | `p8-room-fuel-1280.png` | Reutilizada: requisitos y Cargar 40 min/$30.000 completos. |
+| Sistemas 1600×900 | `p8-room-systems-1600.png` | Nueva: cinco indicadores completos en dos columnas; Energía verde, cuatro cruces naranja; revisión pendiente y riesgos legibles; Verificar 10 min/$10.000 y Cerrar íntegros. |
+| Sistemas 1280×720 | `p8-room-systems-1280.png` | Nueva: mismos cinco indicadores y controles sin superposición/corte; texto ajustado dentro del panel. Se observa puntuación doble `68 %..`, sin afectar lectura. |
+
+- A2/A4: las bases ya inspeccionadas `p8-base-1600.png`/`p8-base-1280.png` muestran fondos diferenciados por equipamiento (plano, pantalla circular, nube/manga, herramientas, depósitos y servidores) y personajes visibles. Los detalles abiertos ocultan temporalmente la cuadrícula: en las dos vistas nuevas de Sistemas no se ven personajes, lo que no prueba assets ausentes. No se encontró recorte roto o marcador de imagen rota inequívoco en Sistemas. No se vuelve a certificar plataforma ni animaciones desde estas imágenes.
+- J2: Sistemas conserva visibles objetivos, ilustración lateral y controles inferiores. Tipografía secundaria pequeña; no se aprecia foco inequívoco en estas imágenes estáticas (no se revalida P2). Rectángulo amarillo vacío junto al título ya registrado; intención sin confirmar. Estos detalles y la puntuación doble son observaciones, no defectos funcionales demostrados ni correcciones realizadas.
+
+### Comandos y resultados reales
+
+1. Preparación necesaria de la sesión: `node --version && npm --version && npm ci && npx playwright install chromium`, código 0. Node v22.23.5, npm 10.9.9, 48 paquetes; Chromium 158.0.8127.18. No se modifica lockfile ni se presenta la salida de instalación como auditoría final P11.
+2. Replay dirigido: `npm run dev -- --host 127.0.0.1 --port 4173` y `node --input-type=module` con script Playwright registrado íntegramente por Core, código 0. Chromium real 158.0.8127.18 en `http://127.0.0.1:4173`; seis botones `room-*` abiertos/cerrados en cada escritorio. **12 PASS**: detalle visible, contenido propio, botones dentro del viewport y reloj fijo Día 1, 08:30. Sistemas comprueba además los cinco nombres y Verificar. **Dos PASS** de errores: cero pageerror, consola error, HTTP >=400 y requests fallidos. No se confirmó ninguna acción mutante. Esta geometría es evidencia funcional complementaria, no juicio visual.
+3. `npm test`, código 0: Vitest 4.1.12, **221 passed / 4 passed** (136 reglas, 60 assets, 24 juego, 1 versiones). Baseline existente en verde; sin pruebas nuevas ni producción modificada. No hay rojo TDD porque no se detectó defecto funcional a corregir y no se fabrica rojo estético.
+4. `sha256sum tests/e2e/rework-captures/p8-room-{design,control,weather,engineering,fuel,systems}-{1600,1280}.png`, código 0; doce hashes en evidencia Core. Sistemas: 1600 `dffbd9f978b0c13da1eb1a1861fd8f7460455081c8d10b861fc7f27fefe8c6e3`; 1280 `ea39de0766ed1d1735c43637ed9a6fa60f43f0dc3a5602a3d4d075daee4cb38d`. No se sobrescribieron capturas.
+
+### Límites / entrega al manager
+
+- Cobertura visual del constructor del lote vigente: 12/12, diez reutilizadas y dos inspecciones faltantes completadas. Único archivo cambiado: esta matriz, mediante adición sin alterar secciones anteriores.
+- **No se declara P8 cerrado:** falta comprobación independiente del probador, exigida por el plan; este constructor no puede acreditarla por él. El manager debe distinguir cobertura del constructor de cierre independiente. Si se exige visor Chromium interactivo, no está disponible en estas herramientas y ese requisito queda pendiente; no se sustituye con DOM.
+- No se ejecutan P9–P12, suite e2e integral, build, auditoría final, animaciones/despegues ni aprobación de entrega. No se solicita transición.
