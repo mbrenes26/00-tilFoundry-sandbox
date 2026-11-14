@@ -1,3 +1,4 @@
+import { boardGeometry } from './evidence/geometry';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
@@ -79,4 +80,25 @@ test('I-1: inventario original completo y APIs de presentación sin setInterval'
   const sources = ['BootScene', 'BaseScene', 'UIScene', 'LaunchScene', 'ResultScene'].map(n => readFileSync(`src/scenes/${n}.ts`, 'utf8')).join('\n');
   expect(sources).toContain('this.anims'); expect(sources).toContain('this.tweens'); expect(sources).toContain('this.time');
   expect(sources).not.toContain('setInterval');
+});
+
+test('I-1/I-2: tablero completo y arte opaco distinguible a 390px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect.poll(() => page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
+    return game.scene.getScene('BaseScene').ready;
+  })).toBe(true);
+  const geometry = await boardGeometry(page);
+  console.log('Geometría 390:', JSON.stringify(geometry));
+  expect(geometry.board.width).toBeGreaterThanOrEqual(350);
+  expect(geometry.board.height).toBeGreaterThanOrEqual(275);
+  expect(geometry.cell).toBeGreaterThanOrEqual(18);
+  expect(geometry.actors).toHaveLength(5);
+  expect(geometry.actors.every(actor => actor.visible && actor.width >= 12 && actor.height >= 12)).toBe(true);
+  expect(geometry.actors[0].width).toBeGreaterThanOrEqual(14);
+  expect(geometry.board.x).toBeGreaterThanOrEqual(0);
+  expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(390);
+  const hud = (await page.locator('#hud').boundingBox())!;
+  expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(hud.y);
 });

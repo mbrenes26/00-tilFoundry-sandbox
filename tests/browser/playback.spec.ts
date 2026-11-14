@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { toPolicy } from '../../src/learning/policy';
+import { boardGeometry } from './evidence/geometry';
 import { createNetwork } from '../../src/learning/network';
 
 // Synthetic, untrained PolicyV1 fixture. Never evidence of learned behaviour.
@@ -22,7 +23,8 @@ async function start(page: Page) {
 
 for (const width of [390, 1600]) {
 test.describe(`rework ${width}px · fixture sintética no entrenada`, () => {
-  test.use({ viewport: { width, height: width === 390 ? 844 : 1000 } });
+  test.setTimeout(60000);
+  test.use({ viewport: { width, height: width === 390 ? 844 : 900 } });
 
 test('I-3: importación inválida, límites, recuperación y semilla segura', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
@@ -92,6 +94,7 @@ test('I-2: acciones, trayectoria y pesos coinciden con inferencia/motor; control
   await expect(page.getByTestId('phase')).toHaveText(`Fase: ${result.state.phase === 'scatter' ? 'dispersión' : 'persecución'}`);
   await expect(page.getByTestId('power')).toHaveText(`Poder: ${result.state.powerRemaining} pasos`);
   await expect(page.getByTestId('steps')).toHaveText(`Pasos: ${result.state.tick} / 3000`);
+  await page.clock.runFor(100); // Finish drawing tweens while simulation is paused.
   await checkLayout(page, '#launch-panel', 'playback');
   const state = () => page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return JSON.stringify(game.scene.getScene('LaunchScene').playback.state); });
   const before = await state(); await page.clock.runFor(250); expect(await state()).toBe(before);
@@ -195,5 +198,16 @@ async function checkLayout(page: Page, selector: string, phase: string) {
     expect(panel.x + panel.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
     expect(panel.y + panel.height).toBeLessThanOrEqual(canvas.y + canvas.height + 1);
   }
-  await page.screenshot({ path: `tests/browser/evidence/rework-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const geometry = await boardGeometry(page);
+  console.log(`Geometría ${page.viewportSize()!.width} ${phase}:`, JSON.stringify(geometry));
+  if (page.viewportSize()!.width === 390) {
+    expect(geometry.board.width).toBeGreaterThanOrEqual(350);
+    expect(geometry.board.x).toBeGreaterThanOrEqual(0);
+    expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(390);
+  } else {
+    expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(panel.x);
+  }
+  expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(geometry.canvas.y + geometry.canvas.height);
+  await page.screenshot({ path: `tests/browser/evidence/observable-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
 }

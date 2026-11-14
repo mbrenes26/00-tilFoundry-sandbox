@@ -27,12 +27,14 @@ select { width: 100%; font: inherit; padding: 8px; color: #e7f4f3; background: #
 #policy-message, #seed-message { overflow-wrap: anywhere; }
 #seed-message:empty { display: none; }
 /* On phones the canvas keeps its logical FIT resolution. The HUD and panels
-   flow below it; only the document scrolls, never a clipped control panel. */
+   flow below it; only the document scrolls, never a clipped control panel.
+   The 1600×900 FIT canvas is twice the phone width. Only unused right-hand
+   scenery is clipped, not the map; BaseScene pans its camera accordingly. */
 @media (max-width: 760px) {
   header { flex-direction: column; gap: 0; }
   header p { margin-bottom: 0; }
-  #stage { aspect-ratio: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  #game { position: relative; inset: auto; min-width: 0; width: 100%; aspect-ratio: 16 / 9; }
+  #stage { aspect-ratio: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; overflow: hidden; }
+  #game { position: relative; inset: auto; min-width: 0; width: 200%; aspect-ratio: 16 / 9; }
   #hud { position: static; width: auto; margin: 0 12px; padding: 12px;
     font-size: 14px; line-height: 1.5; gap: 8px 16px; }
   .panel { position: static; width: auto; margin: 0 12px;

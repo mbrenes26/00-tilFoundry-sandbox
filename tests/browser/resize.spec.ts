@@ -1,3 +1,4 @@
+import { boardGeometry } from './evidence/geometry';
 import { expect, test } from '@playwright/test';
 import { toPolicy } from '../../src/learning/policy';
 import { createNetwork } from '../../src/learning/network';
@@ -13,7 +14,7 @@ test('I-1: escritorio conserva el panel dentro del canvas FIT', async ({ page })
   expect(panel.x + panel.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
   expect(panel.y + panel.height).toBeLessThanOrEqual(canvas.y + canvas.height + 1);
   await expect(page.getByRole('button', { name: 'Iniciar partida' })).toBeDisabled();
-  await page.screenshot({ path: 'tests/browser/evidence/rework-desktop-start.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/rework-desktop-start.png', fullPage: true });
 });
 
 test('I-1: teléfono tiene inicio fuera del canvas sin scroll interno', async ({ page }) => {
@@ -37,9 +38,9 @@ test('I-1: teléfono tiene inicio fuera del canvas sin scroll interno', async ({
   });
   expect(config).toEqual({ width: 1600, height: 900, pixelArt: true, fit: true,
     scenes: ['BootScene', 'BaseScene', 'UIScene', 'LaunchScene', 'ResultScene'] });
-  await page.screenshot({ path: 'tests/browser/evidence/rework-mobile-start.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/rework-mobile-start.png', fullPage: true });
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'tests/browser/evidence/rework-mobile-start-viewport.png' });
+  await page.screenshot({ path: 'test-results/rework-mobile-start-viewport.png' });
 });
 
 test('I-1/I-2: teléfono tiene indicadores legibles fuera del canvas', async ({ page }) => {
@@ -103,5 +104,57 @@ test('I-3: teléfono valida y recupera importaciones sin iniciar reproducción',
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
   expect(errors).toEqual([]);
-  await page.screenshot({ path: 'tests/browser/evidence/rework-mobile-start-valid.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/rework-mobile-start-valid.png', fullPage: true });
+});
+
+
+test('I-1/I-2: redimensionar en ambos sentidos conserva tablero, actores y estado', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByTestId('steps')).toHaveText('Pasos: 0 / 3000');
+  const state = () => page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
+    return JSON.stringify(game.scene.getScene('BaseScene').state);
+  });
+  const original = await state();
+  for (const width of [390, 1600, 390, 1600]) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await expect.poll(async () => (await boardGeometry(page)).board.width).toBe(width === 390 ? 370.5 : 760);
+    const geometry = await boardGeometry(page);
+    expect(geometry.board.x).toBeGreaterThanOrEqual(0);
+    expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(width);
+    expect(geometry.actors.every(actor => actor.visible && actor.width >= 12 && actor.height >= 12)).toBe(true);
+    const hud = (await page.locator('#hud').boundingBox())!;
+    const panel = (await page.locator('#launch-panel').boundingBox())!;
+    if (width === 390) {
+      expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(hud.y);
+      expect(hud.y + hud.height).toBeLessThanOrEqual(panel.y);
+    } else {
+      expect(hud.y + hud.height).toBeLessThanOrEqual(geometry.board.y);
+      expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(panel.x);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    expect(await state()).toBe(original);
+  }
+});
+
+test('I-2: teléfono permite iniciar, pausar, velocidad y reinicio con teclado', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.clock.install();
+  await page.goto('/');
+  await page.locator('#policy-file').setInputFiles({ name: 'fixture-no-entrenada.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(toPolicy(createNetwork(123), { seed: 123, trainingSteps: 0, updates: 0 }))) });
+  await expect(page.locator('#start')).toBeEnabled();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
+  await page.locator('#select-file').focus();
+  await page.keyboard.press('Tab'); await expect(page.locator('#seed')).toBeFocused();
+  await page.keyboard.press('Tab'); await expect(page.locator('#start')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await page.locator('#pause').focus(); await page.keyboard.press('Space');
+  await expect(page.locator('#pause')).toHaveText('Reanudar');
+  await page.keyboard.press('Tab'); await expect(page.locator('#speed')).toBeFocused();
+  await page.keyboard.press('ArrowDown'); await expect(page.locator('#speed')).toHaveValue('4');
+  await page.keyboard.press('ArrowUp'); await expect(page.locator('#speed')).toHaveValue('1');
+  await page.keyboard.press('Tab'); await expect(page.locator('#restart')).toBeFocused();
+  await page.keyboard.press('Enter'); await expect(page.getByTestId('steps')).toHaveText('Pasos: 0 / 3000');
+  expect(await page.locator('#restart').evaluate(el => el.matches(':focus-visible'))).toBe(true);
 });

@@ -17,6 +17,14 @@ export class BaseScene extends Phaser.Scene {
   cellCenter(position: Position): { x: number; y: number } {
     return { x: 80 + position.x * 40 + 20, y: 160 + position.y * 40 + 20 };
   }
+  private adaptViewport(): void {
+    // On narrow screens FIT still renders 1600×900. CSS exposes its left half;
+    // pan only the drawing camera so the entire map occupies that visible area.
+    const narrow = window.matchMedia('(max-width: 760px)').matches;
+    this.cameras.main.setScroll(narrow ? 60 : 0, narrow ? 80 : 0);
+    this.playerSprite.setScale(narrow ? 2.5 : 2);
+    this.guardians.forEach(sprite => sprite.setScale(narrow ? 2.5 : 2));
+  }
   create(): void {
     this.add.text(80, 112, 'EL JARDÍN DE LOS ECOS', { fontFamily: 'monospace', fontSize: '24px', color: '#a8f5cc' });
     MAP.forEach((row, y) => [...row].forEach((tile, x) => {
@@ -26,9 +34,11 @@ export class BaseScene extends Phaser.Scene {
     this.objects = this.add.group();
     this.playerSprite = this.add.sprite(0, 0, 'actors', 0).setScale(2).setDepth(2).play('lumina-flutter');
     this.guardians = [1, 2, 3, 4].map(id => this.add.sprite(0, 0, 'actors', id * 2).setScale(2).setDepth(2).play(`guardian-${id}`));
+    this.adaptViewport();
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.adaptViewport, this);
     this.present(createGame(42), false);
     this.ready = true;
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { this.stopRhythm(); this.ready = false; });
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { this.stopRhythm(); this.scale.off(Phaser.Scale.Events.RESIZE, this.adaptViewport, this); this.ready = false; });
   }
   present(state: GameState, animate = true, duration = STEP_MS * 0.8): void {
     this.state = structuredClone(state);
