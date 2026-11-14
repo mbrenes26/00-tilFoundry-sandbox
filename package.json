@@ -5,7 +5,7 @@
   "type": "module",
   "engines": { "node": ">=22 <23" },
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "test": "node --test tests/game/config.test.mjs && vitest run",
     "test:e2e": "playwright test",

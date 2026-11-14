@@ -30,7 +30,7 @@ Esta descarga no es necesaria para entrenar. Entrenamiento y evaluación se ejec
 npm run dev
 ```
 
-Abre **http://localhost:5173** en el navegador (si Vite anuncia otro puerto, utiliza el que muestra). Mantén esa terminal abierta; Ctrl+C detiene el servidor. Usa HTTP, **no `file://`**: abrir `index.html` con doble clic no es una forma compatible de ejecutar el juego. El servidor de desarrollo escucha en todas las interfaces; úsalo en una red de confianza, no como publicación pública.
+Abre **http://127.0.0.1:5173** en el navegador (si Vite anuncia otro puerto, utiliza el que muestra). Mantén esa terminal abierta; Ctrl+C detiene el servidor. Usa HTTP, **no `file://`**: abrir `index.html` con doble clic no es una forma compatible de ejecutar el juego. El servidor de desarrollo escucha explícitamente en `127.0.0.1` (loopback), solo en el propio equipo, no en la red local. La configuración de Vite mantiene también la vista previa (`vite preview`) en esa dirección. No añadas `--host 0.0.0.0` ni cambies el host para compartir el juego: la publicación está fuera de este trabajo. No se ha comprobado el cortafuegos de Windows ni la exposición a Internet; esta configuración y las pruebas locales no certifican esos aspectos.
 
 En otra terminal, desde la misma carpeta:
 
