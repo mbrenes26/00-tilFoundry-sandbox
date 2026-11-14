@@ -25,10 +25,10 @@ export interface CheckpointV1 {
   exploration: { start: 1; end: 0.1; decaySteps: 100000 };
   online: PolicyV1['parameters']; target: PolicyV1['parameters']; replay: ReplaySnapshot;
   game: GameState; seed: number; actionRngState: number; rngState: number;
-  steps: number; updates: number; episodes: number; activeSeconds: number;
+  steps: number; updates: number; episodes: number; activeSeconds: number; budgetSeconds?: number;
 }
 export interface TrainingState {
-  dqn: DQN; game: GameState; seed: number; actionRngState: number; episodes: number; activeSeconds: number;
+  dqn: DQN; game: GameState; seed: number; actionRngState: number; episodes: number; activeSeconds: number; budgetSeconds?: number;
 }
 export function createTrainingState(seed: number, gameSeed = seed): TrainingState {
   return { dqn: new DQN(seed), game: createGame(gameSeed), seed: normalizeSeed(seed), actionRngState: normalizeSeed(seed), episodes: 0, activeSeconds: 0 };
@@ -56,11 +56,13 @@ export function toCheckpoint(state: TrainingState): CheckpointV1 {
     target: toPolicy(d.target, { seed: state.seed, trainingSteps: d.steps, updates: d.updates }).parameters,
     replay, game: structuredClone(state.game), seed: state.seed, actionRngState: state.actionRngState, rngState: d.rngState,
     steps: d.steps, updates: d.updates, episodes: state.episodes, activeSeconds: state.activeSeconds };
+  if (state.budgetSeconds !== undefined) c.budgetSeconds = state.budgetSeconds;
   validateCheckpoint(c); return c;
 }
 export function validateCheckpoint(value: unknown): asserts value is CheckpointV1 {
   const c = object(value, 'checkpoint');
-  exactKeys(c, ['schemaVersion', 'mapVersion', 'rulesVersion', 'architecture', 'config', 'exploration', 'online', 'target', 'replay', 'game', 'seed', 'actionRngState', 'rngState', 'steps', 'updates', 'episodes', 'activeSeconds'], 'checkpoint'); compatible(c); validateArchitecture(c.architecture);
+  exactKeys(c, ['schemaVersion', 'mapVersion', 'rulesVersion', 'architecture', 'config', 'exploration', 'online', 'target', 'replay', 'game', 'seed', 'actionRngState', 'rngState', 'steps', 'updates', 'episodes', 'activeSeconds', ...('budgetSeconds' in c ? ['budgetSeconds'] : [])], 'checkpoint'); compatible(c); validateArchitecture(c.architecture);
+  if ('budgetSeconds' in c) { finite(c.budgetSeconds, 0, 21600, 'presupuesto activo'); requireValid((c.budgetSeconds as number) > 0, 'presupuesto positivo'); }
   validateParameters(c.online); validateParameters(c.target);
   const config = object(c.config, 'configuración DQN'); exactKeys(config, Object.keys(DQN_CONFIG), 'configuración');
   for (const [key, expected] of Object.entries(DQN_CONFIG)) requireValid(config[key] === expected, `configuración ${key}`);
@@ -125,7 +127,9 @@ export function restoreCheckpoint(checkpoint: CheckpointV1): TrainingState {
   for (const key of REPLAY_KEYS) d.replay[key].set(checkpoint.replay[key]);
   d.replay.size = checkpoint.replay.size; d.replay.cursor = checkpoint.replay.cursor;
   state.game = structuredClone(checkpoint.game); state.actionRngState = checkpoint.actionRngState;
-  state.episodes = checkpoint.episodes; state.activeSeconds = checkpoint.activeSeconds; return state;
+  state.episodes = checkpoint.episodes; state.activeSeconds = checkpoint.activeSeconds;
+  if (checkpoint.budgetSeconds !== undefined) state.budgetSeconds = checkpoint.budgetSeconds;
+  return state;
 }
 export function parseCheckpoint(text: string): CheckpointV1 {
   const c = parseLimited(text, CHECKPOINT_MAX_BYTES); validateCheckpoint(c); return c;
