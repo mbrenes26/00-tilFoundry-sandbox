@@ -65,7 +65,9 @@ for(const size of [{width:1600,height:900},{width:1280,height:720}]){
   }
  });
 }
-test('REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render',async({page})=>{
+for(const width of [1600,1280]){
+test(`REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width*9/16});
  await page.getByTestId('repair-pump').focus();await page.keyboard.press('Enter');
  await dialogKeyboard(page,'confirmation','Confirmar acción','cancel-action','confirm-action');
  await page.keyboard.press('Enter');await expect(page.getByTestId('confirmation')).toBeHidden();
@@ -82,7 +84,8 @@ test('REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras
  await rerender(page);await expect(page.getByTestId('wait-5')).toBeFocused();
  await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:55');
 });
-test('REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render',async({page})=>{
+test(`REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width*9/16});
  await riskyPreparation(page);await page.getByTestId('launch').focus();await page.keyboard.press('Enter');
  await dialogKeyboard(page,'risk-warning','Riesgos detectados en la revisión','cancel-warning','launch-anyway');
  await page.keyboard.press('Enter');await expect(page.getByTestId('risk-warning')).toBeHidden();
@@ -93,3 +96,4 @@ test('REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render
  await rerender(page);await expect(page.getByTestId('launch-animation')).toBeFocused();
  await expect(page.getByTestId('result')).toBeVisible({timeout:11000});await expect(page.getByTestId('restart')).toBeFocused();
 });
+}

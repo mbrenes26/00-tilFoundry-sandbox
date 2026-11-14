@@ -89,3 +89,42 @@ Todas obtenidas por Playwright contra HTTP local y revisadas mediante `ver_captu
 - Las cuatro capturas anteriores enumeradas en Revisión visual anterior.
 
 Core devuelve el hash al confirmar; este documento no afirma una transición ni aprobación.
+
+## P2 — UI-2 / J3, J4 sobre c50bdbc
+
+- Spec base aprobada-original y adenda vigente leídas; C-2–C-5/C-7 respetadas. Paso exclusivo de teclado, foco y aislamiento de confirmación y aviso de riesgos. No se cambió balance, API, dependencias, estilos, reglas ni `tests/e2e/game.spec.ts`.
+- Entorno: Node.js v22.23.5, npm 10.9.9, Chromium Playwright v1254 / Chrome 158.0.8127.18. Primer intento `npm run test:e2e -- tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts`: salida 127, playwright ausente; no es rojo funcional. Preparación `npm ci && npx playwright install chromium`, salida 0, sin modificar versiones ni regenerar lockfile.
+- Antes de editar, mismo comando HTTP tras preparar: salida 0, **8 passed (1.1m)**. Cobertura existente de ambos diálogos: role=dialog, nombre accesible, aria-modal, foco inicial Cancelar, 20 Tab y 20 Shift+Tab contenidos, foco estable tras render; cancelar restaura origen, confirmar reparación enfoca Progreso y luego Reparaciones, confirmar espera restaura Esperar; riesgo confirmado enfoca Despegue y resultado Reiniciar. El puntero ya aislaba acciones y reloj, pero no comprobaba el foco después de hacer clic en el fondo.
+
+### Rojo real nuevo y corrección mínima
+
+- Se amplió `modal-pointer.spec.ts`: por cada uno de seis controles de fondo, clic físico, dispatchEvent(click) y HTMLElement.click(); invariancia de acción pendiente, borrador, perfil, sala, reloj y textos del fondo/diálogo. Se añadió comprobar que Cancelar sigue enfocado tras esos intentos.
+- **Rojo previo a implementación:** `npm run test:e2e -- tests/e2e/modal-pointer.spec.ts`, salida **1**, **4 failed**, ambos diálogos y ambas resoluciones. `toBeFocused`: Expected focused, Received inactive para cancel-action/cancel-warning. La invariancia del fondo sí pasaba. No se revirtió código para fabricar rojo.
+- Defecto: `inert` evita activar controles, pero el clic físico en el fondo puede quitar foco del diálogo antes de `click`; el blanco del evento puede estar fuera del root DOM de Phaser. Si el foco sale del root, su manejador local de teclado no puede contener Tab.
+- `src/game/scenes.ts`: capturar `pointerdown` en document solamente cuando existe un diálogo y el blanco está fuera de él; preventDefault conserva el foco. No se impiden clics internos; se elimina el listener en shutdown. No se añadieron reglas de negocio ni temporizadores.
+- **Verde inmediato:** `npm run test:e2e -- tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts`, salida **0**, **8 passed (1.0m)**.
+- Refuerzo final sin reducir comprobaciones: aserción de foco después de cada clic/activación DOM, Tab a Confirmar y Shift+Tab a Cancelar tras intentos de fondo; parametrizar las dos pruebas existentes de teclado en 1600 y 1280. No hizo falta otra implementación.
+
+### Regresiones reales y evidencia final
+
+Salidas completas y códigos en `tests/e2e/modal-pointer-evidence/p2-{unit,build,http,preview}.log` y `.exit`:
+
+- `npm test`: salida **0**, **35 passed**, incluidos reglas reales y Session.
+- `npm run build`: salida **0**, TypeScript y Vite 6.4.6; advertencia de chunk >500 kB conservada, sin cambios de infraestructura.
+- `npm run test:e2e -- tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts tests/e2e/game.spec.ts`: salida **0**, **24 passed (4.6m)** por HTTP local. Incluye J3 progreso exclusivo/doble confirmación/lectura sin tiempo; J4 ganadora, riesgos primarios y simultáneos, cancelación y revalidación del aviso tras esperas reales. Se ejecutó game.spec.ts completo, sin editarlo y sin sustituir reglas.
+- `PREVIEW=1 npm run test:e2e -- tests/e2e/rework.spec.ts tests/e2e/modal-pointer.spec.ts`: salida **0**, **10 passed (1.3m)** contra build servido por HTTP.
+- Dos llamadas largas devolvieron `Function failed` con proceso todavía activo; se esperó y consultó `.last-run.json` (passed). Para no atribuirles salidas inexistentes se repitió la verificación con logs y códigos propios enumerados arriba; todos los procesos terminaron.
+
+### Capturas revisadas
+
+`tests/e2e/modal-pointer-evidence/p2-confirmation-{1600,1280}.png` y `p2-risk-warning-{1600,1280}.png`: revisión con ver_captura confirma contenido y botones completos, costo/duración o causa señal 68 %, sin recortes internos y contorno amarillo visible en Cancelar. La permanencia del foco tras interacción la prueban las aserciones, no la imagen estática.
+
+### Archivos y límites
+
+- Código: `src/game/scenes.ts`.
+- Pruebas: `tests/e2e/rework.spec.ts`, `tests/e2e/modal-pointer.spec.ts`.
+- Reporte: `tests/e2e/rework-report.md`.
+- Evidencia nueva: cuatro PNG y ocho archivos de logs/códigos dentro de `tests/e2e/modal-pointer-evidence/`.
+- No hay cambio de interfaz pública documentada; no corresponde actualizar contratos ni README en P2.
+- El informe histórico UI completo sigue sin acceso directo para este rol: no existe herramienta leer_informes_de_auditoria; leer_registro(auditoria-ui) devuelve No existe. El hallazgo anterior sobre foco en body/Tab detrás se atribuye al Manager; el rojo nuevo sí fue ejecutado y registrado por Core en este paso.
+- Esto no acredita P3–P9 ni auditoría/entrega independiente. No se pidió transición ni aprobación.

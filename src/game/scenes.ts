@@ -51,6 +51,13 @@ export class UIScene extends Phaser.Scene {
  private progress=0;
  private launchAnimating=false;
  private handler=(event:Event)=>this.click(event);
+ // Inert evita activar el fondo, pero un clic sobre él puede quitar el foco
+ // antes de que llegue click. Captura en document: el blanco puede estar fuera
+ // del contenedor DOM de Phaser. No impide los clics dentro del diálogo.
+ private modalPointerHandler=(event:PointerEvent)=>{
+  const dialog=this.root.querySelector<HTMLElement>('[role=dialog]');
+  if(dialog&&!dialog.contains(event.target as Node))event.preventDefault();
+ };
  private modalOrigin:string|null=null;
  private modalId:string|null=null;
  private keyboardHandler=(event:KeyboardEvent)=>{
@@ -90,8 +97,8 @@ export class UIScene extends Phaser.Scene {
  create(){
   this.room=null;this.draft=72;this.chosen='balanced';this.pending=null;this.progress=0;this.launchAnimating=false;this.message='Explora la base. Las fases orientan: no son barreras de lanzamiento.';
   this.modalOrigin=null;this.modalId=null;
-  this.root=document.createElement('div');this.root.className='game-ui';this.root.addEventListener('click',this.handler);this.root.addEventListener('keydown',this.keyboardHandler);this.add.dom(0,0,this.root).setOrigin(0);this.render();
-  this.events.once('shutdown',()=>{this.root.removeEventListener('click',this.handler);this.root.removeEventListener('keydown',this.keyboardHandler);this.tweens.killAll();this.time.removeAllEvents();this.root.remove();});
+  this.root=document.createElement('div');this.root.className='game-ui';this.root.addEventListener('click',this.handler);this.root.addEventListener('keydown',this.keyboardHandler);document.addEventListener('pointerdown',this.modalPointerHandler,true);this.add.dom(0,0,this.root).setOrigin(0);this.render();
+  this.events.once('shutdown',()=>{this.root.removeEventListener('click',this.handler);this.root.removeEventListener('keydown',this.keyboardHandler);document.removeEventListener('pointerdown',this.modalPointerHandler,true);this.tweens.killAll();this.time.removeAllEvents();this.root.remove();});
  }
  private actionButton(id:string,label:string,action:Action){const p=previewAction(session.state,action);const complete=(action.type==='repair'&&session.state.repairs[action.system])||(action.type==='weather'&&session.state.weatherConsulted)||(action.type==='trajectory'&&session.state.trajectory);const disabled=session.busy||!!session.state.result||complete;return `<button data-testid="${id}" ${disabled?'disabled':''} title="${text([...p.effects,...p.reasons.map(r=>r.text)].join(' '))}">${label}${complete?' ✓':` <small>${p.durationMinutes} min · ${money(p.budgetCost)}${p.inventoryCosts.parts?` · ${p.inventoryCosts.parts} rep.`:''}</small>`}</button>`;}
  private details(v:GameView){
