@@ -6,6 +6,7 @@ export type GuardianId = 1 | 2 | 3 | 4;
 export interface Guardian extends Actor {
   id: GuardianId;
   active: boolean;
+  /** Pasos hasta reaparecer; 1 al entrar al paso indica reaparición inmóvil y sin colisión. */
   respawnRemaining: number;
 }
 export type Phase = 'scatter' | 'chase';
@@ -27,16 +28,19 @@ export interface GameState {
   points: number;
   lives: number;
   phase: Phase;
+  /** Al agotarse al final del paso cambia de fase. Duración completa y tick > 0 permiten invertir una vez. */
   phaseRemaining: number;
+  /** Se aplica antes de mover guardianes y se decrementa al final: recoger devuelve 59, tras 60 movimientos queda 0. */
   powerRemaining: number;
   captureChain: number;
   status: GameStatus;
 }
-/** Eventos en orden de resolución del paso; consumo exclusivo de presentación. */
+/** Eventos en orden de resolución del paso; respawn excluye ese id de las colisiones del paso. */
 export type GameEvent =
   | { type: 'move'; actor: 'player' | GuardianId; from: Position; to: Position }
   | { type: 'pill' | 'power'; position: Position; points: number }
   | { type: 'capture'; guardianId: GuardianId; points: number }
+  | { type: 'respawn'; guardianId: GuardianId }
   | { type: 'death'; lives: number }
   | { type: 'phase'; phase: Phase }
   | { type: 'end'; status: Exclude<GameStatus, 'running'> };
