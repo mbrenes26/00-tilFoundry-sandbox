@@ -174,3 +174,19 @@ for(const width of [1600,1280])test(`P6/J2 distribución y textos ${width}`,asyn
  await prepare(page,{antenna:false,angle:90});await desktopContent(page);await page.getByTestId('launch').click();await expect(page.getByTestId('risk-warning')).toBeVisible();await desktopContent(page);
  await page.screenshot({path:`${captureRoot}/p6-layout-warning-${width}.png`});await page.getByTestId('cancel-warning').click();
 });
+
+// P8: controles reales y capturas estáticas para visor; no certifica estética ni animación.
+for(const width of [1600,1280])test(`P8 A2/A4/J2 nueve salas y arte integrado ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width===1600?900:720});
+ await expect(page.locator('canvas')).toBeVisible();
+ await page.screenshot({path:`${captureRoot}/p8-base-${width}.png`});
+ const contents:Record<string,string>={design:'Equilibrada',control:'trayectoria',weather:'km/h',engineering:'76',fuel:'100.000',systems:'Propulsión',storage:'Inventario restante / carga a bordo',airlock:'ESCLUSA / ACCESO A PLATAFORMA',observation:'HORIZONTE / VENTANA DE OBSERVACIÓN'};
+ for(const [id,text] of Object.entries(contents)){
+  await room(page,id);await expect(page.getByTestId('detail')).toBeVisible();
+  await expect(page.getByTestId('detail')).toContainText(text);
+  await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');
+  await page.screenshot({path:`${captureRoot}/p8-room-${id}-${width}.png`});
+  await close(page);
+ }
+ await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');
+});

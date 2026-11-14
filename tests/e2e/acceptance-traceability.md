@@ -404,3 +404,48 @@ El Probador informó haber abierto con visor real las siguientes imágenes de `t
 - El pendiente de revisión independiente de las seis capturas restantes queda resuelto por el informe recibido; **P7 queda completo en su cobertura visual acumulada y registro**, con la limitación explícita de independencia descrita arriba. Se conservan los informes parciales anteriores como historia, no como pendientes vigentes de esas seis vistas.
 - **No se declara cierre integral de J2**, verificación independiente de las 26 capturas, accesibilidad general, funcionalidad de controles ni aprobación de entrega. Los requisitos de los otros pasos permanecen pendientes; P8–P12 no se ejecutaron en este cierre.
 - Único cambio entregable: `tests/e2e/acceptance-traceability.md`. Sin cambios de producción, tests, capturas, dependencias, contratos, alcance o presupuesto; sin solicitud de transición.
+
+## P8 parcial: nueve salas y arte integrado (A2/A4/J2)
+
+- Base Core: `6e03112c646f588f9175339fe79b1fcdc2bc041e`, PR #7, `foundry/issue-6`. Leídas spec `aprobada-original`, adenda `vigente` y matriz P3–P7; decisiones vigentes de Core C-2–C-5/C-7/C-8 conservadas.
+- **No se certifica P8 completo:** el visor permitió 12 imágenes y rechazó las ocho restantes con «ya miraste 12 capturas; las 8 que quedan son del probador, para que verifique por su cuenta». No se intentó rodear esa restricción. Las ocho vistas requieren inspección independiente del probador.
+- Integración real: Chromium 158.0.8127.18 instalado por `npx playwright install chromium` (código 0), Playwright 1.65.0, Vite por HTTP `http://127.0.0.1:4173`. Node v22.23.5; `npm ci` código 0, 48 paquetes, cero vulnerabilidades informadas en esa instalación (no sustituye P10).
+- Cambios: dos casos nuevos en `tests/e2e/game.spec.ts`, 20 PNG en `tests/e2e/rework-captures/`, esta sección. No se modificaron fuentes, PNG originales, manifiesto, generador, dependencias ni contratos. Consultados `src/game/scenes.ts` y `docs/assets.md` para ubicar integración/inventario; no se regeneró arte.
+
+### Controles reales y evidencia automatizada
+
+- `npm run test:e2e -- --grep 'P8 A2'`: código **0, 2 passed** (8,7 s). Nueve salas abiertas/cerradas mediante botones DOM en cada escritorio, detalle visible y contenido propio comprobado; reloj permanece Día 1, 08:30. No se confirma ninguna acción mutante ni se inicia despegue. Capturas completas 1600×900 y 1280×720.
+- `npm test`: **221 passed / 4 passed**. Comando compuesto posterior con filtro `'^J1/J2/A4/J6'` terminó en **1** por `No tests found` (el título completo incluye ruta); no fue una regresión del juego. Corregido únicamente el filtro: `npm run test:e2e -- --grep 'J1/J2/A4/J6'`, código **0, 1 passed** (4,5 s), prueba anterior conservada de nueve salas/FIT/recursos y nueve sprites activos. Su aserción de animaciones no constituye inspección de P9.
+- Las pruebas nuevas pasaron desde la primera ejecución sobre código existente. **No hay rojo TDD ni corrección de producción**; no se fabricó un fallo para juicios visuales o comportamiento ya correcto. No se ejecutó la regresión e2e integral, reservada para P12.
+
+### Archivos inspeccionados realmente con `ver_captura`
+
+Todas las rutas siguientes son relativas a `tests/e2e/rework-captures/`; cada archivo se abrió individualmente en el visor, no se dedujo su aspecto de coordenadas o del test.
+
+| Archivos vistos | Hallazgos visuales |
+| --- | --- |
+| `p8-base-1600.png`, `p8-base-1280.png` | Cuadrícula 3×3 completa; nueve personajes visibles, sin recortes de cabeza/cuerpo inequívocos. Equipamiento distingue Diseño (plano), Control (pantalla circular), Meteorología (nube/manga de viento), Ingeniería (herramientas), Combustible (depósitos), Sistemas (servidores), Almacén (estantes), Pasillo (puerta) y Observación (ventanas). Paredes comparten azul oscuro, diferenciación por objetos y rótulos. Personajes superponen parte del equipamiento, especialmente Ingeniería y Meteorología, pero conservan siluetas reconocibles. |
+| `p8-room-design-1600.png`, `p8-room-design-1280.png` | Panel Diseño completo: perfiles Equilibrada/Potente/Reforzada, ficha visible Equilibrada, costo 200.000/10 min y controles Cerrar/Confirmar sin cortes. No se seleccionaron otros perfiles en P8. |
+| `p8-room-control-1600.png`, `p8-room-control-1280.png` | Control completo: TIERRA/ÓRBITA y puntos de trayectoria, estado pendiente, botón Calcular 10 min/20.000. Sin cortes en gráfico o contenido. |
+| `p8-room-weather-1600.png`, `p8-room-weather-1280.png` | Meteorología: condiciones iniciales, tres filas de pronóstico completas y alineadas; viento 45 desde 10:40 y aviso favorable hasta 10:39 coherentes. Cerrar/Consultar visibles. |
+| `p8-room-engineering-1600.png`, `p8-room-engineering-1280.png` | Ingeniería: bomba 76 %, antena 68 %, instrucciones de progreso; reparaciones inferiores y costos completos. 2 segundos reales frente a 20 min de juego son escalas distintas aprobadas, no un defecto de duración demostrado por la imagen. |
+| `p8-room-fuel-1600.png`, `p8-room-fuel-1280.png` | Combustible: almacén 120.000 y bordo 0, transferencia de cuatro consumibles, 40/30 min y requisitos legibles. Cargar 40 min/30.000 visible aunque faltan requisitos; esta apariencia no demuestra aceptación de acción inválida. |
+
+### Arte y observaciones transversales
+
+- Base abierta: cohete blanco/crema y naranja, torre roja con travesaños/diagonales, dos cabezales amarillos de reflectores y montañas en capas visibles dentro de la plataforma. Torre/cohete y disco amarillo del cielo se solapan parcialmente, sin recorte accidental inequívoco. Soportes de reflectores y montañas oscuras tienen contraste limitado; no se distinguen haces de luz (la spec exige reflectores, no haces).
+- Contornos escalonados y paleta azul marino/gris con cian/naranja/amarillo/verde/rojo coherentes. Seis recursos HUD con iconos, nombres, cantidades y unidades visibles en ambos escritorios. No se encontró PNG integrado ausente ni recorte roto claro en las vistas revisadas. Los paneles descriptivos ocultan temporalmente la cuadrícula/personajes; las dos capturas de base sí permiten revisar los nueve. No se interpreta esa ocultación por panel como sprite invisible.
+- Observaciones para el manager, **no corregidas ni usadas como bloqueo nuevo de contrato**: pequeño rectángulo amarillo vacío junto al título (posible glifo no representado; intención no confirmada); texto «Confirmado: 72° (inicial, no confirmado)» ambiguo; etiquetas de espera duplican «5 min 5 min», equivalentes para 10/20; tipografía secundaria pequeña a 1280. «Cohete sin diseñar» con ilustración genérica presente no prueba contradicción funcional: el estado inicial aprobado carece de diseño y el arte puede ser representativo. No se alteró UX fuera de esta comprobación ni se fabricó un rojo estético.
+
+### Capturas creadas pero NO vistas: entrega al probador
+
+- `tests/e2e/rework-captures/p8-room-systems-1600.png`
+- `tests/e2e/rework-captures/p8-room-systems-1280.png`
+- `tests/e2e/rework-captures/p8-room-storage-1600.png`
+- `tests/e2e/rework-captures/p8-room-storage-1280.png`
+- `tests/e2e/rework-captures/p8-room-airlock-1600.png`
+- `tests/e2e/rework-captures/p8-room-airlock-1280.png`
+- `tests/e2e/rework-captures/p8-room-observation-1600.png`
+- `tests/e2e/rework-captures/p8-room-observation-1280.png`
+
+Los controles reales de estas cuatro salas se ejecutaron y sus contenidos se comprobaron automáticamente; sus paneles NO tienen inspección visual en esta ejecución. Los fondos y personajes correspondientes sí aparecen en las dos bases vistas. El probador debe abrir las ocho imágenes y contrastar contenidos/recortes/arte a ambas escalas antes de cerrar la cobertura visual P8. Esta sección no sustituye esa inspección con geometría ni con el resultado verde. P9 (trabajo/humo/llama/ambos despegues), P10–P12, aprobación de entrega y referencia mockup no inspeccionada permanecen fuera de este paso. No se solicita transición.
