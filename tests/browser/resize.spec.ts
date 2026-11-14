@@ -13,6 +13,18 @@ for (const viewport of [{ width: 1920, height: 600 }, { width: 390, height: 844 
     expect(panel!.x).toBeGreaterThanOrEqual(canvas!.x);
     expect(panel!.x + panel!.width).toBeLessThanOrEqual(canvas!.x + canvas!.width + 1);
     expect(panel!.y + panel!.height).toBeLessThanOrEqual(canvas!.y + canvas!.height + 1);
+    const footer = await page.locator('footer').boundingBox();
+    expect(panel!.y + panel!.height).toBeLessThanOrEqual(footer!.y);
+    if (viewport.width === 390) {
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(viewport.width);
+      const note = page.locator('#launch-panel p').last();
+      await note.scrollIntoViewIfNeeded();
+      const noteBox = await note.boundingBox();
+      expect(noteBox!.y).toBeGreaterThanOrEqual(panel!.y);
+      expect(noteBox!.y + noteBox!.height).toBeLessThanOrEqual(panel!.y + panel!.height);
+      expect(await page.locator('#launch-panel').evaluate(el => el.scrollTop)).toBeGreaterThan(0);
+      await page.screenshot({ path: 'test-results/mobile-step-9-scrolled.png', fullPage: true });
+    }
     await expect(page.getByRole('button', { name: 'Iniciar partida' })).toBeDisabled();
   });
 }

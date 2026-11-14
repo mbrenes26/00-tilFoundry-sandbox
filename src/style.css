@@ -19,3 +19,15 @@ button { width: 100%; padding: 12px; border: 1px solid #90dabb; border-radius: 6
 button:disabled { background: #28394b; color: #a4b1c0; border-color: #425a6c; cursor: not-allowed; }
 footer { padding: 12px 4%; }
 [hidden] { display: none !important; }
+
+/* Keep the logical canvas in FIT; scroll the readable overlay, not the game. */
+@media (max-width: 760px) {
+  header { flex-direction: column; gap: 0; }
+  header p { margin-bottom: 0; }
+  .panel {
+    top: 26%; left: 5%; width: 90%; max-height: 70%;
+    overflow-y: auto; overscroll-behavior: contain;
+    font-size: 14px; padding: 12px;
+  }
+  .panel h2 { font-size: 18px; }
+}
