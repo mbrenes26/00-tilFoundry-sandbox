@@ -232,3 +232,147 @@ describe('P3 R3 trazabilidad reloj, pronóstico y ventana',()=>{
   expect(terminal.result?.causes.map(r=>r.code)).toEqual(['time']);
  });
 });
+
+
+// P4: tablas de referencia independientes del motor, API reglas v1 R4/R5.
+const WIN_ACTIONS:Action[]=[
+ {type:'design',profile:'balanced'},{type:'trajectory'},{type:'weather'},
+ {type:'repair',system:'pump'},{type:'repair',system:'antenna'},
+ {type:'load'},{type:'angle',angle:72},{type:'verify'}
+];
+const WIN_TIMES=[520,530,535,555,575,605,610,620];
+function referenceActions(options:{pump?:boolean;antenna?:boolean;angle?:number;verify?:boolean;loadFirst?:boolean}={}):Action[]{
+ const actions=WIN_ACTIONS.filter(a=>!(a.type==='repair'&&options[a.system]===false)&&!(a.type==='verify'&&options.verify===false))
+  .map(a=>a.type==='angle'?{...a,angle:options.angle??72}:a);
+ if(options.loadFirst){const load=actions.splice(actions.findIndex(a=>a.type==='load'),1)[0];actions.splice(3,0,load);}
+ return actions;
+}
+const REFERENCES:{name:string;actions:Action[];times:number[];causes:string[];texts:string[][];metrics:{minute:number;budget:number;parts:number;angle:number};components:number[];fuel:number;total:number;launched:boolean}[]=[
+ {name:'1 ganadora',actions:WIN_ACTIONS,times:WIN_TIMES,causes:[],texts:[],metrics:{minute:620,budget:640000,parts:35,angle:72},components:[256,140,166,150],fuel:8000,total:712,launched:true},
+ {name:'2 ángulo',actions:referenceActions({angle:80}),times:WIN_TIMES,causes:['angle'],texts:[['80°','72°']],metrics:{minute:620,budget:640000,parts:35,angle:80},components:[256,140,166,83],fuel:0,total:0,launched:true},
+ {name:'3 bomba',actions:referenceActions({pump:false}),times:[520,530,535,555,595,600,610],causes:['pump'],texts:[['76 %']],metrics:{minute:610,budget:700000,parts:45,angle:72},components:[280,180,208,150],fuel:8000,total:0,launched:true},
+ {name:'4 antena',actions:referenceActions({antenna:false}),times:[520,530,535,555,585,590,600],causes:['antenna'],texts:[['68 %']],metrics:{minute:600,budget:680000,parts:40,angle:72},components:[272,160,250,150],fuel:8000,total:0,launched:true},
+ {name:'5 clima',actions:[...WIN_ACTIONS,{type:'wait',minutes:20}],times:[...WIN_TIMES,640],causes:['weather'],texts:[['10:40','45 km/h','0 %']],metrics:{minute:640,budget:640000,parts:35,angle:72},components:[256,140,83,150],fuel:8000,total:0,launched:true},
+ {name:'6 tiempo',actions:[...WIN_ACTIONS,{type:'wait',minutes:20},{type:'wait',minutes:20},{type:'wait',minutes:20}],times:[...WIN_TIMES,640,660,680],causes:['time'],texts:[['11:20','11:00']],metrics:{minute:680,budget:640000,parts:35,angle:72},components:[256,140,0,150],fuel:100000,total:0,launched:false},
+ {name:'7 verificación omitida',actions:[...referenceActions({antenna:false,verify:false}),{type:'wait',minutes:10}],times:[520,530,535,555,585,590,600],causes:['antenna'],texts:[['68 %']],metrics:{minute:600,budget:690000,parts:40,angle:72},components:[276,160,250,150],fuel:8000,total:0,launched:true},
+ {name:'8 riesgos simultáneos',actions:referenceActions({antenna:false,angle:90}),times:[520,530,535,555,585,590,600],causes:['angle','antenna','fuel'],texts:[['90°','72°'],['68 %'],['110.000','100.000']],metrics:{minute:600,budget:680000,parts:40,angle:90},components:[272,160,250,0],fuel:0,total:0,launched:true},
+ {name:'9 carga antes de bomba',actions:referenceActions({loadFirst:true}),times:[520,530,535,575,595,615,620,630],causes:[],texts:[],metrics:{minute:630,budget:640000,parts:35,angle:72},components:[256,140,125,150],fuel:8000,total:671,launched:true}
+];
+describe('P4 R4 checklist, fases, barras y cinco sistemas',()=>{
+ it('ocho objetivos en cada transición, reparaciones 0/2→2/2 y fases completadas por objetivos',()=>{
+  const keys=['design','trajectory','weather','repairs','load','angle','verify','launch'];
+  const completed=[[],['design'],['design','trajectory'],['design','trajectory','weather'],['design','trajectory','weather'],['design','trajectory','weather','repairs'],['design','trajectory','weather','repairs','load'],['design','trajectory','weather','repairs','load','angle'],['design','trajectory','weather','repairs','load','angle','verify'],keys];
+  const counts=[0,0,0,0,1,2,2,2,2,2];
+  const phases=['Planificación','Planificación','Planificación','Preparación','Preparación','Preparación','Preparación','Verificaciones','Lanzamiento','Lanzamiento'];
+  const phaseCompletion=[[false,false,false,false],[false,false,false,false],[false,false,false,false],[true,false,false,false],[true,false,false,false],[true,false,false,false],[true,false,false,false],[true,true,false,false],[true,true,true,false],[true,true,true,true]];
+  let s=initial();
+  for(let i=0;i<completed.length;i++){
+   if(i)s=step(s,[...WIN_ACTIONS,{type:'launch'} as Action][i-1]);
+   const v=getView(s);expect(v.objectives).toEqual(Object.fromEntries(keys.map(k=>[k,completed[i].includes(k)])));
+   expect(Object.keys(v.objectives)).toHaveLength(8);expect(v.repairCount).toBe(counts[i]);expect(v.general.systems).toBe(90+5*counts[i]);
+   expect(v.phase).toBe(phases[i]);expect(v.phases.map(p=>p.complete)).toEqual(phaseCompletion[i]);
+   expect(v.systems).toEqual({propulsion:i>=4,communication:i>=5,energy:true,lifeSupport:i>=6,navigation:i>=2});
+  }
+ });
+ it('rediseño invalida objetivo y sistema de trayectoria y devuelve guía a planificación',()=>{
+  let s=initial();for(const a of WIN_ACTIONS.slice(0,3))s=step(s,a);
+  expect(getView(s).phase).toBe('Preparación');s=step(s,{type:'design',profile:'reinforced'});
+  const v=getView(s);expect(v.objectives).toMatchObject({design:true,trajectory:false,weather:true});expect(v.systems.navigation).toBe(false);
+  expect(v.phase).toBe('Planificación');expect(v.phases[0].complete).toBe(false);
+  expect(evaluateLaunch(s).blockedReasons.map(r=>r.code)).toEqual(['trajectory','load','early']);
+ });
+ it.each([['balanced',86],['power',88],['reinforced',92]] as const)('barra Nave %s, independiente de verificaciones', (profile,ship)=>{
+  const s=step(initial(),{type:'design',profile});expect(getView(s).general).toEqual({ship,systems:90,resources:100});
+ });
+ it('Recursos promedia cinco fracciones, redondea y excluye presupuesto/carga',()=>{
+  const s={...initial(),budget:1,inventory:{fuel:60000,oxygen:7500,water:7500,food:200,parts:20}};
+  expect(getView(s).general.resources).toBe(40); // (0.5+0.25+0.75+0.1+0.4)/5*100
+  expect(getView({...s,budget:1000000,cargo:{fuel:100000,oxygen:6000,water:2000,food:400}}).general.resources).toBe(40);
+  expect(getView({...initial(),inventory:{fuel:0,oxygen:0,water:0,food:0,parts:1}}).general.resources).toBe(0); // 0.4 → 0
+  expect(getView({...initial(),inventory:{fuel:0,oxygen:0,water:0,food:0,parts:2}}).general.resources).toBe(1); // 0.8 → 1
+  expect(getView(prepared()).general.resources).toBe(65);
+ });
+ it('éxito con clima, ángulo inicial y revisión omitidos, sin riesgos inventados ni barreras de fase',()=>{
+  let s=initial();for(const a of WIN_ACTIONS.filter(a=>!['weather','angle','verify'].includes(a.type)))s=step(s,a);
+  expect(s.minute).toBe(600);expect(getView(s).phase).toBe('Planificación');
+  expect(getView(s).objectives).toEqual({design:true,trajectory:true,weather:false,repairs:true,load:true,angle:false,verify:false,launch:false});
+  expect(evaluateLaunch(s)).toEqual({blockedReasons:[],risks:[],outcome:'success'});
+  s=step(s,{type:'launch'});expect(s.result?.outcome).toBe('success');expect(getView(s).phase).toBe('Lanzamiento');
+  expect(getView(s).phases.map(p=>p.complete)).toEqual([false,false,false,true]);expect(getView(s).objectives.launch).toBe(true);
+ });
+});
+describe('P4 R5 nueve secuencias, causas completas, instantánea y reinicio',()=>{
+ it.each(REFERENCES)('$name: reloj de cada acción, evaluación, consumo, causas, diagnóstico y reinicio',ref=>{
+  let s=initial();ref.actions.forEach((a,i)=>{s=step(s,a);expect(s.minute).toBe(ref.times[i]);});
+  expect(s.inventory.fuel).toBe(20000);expect(s.cargo.fuel).toBe(100000);
+  if(ref.launched){
+   expect(s.result).toBeNull();const e=evaluateLaunch(s);expect(e.blockedReasons).toEqual([]);expect(e.risks.map(r=>r.code)).toEqual(ref.causes);
+   expect(e.outcome).toBe(ref.total?'success':'failure');expect(previewAction(s,{type:'launch'}).allowed).toBe(true);
+   s=step(s,{type:'launch'});
+  }
+  expect(s.launched).toBe(ref.launched);expect(getView(s).objectives.launch).toBe(ref.launched);
+  expect(s.result?.outcome).toBe(ref.total?'success':'failure');expect(s.result?.causes.map(r=>r.code)).toEqual(ref.causes);
+  ref.texts.forEach((fragments,i)=>fragments.forEach(fragment=>expect(s.result?.causes[i].text).toContain(fragment)));
+  expect(s.result?.metrics).toEqual(ref.metrics);expect(s.cargo).toEqual({fuel:ref.fuel,oxygen:6000,water:2000,food:400});
+  const score=getScore(s);expect([score.budget,score.parts,score.time,score.precision]).toEqual(ref.components);expect(score.total).toBe(ref.total);expect(score.metrics).toEqual(ref.metrics);
+  // Cambiar los campos de preparación no modifica la instantánea terminal.
+  const changed={...s,minute:510,budget:1,inventory:{...s.inventory,parts:0},angle:45,cargo:{...s.cargo,fuel:0}};
+  expect(getScore(changed)).toEqual(score);const exposed=getScore(s);exposed.metrics.angle=45;expect(getScore(s)).toEqual(score);
+  const original=structuredClone(s);expectRejected(s,{type:'launch'},['finished']);expect(createInitialState()).toEqual(EXPECTED_INITIAL);expect(s).toEqual(original);
+ });
+ it('márgenes ganadores y éxito sin revisión de la referencia 7',()=>{
+  const winner=prepared();expect(640-winner.minute).toBe(20);expect(660-winner.minute).toBe(40);
+  const s=prepared({verify:false});expect(s.minute).toBe(610);expect(evaluateLaunch(s)).toEqual({blockedReasons:[],risks:[],outcome:'success'});
+  expect(step(s,{type:'launch'}).result?.outcome).toBe('success');
+ });
+ it('bloqueos contractuales separados de riesgos, sin códigos de omisiones',()=>{
+  const cases:[GameState,string[],string[]][]=[
+   [initial(),['design','trajectory','load','early'],['pump','antenna']],
+   [{...prepared(),profile:null},['design'],[]],[{...prepared(),trajectory:false},['trajectory'],[]],
+   [{...prepared(),loaded:false},['load'],[]],[{...prepared(),minute:599},['early'],[]],
+   [{...prepared(),minute:661},['time'],['weather']],
+   [step(prepared(),{type:'launch'}),['finished'],['fuel']]
+  ];
+  for(const [s,blocks,risks] of cases){
+   const e=evaluateLaunch(s);expect(e.blockedReasons.map(r=>r.code)).toEqual(blocks);expect(e.risks.map(r=>r.code)).toEqual(risks);expect(e.outcome).toBe('blocked');
+   expect(previewAction(s,{type:'launch'}).allowed).toBe(false);expectRejected(s,{type:'launch'},blocks);
+  }
+ });
+ it('código fuel aislado en un estado de contrato con carga insuficiente, no nueva secuencia jugable',()=>{
+  const s=prepared();s.cargo.fuel=91999;const e=evaluateLaunch(s);
+  expect(e.blockedReasons).toEqual([]);expect(e.risks.map(r=>r.code)).toEqual(['fuel']);expect(e.risks[0].text).toContain('92.000');expect(e.risks[0].text).toContain('91.999');
+  expect(previewAction(s,{type:'launch'}).allowed).toBe(true);const end=step(s,{type:'launch'});expect(end.cargo.fuel).toBe(0);expect(getScore(end).total).toBe(0);
+ });
+ it('los cinco riesgos simultáneos son exhaustivos, sin azar',()=>{
+  const s={...prepared({pump:false,antenna:false,angle:90}),minute:640};
+  for(let i=0;i<3;i++){
+   const e=evaluateLaunch(s);expect(e.blockedReasons).toEqual([]);expect(e.risks.map(r=>r.code)).toEqual(['angle','pump','antenna','weather','fuel']);
+   const end=step(s,{type:'launch'});expect(end.result?.causes).toEqual(e.risks);expect(getScore(end).total).toBe(0);
+  }
+ });
+ it.each([
+  [600,999999,49,70,[399,196,250,133],978],
+  [599,0,0,72,[0,0,250,150],400],
+  [660,0,0,45,[0,0,0,0],0],
+  [661,0,0,90,[0,0,0,0],0],
+  [619,1,1,71,[0,4,170,142],316],
+  [510,1000000,50,72,[400,200,250,150],1000],
+  [510,2000000,100,72,[800,400,250,150],1000]
+ ] as const)('floor/round/clamp minute %i budget %i parts %i angle %i',(minute,budget,parts,angle,components,total)=>{
+  // Estados métricos sintéticos para límites, no victorias jugadas.
+  const s={...initial(),minute,budget,inventory:{...initial().inventory,parts},angle};const score=getScore(s);
+  expect([score.budget,score.parts,score.time,score.precision]).toEqual(components);expect(score.total).toBe(total);expect(Number.isInteger(score.total)).toBe(true);
+  expect(getScore({...s,result:{outcome:'failure',causes:[],metrics:{minute,budget,parts,angle}}})).toEqual({...score,total:0});
+ });
+});
+
+
+it.each(['pump','antenna'] as const)('P4 R4 reparación aislada %s y revisión no esconden los cinco sistemas',system=>{
+ const repaired=step(initial(),{type:'repair',system});
+ expect(getView(repaired).repairCount).toBe(1);expect(getView(repaired).general.systems).toBe(95);
+ expect(getView(repaired).systems).toEqual({propulsion:system==='pump',communication:system==='antenna',energy:true,lifeSupport:false,navigation:false});
+ const loaded=step(planned(),{type:'load'}),before=getView(loaded).systems;
+ expect(before).toEqual({propulsion:false,communication:false,energy:true,lifeSupport:true,navigation:true});
+ const verified=step(loaded,{type:'verify'});expect(getView(verified).systems).toEqual(before);expect(getView(verified).objectives.verify).toBe(true);
+ expect(evaluateLaunch(verified).risks.map(r=>r.code)).toEqual(['pump','antenna']);
+});
