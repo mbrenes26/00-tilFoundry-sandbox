@@ -190,3 +190,39 @@ for(const width of [1600,1280])test(`P8 A2/A4/J2 nueve salas y arte integrado ${
  }
  await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');
 });
+
+// P9: lectura real de tres salas y plataforma; la inspección la hace el visor.
+for(const width of [1600,1280])test(`P9 A2/A4/J2 almacén, esclusa, observación y plataforma ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width===1600?900:720});
+ await expect(page.locator('canvas')).toBeVisible();
+ const capture=async(name:string)=>page.screenshot({path:`${captureRoot}/p9-${name}-${width}.png`});
+ const inventory=async(values:string[][])=>{
+  const rows=page.getByTestId('detail').locator('tbody tr');await expect(rows).toHaveCount(values.length);
+  for(let i=0;i<values.length;i++)await expect(rows.nth(i).locator('td')).toHaveText(values[i]);
+ };
+ const initial=[['Combustible L','120.000','0'],['Oxígeno L','30.000','0'],['Agua L','10.000','0'],['Alimentos kg','2000','0'],['Repuestos u.','50','—']];
+ await capture('base');await essentialBounds(page);
+ await room(page,'storage');await inventory(initial);
+ await expect(page.getByTestId('detail')).toContainText('Los consumibles cargados se transfieren; no desaparecen.');
+ await expect(page.getByTestId('detail').locator('button')).toHaveCount(1);await essentialBounds(page);await capture('room-storage');await close(page);
+ for(const [id,text] of [['airlock','ESCLUSA / ACCESO A PLATAFORMA'],['observation','HORIZONTE / VENTANA DE OBSERVACIÓN']]){
+  await room(page,id);await expect(page.getByTestId('detail')).toContainText(text);
+  await expect(page.getByTestId('detail').locator('button')).toHaveCount(1);
+  await expect(page.getByTestId('detail').locator('button')).toHaveText('Cerrar');
+  await expect(page.getByTestId('detail').locator('input,select')).toHaveCount(0);
+  await essentialBounds(page);await capture(`room-${id}`);await close(page);
+ }
+ // Repetir lectura/cierre no avanza reloj ni gasta inventario/presupuesto.
+ for(let i=0;i<3;i++)for(const id of ['storage','airlock','observation']){await room(page,id);await close(page);}
+ await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');
+ await expect(page.getByTestId('budget')).toContainText('1.000.000');await room(page,'storage');await inventory(initial);await close(page);
+ // Preparación mínima jugable, sin reparar ni lanzar: carga real de 40 min.
+ await room(page,'design');await page.locator('[data-profile=balanced]').click();await action(page,'design-balanced');
+ await room(page,'control');await action(page,'trajectory');await room(page,'fuel');await action(page,'load');
+ await room(page,'storage');await inventory([['Combustible L','20.000','100.000'],['Oxígeno L','24.000','6000'],['Agua L','8000','2000'],['Alimentos kg','1600','400'],['Repuestos u.','50','—']]);
+ await expect(page.getByTestId('clock')).toHaveText('Día 1, 09:30');await expect(page.getByTestId('budget')).toContainText('750.000');
+ await essentialBounds(page);await capture('room-storage-loaded');await close(page);
+ for(const id of ['airlock','observation']){await room(page,id);await close(page);}
+ await expect(page.getByTestId('clock')).toHaveText('Día 1, 09:30');await expect(page.getByTestId('budget')).toContainText('750.000');
+ console.log(`P9 ${width}: inventario inicial y transferido correctos; lectura 08:30/09:30 estable; sin acciones decorativas ni lanzamiento`);
+});
