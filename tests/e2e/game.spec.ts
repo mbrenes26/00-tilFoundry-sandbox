@@ -128,3 +128,49 @@ test('P6 J6 frames reales idle, reparación y carga; configuración FIT',async({
  await expect(page.getByTestId('progress')).toBeVisible();await collect(4,'technician-work');
  await expect(page.getByTestId('progress')).toBeHidden({timeout:5000});await collect(4,'technician-idle');
 });
+
+// P6/J2 vigente: distribución y contenido; no verifica arte ni animaciones.
+async function desktopContent(page:Page){
+ await essentialBounds(page);
+ const defects=await page.evaluate(()=>{
+  const errors:string[]=[];
+  const panels=Array.from(document.querySelectorAll<HTMLElement>('.game-ui .panel, .platform-label')).filter(el=>!el.classList.contains('dialog')&&getComputedStyle(el).visibility!=='hidden');
+  const overlap=(a:DOMRect,b:DOMRect)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
+  for(let i=0;i<panels.length;i++)for(let j=i+1;j<panels.length;j++)if(overlap(new DOMRect(panels[i].getBoundingClientRect().x,panels[i].getBoundingClientRect().y,panels[i].getBoundingClientRect().width+4,panels[i].getBoundingClientRect().height+4),panels[j].getBoundingClientRect()))errors.push(`paneles: ${panels[i].className} / ${panels[j].className}`);
+  const reasons=document.querySelector<HTMLElement>('.launch-reasons')!;
+  const root=document.querySelector('.game-ui')!.getBoundingClientRect();
+  // Zona visible de la plataforma definida por BaseScene (no solo botones DOM).
+  // Incluye el marco de la base Phaser hasta y=650, no solo el panel DOM.
+  if(reasons.getBoundingClientRect().top<root.y+660*root.height/900-1)errors.push('avisos invaden marco exterior de la base');
+  const platform=new DOMRect(root.x+1130*root.width/1600,root.y+250*root.height/900,450*root.width/1600,400*root.height/900);
+  for(const el of panels)if(overlap(el.getBoundingClientRect(),platform))errors.push(`plataforma tapada: ${el.className}`);
+  for(const el of document.querySelectorAll<HTMLElement>('.game-ui .panel')){
+   if(getComputedStyle(el).visibility==='hidden')continue;
+   const box=el.getBoundingClientRect();
+   const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+   while(walker.nextNode()){
+    const node=walker.currentNode;if(!node.textContent?.trim())continue;
+    const range=document.createRange();range.selectNodeContents(node);
+    for(const r of range.getClientRects())if(r.left<box.left-1||r.right>box.right+1||r.top<box.top-1||r.bottom>box.bottom+1)errors.push(`texto fuera de ${el.className}: ${node.textContent}`);
+   }
+   if(el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1)errors.push(`contenido recortado: ${el.className} ${el.scrollWidth}/${el.clientWidth} x ${el.scrollHeight}/${el.clientHeight}`);
+  }
+  return errors;
+ });
+ expect(defects).toEqual([]);
+}
+for(const width of [1600,1280])test(`P6/J2 distribución y textos ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:width===1600?900:720});
+ await page.screenshot({path:`${captureRoot}/p6-layout-base-${width}.png`});await desktopContent(page);
+ for(const id of ['design','control','weather','engineering','fuel','systems','storage','airlock','observation']){
+  await room(page,id);await expect(page.getByTestId('detail')).toBeVisible();await desktopContent(page);
+  await page.screenshot({path:`${captureRoot}/p6-layout-${id}-${width}.png`});await close(page);
+ }
+ await page.getByTestId('repair-pump').click();await expect(page.getByTestId('confirmation')).toContainText('60.000');await desktopContent(page);
+ await page.screenshot({path:`${captureRoot}/p6-layout-confirmation-${width}.png`});await page.getByTestId('confirm-action').click();
+ await expect(page.getByTestId('progress')).toBeVisible();await room(page,'systems');await desktopContent(page);
+ await page.screenshot({path:`${captureRoot}/p6-layout-progress-${width}.png`});await expect(page.getByTestId('progress')).toBeHidden({timeout:5000});await close(page);
+ await page.reload();await expect(page.getByTestId('clock')).toHaveText('Día 1, 08:30');
+ await prepare(page,{antenna:false,angle:90});await desktopContent(page);await page.getByTestId('launch').click();await expect(page.getByTestId('risk-warning')).toBeVisible();await desktopContent(page);
+ await page.screenshot({path:`${captureRoot}/p6-layout-warning-${width}.png`});await page.getByTestId('cancel-warning').click();
+});
