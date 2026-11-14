@@ -15,6 +15,10 @@ async function start(page: Page) {
   await page.getByRole('button', { name: 'Reiniciar', exact: true }).click();
 }
 
+for (const width of [390, 1600]) {
+test.describe(`rework ${width}px · fixture sintética no entrenada`, () => {
+  test.use({ viewport: { width, height: width === 390 ? 844 : 1000 } });
+
 test('I-3: importación inválida, límites, recuperación y semilla segura', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   await page.goto('/');
@@ -54,6 +58,7 @@ test('I-3: importación inválida, límites, recuperación y semilla segura', as
   }
   await page.getByLabel('Semilla de partida').fill('0'); await expect(startButton).toBeEnabled();
   expect(errors).toEqual([]);
+  await checkLayout(page, '#launch-panel', 'import');
 });
 
 test('I-2: acciones, trayectoria y pesos coinciden con inferencia/motor; controles no cambian simulación', async ({ page }) => {
@@ -82,6 +87,7 @@ test('I-2: acciones, trayectoria y pesos coinciden con inferencia/motor; control
   await expect(page.getByTestId('phase')).toHaveText(`Fase: ${result.state.phase === 'scatter' ? 'dispersión' : 'persecución'}`);
   await expect(page.getByTestId('power')).toHaveText(`Poder: ${result.state.powerRemaining} pasos`);
   await expect(page.getByTestId('steps')).toHaveText(`Pasos: ${result.state.tick} / 3000`);
+  await checkLayout(page, '#launch-panel', 'playback');
   const state = () => page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return JSON.stringify(game.scene.getScene('LaunchScene').playback.state); });
   const before = await state(); await page.waitForTimeout(250); expect(await state()).toBe(before);
   await page.getByLabel('Velocidad').selectOption('4'); await page.waitForTimeout(180); expect(await state()).toBe(before);
@@ -130,7 +136,33 @@ test('I-3: final real resume y permite reiniciar con la misma política', async 
   });
   expect(final.state.status).not.toBe('running'); expect(final.unchanged).toBe(true);
   await expect(page.getByTestId('result-summary')).toHaveText(`${final.state.points} puntos · ${final.state.lives} vidas · ${final.state.tick} pasos`);
+  await checkLayout(page, '#result-panel', 'final');
   await page.getByRole('button', { name: 'Reiniciar partida', exact: true }).click();
   await expect(page.getByTestId('steps')).toHaveText('Pasos: 0 / 3000');
   await expect(page.getByRole('button', { name: 'Reanudar', exact: true })).toBeVisible();
 });
+
+});
+}
+
+async function checkLayout(page: Page, selector: string, phase: string) {
+  const canvas = (await page.locator('canvas').boundingBox())!;
+  const panel = (await page.locator(selector).boundingBox())!;
+  if (page.viewportSize()!.width === 390) {
+    expect(panel.y, `${phase}: panel fuera del canvas`).toBeGreaterThanOrEqual(canvas.y + canvas.height);
+    const hud = (await page.locator('#hud').boundingBox())!;
+    expect(hud.y).toBeGreaterThanOrEqual(canvas.y + canvas.height);
+    expect(hud.y + hud.height).toBeLessThanOrEqual(panel.y);
+    expect(await page.locator(selector).evaluate(el => el.scrollHeight <= el.clientHeight + 1)).toBe(true);
+    expect(await page.locator(selector).evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(14);
+    for (const control of await page.locator(`${selector} button:visible, ${selector} select:visible, ${selector} input:visible`).all()) {
+      expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  } else {
+    expect(panel.x).toBeGreaterThanOrEqual(canvas.x);
+    expect(panel.x + panel.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
+    expect(panel.y + panel.height).toBeLessThanOrEqual(canvas.y + canvas.height + 1);
+  }
+  await page.screenshot({ path: `tests/browser/evidence/rework-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
+}

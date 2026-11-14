@@ -20,22 +20,24 @@ button:disabled { background: #28394b; color: #a4b1c0; border-color: #425a6c; cu
 footer { padding: 12px 4%; }
 [hidden] { display: none !important; }
 
-/* Keep the logical canvas in FIT; scroll the readable overlay, not the game. */
-@media (max-width: 760px) {
-  header { flex-direction: column; gap: 0; }
-  header p { margin-bottom: 0; }
-  .panel {
-    top: 26%; left: 5%; width: 90%; max-height: 70%;
-    overflow-y: auto; overscroll-behavior: contain;
-    font-size: 14px; padding: 12px;
-  }
-  .panel h2 { font-size: 18px; }
-}
-
 /* Playback controls remain readable and contained at FIT sizes. */
 .panel { max-height: 74%; overflow-y: auto; overscroll-behavior: contain; }
 .panel button, .panel select { margin-bottom: 10px; }
 select { width: 100%; font: inherit; padding: 8px; color: #e7f4f3; background: #28394b; border: 1px solid #90dabb; border-radius: 6px; }
 #policy-message, #seed-message { overflow-wrap: anywhere; }
 #seed-message:empty { display: none; }
-@media (max-width: 760px) { .panel { max-height: 70%; } }
+/* On phones the canvas keeps its logical FIT resolution. The HUD and panels
+   flow below it; only the document scrolls, never a clipped control panel. */
+@media (max-width: 760px) {
+  header { flex-direction: column; gap: 0; }
+  header p { margin-bottom: 0; }
+  #stage { aspect-ratio: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  #game { position: relative; inset: auto; min-width: 0; width: 100%; aspect-ratio: 16 / 9; }
+  #hud { position: static; width: auto; margin: 0 12px; padding: 12px;
+    font-size: 14px; line-height: 1.5; gap: 8px 16px; }
+  .panel { position: static; width: auto; margin: 0 12px;
+    max-height: none; overflow: visible; font-size: 16px; padding: 16px; }
+  .panel h2 { font-size: 22px; }
+  .panel button, .panel select, .panel input:not([hidden]) { min-height: 44px; }
+  label { margin-bottom: 8px; }
+}
