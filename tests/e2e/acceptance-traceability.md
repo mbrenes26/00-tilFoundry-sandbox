@@ -340,3 +340,36 @@ Herramienta **ver_captura**, no solo generación o geometría. Capturas P6 revis
 - Sin inspección P7 del Constructor: Systems, Storage, Airlock, Observation, Confirmation, Progress y Warning, cada una a ambas resoluciones (14 imágenes). Tampoco se inspeccionó arte/nueve salas como A2/A4, ni animaciones/despegues; P8/P9 permanecen intactos.
 - Para las ocho aperturas reservadas al Probador, se recomienda priorizar `p6-layout-{systems,confirmation,progress,warning}-{1600,1280}.png` y registrar su evidencia visual propia. Storage/Airlock/Observation quedarían pendientes si Core no ofrece más aperturas; el Manager debe resolver la cobertura restante sin sustituirla por geometría ni afirmar cierre.
 - **J2 no se declara cerrado**: falta inspección independiente y cobertura visual restante. No se modificaron CSS, tests ni PNG; únicamente se añade esta sección. No hubo regresión roja/verde nueva porque no se reprodujo un defecto de distribución; no se fabricó rojo ni se volvió a aplicar una corrección existente.
+
+## P7: reanudación — seis vistas restantes, Constructor
+
+- Punto de partida de Core: `0af4f42c700365e3d6615549414a9a925c7f1786`, REWORK, rama `foundry/issue-6`, PR #7. Spec `aprobada-original` y adenda `vigente` consultadas: J2 se conserva. Cerebro vigente respetado; no se cambian reglas, tecnología ni alcance.
+- Se abrieron con `ver_captura` **solo las seis imágenes de la tabla**, existentes al inicio. La inspección visual no se sustituye por geometría. Se conserva el historial previo, incluido el rechazo de aperturas de otra ejecución; el contexto vigente autoriza esta reanudación. Las otras veinte vistas y su evidencia previa no se reabrieron ni se sustituyeron.
+- Prefijo de rutas de la tabla: `tests/e2e/rework-captures/`. Cada fila corresponde a una apertura real del visor en esta ejecución.
+
+| Imagen | Resolución | Hallazgos visuales del Constructor |
+| --- | --- | --- |
+| `p6-layout-storage-1600.png` | 1600×900 | «Almacén y Recursos», encabezado inventario/carga, cinco filas y nota completos; valores alineados (combustible 120.000/0, oxígeno 30.000/0, agua 10.000/0, alimentos 2000/0, repuestos 50/—). Cerrar separado del título. HUD, objetivos, avisos y controles inferiores legibles, sin recortes ni solapamientos. Encabezado conjunto, no individual por columna. Duración repetida en espera. |
+| `p6-layout-storage-1280.png` | 1280×720 | Tabla, título, nota y Cerrar completos y alineados. HUD y paneles inferiores contenidos; margen inferior reducido, sin cortar bordes. Texto secundario pequeño pero legible. Inventario/carga se distingue por encabezado conjunto. Lanzar atenuado. |
+| `p6-layout-airlock-1600.png` | 1600×900 | «Pasillo / Esclusa», rótulo y descripción completos, sin superposición; Cerrar visible separado. No hay botón mutante propio: «Usa Lanzar misión cuando estés listo» es instrucción descriptiva, no acción del panel ni incumplimiento de la spec. HUD y controles inferiores íntegros. Duración repetida en espera; Lanzar atenuado. |
+| `p6-layout-airlock-1280.png` | 1280×720 | Título, descripción y Cerrar legibles y dentro del marco. Sin botón mutante propio. Recursos, objetivos, avisos y tres paneles inferiores completos, sin solapamientos. Textos secundarios pequeños distinguibles; Lanzar atenuado. |
+| `p6-layout-observation-1600.png` | 1600×900 | «Sala de Observación», rótulo y descripción en dos líneas completos, con espacio libre; solo Cerrar como control propio. HUD y paneles inferiores completos, sin recortes ni cruces. Espera repite duración; «Confirmado: 72° (inicial, no confirmado)» es ambiguo. Lanzar atenuado. |
+| `p6-layout-observation-1280.png` | 1280×720 | Título, rótulo, descripción en dos líneas y Cerrar completos y separados. Panel no tapa objetivos/HUD/controles inferiores. Avisos de bloqueos y riesgos completos. Objetivos y verificaciones usan dos líneas sin perder texto. Controles completos, poco margen inferior; duración repetida en espera, Lanzar atenuado. |
+
+### Resultado y límites visuales
+
+- No se reprodujo en estas seis vistas un defecto de **distribución J2** (recorte, texto tapado o solapamiento no intencional). No se modifica CSS ni se fabrica una regresión roja. Se reutilizan las correcciones existentes.
+- Se conservan como observaciones para el Manager las etiquetas ya señaladas anteriormente: duración duplicada en espera y ambigüedad de «Confirmado … no confirmado». El encabezado conjunto de inventario/carga podría ser más explícito, pero el contenido está completo. Estas observaciones no justifican una corrección CSS; no se toca su fuente fuera de los archivos de P7 autorizados.
+- Los textos secundarios son pequeños, especialmente a 1280×720, aunque el visor los describe legibles. Lanzar tiene menor contraste y apariencia deshabilitada en el estado inicial con bloqueos visibles. Las capturas estáticas no acreditan funcionalidad, foco ni accesibilidad general. No se repite P1/P2 ni se inspeccionan arte/animaciones (P8/P9).
+
+### Regresión dirigida y conservación de evidencia
+
+1. Lectura de matriz, tests y configuración: comandos `sed`, `tail`, `grep`, `cat`, código 0. Node **v22.23.5**, npm **10.9.9**. Faltaba `node_modules`.
+2. `npm ci`: código **0**, **48 packages added**, **0 vulnerabilities**; instalación del lockfile existente, no actualización ni verificación integral P10.
+3. `npm run test:e2e -- --grep 'P6/J2 distribución y textos'`: código **1**, dos tests sin poder iniciar Chromium (`Executable doesn't exist`, headless shell v1254). Es fallo de preparación de sesión, **no rojo funcional/TDD**.
+4. `npx playwright install chromium`: código **0**, Chrome/Headless Shell **158.0.8127.18**, Playwright Chromium **v1254**, FFmpeg v1013 instalados en la sesión.
+5. Mismo comando dirigido: código **0**, **2 passed (46.7s)**; `P6/J2 distribución y textos 1600` **24.3s**, `1280` **20.8s**. Motor real en Chromium por HTTP con configuración existente. No se eliminan ni debilitan aserciones.
+6. Antes de cada regresión se copiaron los PNG `p6-layout-*.png` a un respaldo temporal y se restauraron al terminar: el test existente escribe capturas, pero esta ejecución no las entrega ni afirma haberlas inspeccionado. En la ejecución verde se verificó SHA-256 de las **26 imágenes restauradas**, todas **OK**, preservando tanto las seis inspeccionadas como las veinte previas.
+
+- Cambio entregable exclusivo: `tests/e2e/acceptance-traceability.md`. CSS, tests, PNG, dependencias y lockfile quedan sin cambios entregables.
+- **Pendiente:** el Probador debe abrir de forma independiente, como mínimo, estas mismas seis imágenes y registrar hallazgos por resolución. Se utilizaron seis aperturas del Constructor, sin consumir aperturas del Probador. **J2 no se declara cerrado ni P7 independientemente verificado**; no se solicita transición ni aprobación. P8–P12 no se ejecutan en este paso.
