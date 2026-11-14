@@ -159,3 +159,4 @@
 {"auditor": "ui", "commit": "07f941a655d5314c2c7b6959c0e9a0cb243d33ba", "registro": "issue-8/auditoria/ui-07f941a", "resultado": "cambios", "tipo": "veredicto"}
 {"allowed": ["REWORK"], "checks_en_verde": true, "commit": "07f941a655d5314c2c7b6959c0e9a0cb243d33ba", "fuera_de_alcance": [], "resultado": "cambios", "riesgo_efectivo": "high", "tipo": "consolidacion"}
 {"completado": true, "costo_usd": 0.220403, "fase": "fin", "fecha": "2026-11-14T22:42:00Z", "id": "202ff4459212", "rol": "ui", "tipo": "ejecucion"}
+{"fase": "inicio", "fecha": "2026-11-14T22:42:01Z", "id": "1baa0bcb71d6", "rol": "manager-auditoria", "tipo": "ejecucion"}
