@@ -148,3 +148,4 @@
 {"completado": true, "costo_usd": 0.199556, "fase": "fin", "fecha": "2026-11-14T22:30:01Z", "id": "3f34c3e52ff8", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "inicio", "fecha": "2026-11-14T22:30:03Z", "id": "54d018948bff", "rol": "seguridad", "tipo": "ejecucion"}
 {"auditor": "seguridad", "commit": "07f941a655d5314c2c7b6959c0e9a0cb243d33ba", "registro": "issue-8/auditoria/seguridad-07f941a", "resultado": "aprobado", "tipo": "veredicto"}
+{"completado": true, "costo_usd": 1.012702, "fase": "fin", "fecha": "2026-11-14T22:32:13Z", "id": "54d018948bff", "rol": "seguridad", "tipo": "ejecucion"}
