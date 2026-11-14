@@ -1,0 +1,6191 @@
+{
+  "before": {
+    "minute": 530,
+    "budget": 780000,
+    "inventory": {
+      "fuel": 120000,
+      "oxygen": 30000,
+      "water": 10000,
+      "food": 2000,
+      "parts": 50
+    },
+    "cargo": {
+      "fuel": 0,
+      "oxygen": 0,
+      "water": 0,
+      "food": 0
+    },
+    "profile": "balanced",
+    "trajectory": true,
+    "weatherConsulted": false,
+    "repairs": {
+      "pump": false,
+      "antenna": false
+    },
+    "loaded": false,
+    "angle": 72,
+    "angleConfirmed": false,
+    "verified": false,
+    "launched": false,
+    "result": null
+  },
+  "preview": "Confirmar acción\n\n40 min de juego · $30.000\n\nTransferir a bordo 100.000 L combustible, 6.000 L O₂, 2.000 L agua y 400 kg alimentos.\n\nCancelarConfirmar",
+  "trace": [
+    {
+      "ms": 11.100000000093132,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "0%"
+    },
+    {
+      "ms": 27.800000000046566,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "1%"
+    },
+    {
+      "ms": 44.199999999953434,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "2%"
+    },
+    {
+      "ms": 60.800000000046566,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "3%"
+    },
+    {
+      "ms": 78.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "3%"
+    },
+    {
+      "ms": 94.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "4%"
+    },
+    {
+      "ms": 110.80000000004657,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "5%"
+    },
+    {
+      "ms": 127.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "6%"
+    },
+    {
+      "ms": 144.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "7%"
+    },
+    {
+      "ms": 161.10000000009313,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "8%"
+    },
+    {
+      "ms": 177.80000000004657,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "8%"
+    },
+    {
+      "ms": 194,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "9%"
+    },
+    {
+      "ms": 210.80000000004657,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "10%"
+    },
+    {
+      "ms": 227.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "11%"
+    },
+    {
+      "ms": 244.69999999995343,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "12%"
+    },
+    {
+      "ms": 260.80000000004657,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "13%"
+    },
+    {
+      "ms": 277.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "13%"
+    },
+    {
+      "ms": 294,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "14%"
+    },
+    {
+      "ms": 310.80000000004657,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "15%"
+    },
+    {
+      "ms": 327.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "16%"
+    },
+    {
+      "ms": 344.19999999995343,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "17%"
+    },
+    {
+      "ms": 360.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "18%"
+    },
+    {
+      "ms": 377.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "18%"
+    },
+    {
+      "ms": 395.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "19%"
+    },
+    {
+      "ms": 411.10000000009313,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "20%"
+    },
+    {
+      "ms": 427.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "21%"
+    },
+    {
+      "ms": 444.10000000009313,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "22%"
+    },
+    {
+      "ms": 460.69999999995343,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "23%"
+    },
+    {
+      "ms": 477.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "23%"
+    },
+    {
+      "ms": 494,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "24%"
+    },
+    {
+      "ms": 511.10000000009313,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "25%"
+    },
+    {
+      "ms": 527.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "26%"
+    },
+    {
+      "ms": 558.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "27%"
+    },
+    {
+      "ms": 562.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "27%"
+    },
+    {
+      "ms": 577.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "28%"
+    },
+    {
+      "ms": 594.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "29%"
+    },
+    {
+      "ms": 610.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "30%"
+    },
+    {
+      "ms": 627.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "31%"
+    },
+    {
+      "ms": 644.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "32%"
+    },
+    {
+      "ms": 660.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "33%"
+    },
+    {
+      "ms": 678.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "33%"
+    },
+    {
+      "ms": 694,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "34%"
+    },
+    {
+      "ms": 710.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "35%"
+    },
+    {
+      "ms": 727.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "36%"
+    },
+    {
+      "ms": 744.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "37%"
+    },
+    {
+      "ms": 761,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "38%"
+    },
+    {
+      "ms": 777.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "38%"
+    },
+    {
+      "ms": 793.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "39%"
+    },
+    {
+      "ms": 810.6999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "40%"
+    },
+    {
+      "ms": 827.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "41%"
+    },
+    {
+      "ms": 844.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "42%"
+    },
+    {
+      "ms": 860.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "43%"
+    },
+    {
+      "ms": 877.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "43%"
+    },
+    {
+      "ms": 894,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "44%"
+    },
+    {
+      "ms": 911.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "45%"
+    },
+    {
+      "ms": 928,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "46%"
+    },
+    {
+      "ms": 944.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "47%"
+    },
+    {
+      "ms": 961.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "48%"
+    },
+    {
+      "ms": 977.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "48%"
+    },
+    {
+      "ms": 994,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "49%"
+    },
+    {
+      "ms": 1010.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "50%"
+    },
+    {
+      "ms": 1027.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "51%"
+    },
+    {
+      "ms": 1044,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "52%"
+    },
+    {
+      "ms": 1060.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "53%"
+    },
+    {
+      "ms": 1077.6000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "53%"
+    },
+    {
+      "ms": 1093.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "54%"
+    },
+    {
+      "ms": 1110.6999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "55%"
+    },
+    {
+      "ms": 1127.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "56%"
+    },
+    {
+      "ms": 1144.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "57%"
+    },
+    {
+      "ms": 1160.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "57%"
+    },
+    {
+      "ms": 1189.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "59%"
+    },
+    {
+      "ms": 1194.6000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "59%"
+    },
+    {
+      "ms": 1259,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "62%"
+    },
+    {
+      "ms": 1261.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "62%"
+    },
+    {
+      "ms": 1277.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "63%"
+    },
+    {
+      "ms": 1294.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "64%"
+    },
+    {
+      "ms": 1311,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "65%"
+    },
+    {
+      "ms": 1327.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "66%"
+    },
+    {
+      "ms": 1344.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "67%"
+    },
+    {
+      "ms": 1360.6999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "68%"
+    },
+    {
+      "ms": 1377.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "68%"
+    },
+    {
+      "ms": 1394,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "69%"
+    },
+    {
+      "ms": 1410.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "70%"
+    },
+    {
+      "ms": 1427.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "71%"
+    },
+    {
+      "ms": 1444.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "72%"
+    },
+    {
+      "ms": 1461,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "73%"
+    },
+    {
+      "ms": 1477.6000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "73%"
+    },
+    {
+      "ms": 1494,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "74%"
+    },
+    {
+      "ms": 1510.9000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "75%"
+    },
+    {
+      "ms": 1527.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "76%"
+    },
+    {
+      "ms": 1544.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "77%"
+    },
+    {
+      "ms": 1560.6000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "77%"
+    },
+    {
+      "ms": 1577.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "78%"
+    },
+    {
+      "ms": 1594.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "79%"
+    },
+    {
+      "ms": 1610.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "80%"
+    },
+    {
+      "ms": 1627.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "81%"
+    },
+    {
+      "ms": 1644.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "82%"
+    },
+    {
+      "ms": 1660.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "82%"
+    },
+    {
+      "ms": 1677.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "83%"
+    },
+    {
+      "ms": 1694.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "84%"
+    },
+    {
+      "ms": 1710.6999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "85%"
+    },
+    {
+      "ms": 1727.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "86%"
+    },
+    {
+      "ms": 1744.1999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "87%"
+    },
+    {
+      "ms": 1760.6999999999534,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "87%"
+    },
+    {
+      "ms": 1777.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "88%"
+    },
+    {
+      "ms": 1794.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "89%"
+    },
+    {
+      "ms": 1818.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "90%"
+    },
+    {
+      "ms": 1859.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 2,
+      "playing": true,
+      "progress": "92%"
+    },
+    {
+      "ms": 1861.6000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "92%"
+    },
+    {
+      "ms": 1877.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "93%"
+    },
+    {
+      "ms": 1897.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "94%"
+    },
+    {
+      "ms": 1910.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "95%"
+    },
+    {
+      "ms": 1927.4000000001397,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "96%"
+    },
+    {
+      "ms": 1944.1000000000931,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "97%"
+    },
+    {
+      "ms": 1961,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "97%"
+    },
+    {
+      "ms": 1977.3000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "98%"
+    },
+    {
+      "ms": 1994,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "99%"
+    },
+    {
+      "ms": 2010.8000000000466,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "100%"
+    },
+    {
+      "ms": 2027.5,
+      "state": {
+        "minute": 530,
+        "budget": 780000,
+        "inventory": {
+          "fuel": 120000,
+          "oxygen": 30000,
+          "water": 10000,
+          "food": 2000,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 0,
+          "oxygen": 0,
+          "water": 0,
+          "food": 0
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": false,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": true,
+      "animation": "technician-work",
+      "frame": 3,
+      "playing": true,
+      "progress": "100%"
+    },
+    {
+      "ms": 2047.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2060.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2077.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2093.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2110.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2127.4000000001397,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2143.9000000001397,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2161.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2177.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2194,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2210.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2227.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2244.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2260.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2277.3000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2293.9000000001397,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2310.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2327.100000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2344,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2360.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2377.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2393.9000000001397,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2410.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2427.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2443.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2460.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2477.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2493.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2510.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2527.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 1,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2543.6999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2560.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2577.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2593.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2610.5,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2627.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2643.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2660.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2677.3000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2693.9000000001397,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2710.600000000093,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2727.1999999999534,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    },
+    {
+      "ms": 2743.8000000000466,
+      "state": {
+        "minute": 570,
+        "budget": 750000,
+        "inventory": {
+          "fuel": 20000,
+          "oxygen": 24000,
+          "water": 8000,
+          "food": 1600,
+          "parts": 50
+        },
+        "cargo": {
+          "fuel": 100000,
+          "oxygen": 6000,
+          "water": 2000,
+          "food": 400
+        },
+        "profile": "balanced",
+        "trajectory": true,
+        "weatherConsulted": false,
+        "repairs": {
+          "pump": false,
+          "antenna": false
+        },
+        "loaded": true,
+        "angle": 72,
+        "angleConfirmed": false,
+        "verified": false,
+        "launched": false,
+        "result": null
+      },
+      "busy": false,
+      "animation": "technician-idle",
+      "frame": 0,
+      "playing": true,
+      "progress": null
+    }
+  ]
+}

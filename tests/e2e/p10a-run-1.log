@@ -1,0 +1,24 @@
+npm warn exec The following package was not found and will be installed: playwright@1.65.1
+Error: Cannot find package '@playwright/test' imported from /trabajo/playwright.config.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)
+    at packageResolve (node:internal/modules/esm/resolve:772:81)
+    at moduleResolve (node:internal/modules/esm/resolve:859:18)
+    at defaultResolve (node:internal/modules/esm/resolve:989:11)
+    at ModuleLoader.#cachedDefaultResolve (node:internal/modules/esm/loader:747:20)
+    at ModuleLoader.#resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:783:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolve (/home/sandbox/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/lib/common/index.js:870:19)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveWithHooks (node:internal/modules/customization_hooks:417:10)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:803:14)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:719:19)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:182:49)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice
