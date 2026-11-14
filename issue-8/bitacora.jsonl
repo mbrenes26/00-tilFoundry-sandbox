@@ -167,3 +167,4 @@
 {"completado": true, "costo_usd": 0.062457, "fase": "fin", "fecha": "2026-11-14T22:43:03Z", "id": "eaf38c79f89a", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "inicio", "fecha": "2026-11-14T22:43:05Z", "id": "858e71777d1c", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "inicio", "fecha": "2026-11-14T22:52:11Z", "id": "80a168f94338", "rol": "manager-producto", "tipo": "ejecucion"}
+{"estado": "REWORK", "fecha": "2026-11-14T22:52:12Z", "intensidad": 0.2, "tipo": "sentimiento", "tono": "neutro"}
