@@ -24,3 +24,4 @@
 {"fase": "inicio", "fecha": "2026-11-14T20:47:00Z", "id": "a9d9675508ea", "rol": "manager-producto", "tipo": "ejecucion"}
 {"estado": "BLOCKED", "fecha": "2026-11-14T20:47:02Z", "intensidad": 0.8, "tipo": "sentimiento", "tono": "neutro"}
 {"actor": "agente:manager-producto", "aprobacion": null, "desde": "BLOCKED", "fecha": "2026-11-14T20:47:10Z", "hacia": "CANCELLED", "motivo": "Rol: manager-producto. La persona mbrenes26 pidió explícitamente cancelar el issue-4 el 2026-11-14: «Cancela este pedido, ya no lo necesito». Se solicita cerrar el trabajo por desistimiento de la persona, sin continuar construcción ni verificación y sin aprobar o entregar cambios.", "riesgo": "medium", "tipo": "evento", "trabajo": "issue-4"}
+{"completado": true, "costo_usd": 0.03176, "fase": "fin", "fecha": "2026-11-14T20:47:22Z", "id": "a9d9675508ea", "rol": "manager-producto", "tipo": "ejecucion"}
