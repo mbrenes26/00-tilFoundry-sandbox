@@ -8,7 +8,12 @@ async function upload(page: Page, text = JSON.stringify(fixture)) {
   await page.locator('#policy-file').setInputFiles({ name: 'fixture-prueba-no-entrenada.json', mimeType: 'application/json', buffer: Buffer.from(text) });
 }
 async function start(page: Page) {
+  await page.clock.install();
   await page.goto('/'); await upload(page);
+  await expect(page.getByRole('button', { name: 'Iniciar partida', exact: true })).toBeEnabled();
+  // Freeze presentation time before starting: slow workers must not spend the
+  // fixture's 114-step lifetime while Playwright scrolls to mobile controls.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
   await page.getByLabel('Semilla de partida').fill('42');
   await page.getByRole('button', { name: 'Iniciar partida', exact: true }).click();
   await page.getByRole('button', { name: 'Pausar', exact: true }).click();
@@ -89,8 +94,8 @@ test('I-2: acciones, trayectoria y pesos coinciden con inferencia/motor; control
   await expect(page.getByTestId('steps')).toHaveText(`Pasos: ${result.state.tick} / 3000`);
   await checkLayout(page, '#launch-panel', 'playback');
   const state = () => page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return JSON.stringify(game.scene.getScene('LaunchScene').playback.state); });
-  const before = await state(); await page.waitForTimeout(250); expect(await state()).toBe(before);
-  await page.getByLabel('Velocidad').selectOption('4'); await page.waitForTimeout(180); expect(await state()).toBe(before);
+  const before = await state(); await page.clock.runFor(250); expect(await state()).toBe(before);
+  await page.getByLabel('Velocidad').selectOption('4'); await page.clock.runFor(180); expect(await state()).toBe(before);
   await page.getByRole('button', { name: 'Reiniciar', exact: true }).click();
   await expect(page.getByTestId('steps')).toHaveText('Pasos: 0 / 3000');
   // At each real timed pulse, compare against one pure step at either speed.
@@ -111,14 +116,14 @@ test('I-2: acciones, trayectoria y pesos coinciden con inferencia/motor; control
     };
   });
   await page.getByRole('button', { name: 'Reanudar', exact: true }).click();
-  await page.waitForTimeout(250);
+  await page.clock.runFor(250);
   expect(await page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return game.scene.getScene('BaseScene').rhythm.delay; })).toBe(25);
   await page.getByRole('button', { name: 'Pausar', exact: true }).click();
   const fast = await page.evaluate(() => (window as any).timed.count); expect(fast).toBeGreaterThanOrEqual(4);
   await page.getByLabel('Velocidad').selectOption('1');
   await page.getByRole('button', { name: 'Reanudar', exact: true }).click();
   expect(await page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return game.scene.getScene('BaseScene').rhythm.delay; })).toBe(100);
-  await page.waitForTimeout(350);
+  await page.clock.runFor(350);
   await page.getByRole('button', { name: 'Pausar', exact: true }).click();
   const timed = await page.evaluate(() => (window as any).timed);
   expect(timed.matches).toBe(true); expect(timed.count - fast).toBeGreaterThanOrEqual(2); expect(await page.evaluate(async () => { const { game } = await import('/src/main.ts' as string); return game.scene.getScene('LaunchScene').playback.speed; })).toBe(1);
@@ -134,6 +139,8 @@ test('I-3: final real resume y permite reiniciar con la misma política', async 
     for (let i = 0; i < 3000 && launch.playback.state.status === 'running'; i++) launch.pulse();
     return { state: launch.playback.state, unchanged: before === JSON.stringify(launch.playback.policy) };
   });
+  // Phaser queues ResultScene until its next frame. Advance that frame explicitly.
+  await page.clock.runFor(100);
   expect(final.state.status).not.toBe('running'); expect(final.unchanged).toBe(true);
   await expect(page.getByTestId('result-summary')).toHaveText(`${final.state.points} puntos · ${final.state.lives} vidas · ${final.state.tick} pasos`);
   await checkLayout(page, '#result-panel', 'final');
@@ -146,19 +153,43 @@ test('I-3: final real resume y permite reiniciar con la misma política', async 
 }
 
 async function checkLayout(page: Page, selector: string, phase: string) {
-  const canvas = (await page.locator('canvas').boundingBox())!;
-  const panel = (await page.locator(selector).boundingBox())!;
+  await expect(page.locator(selector)).toBeVisible();
+  // One DOM snapshot avoids exhausting the test deadline through a separate
+  // protocol/actionability round trip for every mobile control.
+  const layout = await page.locator(selector).evaluate(panel => {
+    const rect = (el: Element) => {
+      const { x, y, width, height } = el.getBoundingClientRect();
+      return { x, y, width, height };
+    };
+    const controls = [...panel.querySelectorAll('button, select, input')]
+      .filter(el => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden');
+    return {
+      canvas: rect(document.querySelector('canvas')!), panel: rect(panel),
+      hud: rect(document.querySelector('#hud')!),
+      noInternalScroll: panel.scrollHeight <= panel.clientHeight + 1,
+      fontSize: parseFloat(getComputedStyle(panel).fontSize),
+      controls: controls.map(el => ({ id: el.id || el.textContent, ...rect(el) })),
+      scrollWidth: document.documentElement.scrollWidth,
+    };
+  });
+  const { canvas, panel, hud } = layout;
+  expect(canvas.width).toBeGreaterThan(0); expect(panel.width).toBeGreaterThan(0);
   if (page.viewportSize()!.width === 390) {
     expect(panel.y, `${phase}: panel fuera del canvas`).toBeGreaterThanOrEqual(canvas.y + canvas.height);
-    const hud = (await page.locator('#hud').boundingBox())!;
     expect(hud.y).toBeGreaterThanOrEqual(canvas.y + canvas.height);
     expect(hud.y + hud.height).toBeLessThanOrEqual(panel.y);
-    expect(await page.locator(selector).evaluate(el => el.scrollHeight <= el.clientHeight + 1)).toBe(true);
-    expect(await page.locator(selector).evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(14);
-    for (const control of await page.locator(`${selector} button:visible, ${selector} select:visible, ${selector} input:visible`).all()) {
-      expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect(layout.noInternalScroll).toBe(true);
+    expect(layout.fontSize).toBeGreaterThanOrEqual(14);
+    // Assert the snapshot includes every expected control, not just a possibly
+    // empty filtered list, before checking the existing 44px touch targets.
+    expect(layout.controls.map(control => control.id).sort()).toEqual((phase === 'import'
+      ? ['select-file', 'seed', 'start']
+      : phase === 'playback' ? ['pause', 'speed', 'restart', 'change-policy']
+      : ['Reiniciar partida']).sort());
+    for (const control of layout.controls) {
+      expect(control.height, control.id).toBeGreaterThanOrEqual(44);
     }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+    expect(layout.scrollWidth).toBe(390);
   } else {
     expect(panel.x).toBeGreaterThanOrEqual(canvas.x);
     expect(panel.x + panel.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
