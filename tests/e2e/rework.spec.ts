@@ -34,26 +34,35 @@ async function dialogKeyboard(page:Page,id:string,name:string,cancel:string,conf
 }
 async function objectiveGeometry(page:Page){
  const geometry=await page.getByTestId('objectives').evaluate(panel=>{
-  const bounds=panel.getBoundingClientRect();const problems:string[]=[];
+  const bounds=panel.getBoundingClientRect();const problems:string[]=[];let textRects=0;
   const walker=document.createTreeWalker(panel,NodeFilter.SHOW_TEXT);
   while(walker.nextNode()){
    const node=walker.currentNode;if(!node.textContent?.trim())continue;
    const range=document.createRange();range.selectNodeContents(node);
    for(const r of Array.from(range.getClientRects())){
+    textRects++;
     if(r.left<bounds.left+2||r.right>bounds.right-2||r.top<bounds.top+2||r.bottom>bounds.bottom-2)problems.push('Fuera del panel: '+node.textContent);
     const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
     if(!hit||!panel.contains(hit))problems.push('Texto tapado: '+node.textContent);
    }
   }
-  return {client:panel.clientHeight,scroll:panel.scrollHeight,problems};
+  return {client:panel.clientHeight,scroll:panel.scrollHeight,textRects,problems};
  });
+ expect(geometry.textRects).toBeGreaterThan(0);
  expect(geometry.problems).toEqual([]);expect(geometry.scroll).toBeLessThanOrEqual(geometry.client);
+ return geometry;
 }
 for(const size of [{width:1600,height:900},{width:1280,height:720}]){
  test(`REWORK objetivos completos sin solapamiento ${size.width}x${size.height}`,async({page},info)=>{
-  await page.setViewportSize(size);await objectiveGeometry(page);
-  await riskyPreparation(page);await objectiveGeometry(page);
-  await page.screenshot({path:info.outputPath(`objectives-${size.width}.png`)});
+  await page.setViewportSize(size);
+  for(const state of ['initial','prepared'] as const){
+   if(state==='prepared')await riskyPreparation(page);
+   const geometry=await objectiveGeometry(page);
+   console.log(`UI-1 ${size.width}x${size.height} ${state}: ${JSON.stringify(geometry)}`);
+   const path=`tests/e2e/rework-captures/p1-objectives-${size.width}x${size.height}-${state}.png`;
+   await page.screenshot({path});
+   await info.attach(`UI-1 ${state}`,{path,contentType:'image/png'});
+  }
  });
 }
 test('REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render',async({page})=>{

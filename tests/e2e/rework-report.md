@@ -1,65 +1,91 @@
 # Corrección de bloqueantes de interfaz — issue-6 / PR #7
 
-- Base indicada por Core: `dea64d9c1a95dbb7af735fb9e60c6946fb062891`; rama `foundry/issue-6`.
-- Cambios limitados a `src/game/`, `src/styles/`, `tests/e2e/`. Sin cambios de reglas, contratos, assets del juego, versiones ni configuración.
+## P1 — Revalidación de UI-1 / J2 sobre d51665b
 
-## Evidencia TDD por bloqueante
+- Paso exclusivo: objetivos sin solapamiento. Spec base leída mediante `leer_registro('spec-solucion', version='aprobada-original')`, con J2 completo; revisiones aprobadas y C-2 a C-5/C-7 conservadas. No se modificó CSS, juego, versiones, reglas, assets ni contratos. Los diálogos corresponden a P2, no a esta revalidación.
+- Entorno propio: Node.js `v22.23.5`, npm `10.9.9`, Chromium Playwright v1254 (Chrome Headless Shell 158.0.8127.18).
+- Primer intento del comando focalizado: salida 127, `playwright: not found`. Es un fallo de preparación de sesión, NO rojo funcional de J2. La sesión no contiene `.git`; `git status`/`git rev-parse HEAD` tampoco pudieron comprobar el commit. La base d51665b es la indicada por Core.
+- Preparación: `npm ci && npx playwright install chromium`, salida 0. Sin sustitución de versiones ni regeneración del lockfile.
+- Antes de editar: `npm run test:e2e -- tests/e2e/rework.spec.ts --grep 'objetivos completos sin solapamiento'`, salida 0, `2 passed (15.8s)`; pruebas existentes ejecutadas en ambos tamaños, inicialmente y tras preparar misión mediante controles reales.
+- Cambio de evidencia en la prueba parametrizada: conservar las comprobaciones de cada rectángulo Range, hit test central y `scrollHeight <= clientHeight`; añadir conteo de rectángulos para evitar comprobación vacía, imprimir geometría y guardar capturas de ambos estados en rutas permanentes. No se redujeron comprobaciones ni se modificaron las pruebas de diálogos.
+- Después de editar: mismo comando, salida 0, `2 passed (15.5s)`. Las cuatro mediciones devuelven `client=471`, `scroll=471`, `textRects=18`, `problems=[]`:
+  - 1600×900 inicial y preparada.
+  - 1280×720 inicial y preparada.
+- Los valores client/scroll corresponden a píxeles de disposición CSS del panel lógico; los rectángulos y hit tests se evalúan en coordenadas reales del viewport escalado por FIT.
+
+### Capturas nuevas e inspección real
+
+Todas obtenidas por Playwright contra HTTP local y revisadas mediante `ver_captura` en esta ejecución:
+
+- `tests/e2e/rework-captures/p1-objectives-1600x900-initial.png`: ocho objetivos y notas Ventana/Clima/Fase completos dentro del panel, sin solapamientos.
+- `tests/e2e/rework-captures/p1-objectives-1600x900-prepared.png`: checklist con reparación 1/2 y notas completos, sin cobertura por estado o parámetros.
+- `tests/e2e/rework-captures/p1-objectives-1280x720-initial.png`: ocho objetivos legibles sin recorte; notas completas pero pequeñas (visor estima 10–11 px), punto débil de legibilidad, sin impedir lectura en la revisión.
+- `tests/e2e/rework-captures/p1-objectives-1280x720-prepared.png`: ocho objetivos y notas legibles completos, sin solapamientos.
+
+### Contraste del rojo histórico
+
+- El Manager transmite el hallazgo del auditor UI sobre `dea64d9`: `clientHeight=471`, `scrollHeight=630`; texto en y=691–812 tapado por Parámetros desde y=715.
+- El reporte anterior de la rama registraba rojo de las pruebas de objetivos en ambas resoluciones (`Fuera del panel` y `Texto tapado` en Ventana y notas), y después verde con scroll/client=471/471.
+- Las mediciones propias nuevas 471/471 y cero problemas son consistentes con la corrección ya existente; no se revirtió CSS para fabricar rojo.
+- Límite de trazabilidad histórica: `leer_conversacion` omite 86 mensajes intermedios; `leer_registro('eventos')` y `leer_registro('auditoria-ui')` devuelven `No existe`, y este rol no dispone de `leer_informes_de_auditoria`. No se pudo leer directamente la salida histórica de Core ni el informe completo del auditor. El hallazgo histórico anterior se atribuye al Manager y al reporte de rama, NO a comandos propios de esta ejecución. Core registra las ejecuciones nuevas.
+
+### Archivos de P1 y pendientes
+
+- Modificados: `tests/e2e/rework.spec.ts`, `tests/e2e/rework-report.md`.
+- Añadidos: las cuatro capturas `p1-objectives-...` enumeradas arriba.
+- `src/styles/game.css`: verificado sin cambios; no hizo falta corregir la implementación.
+- No se ejecutaron pruebas de P2 ni regresión integral en este paso. J2 se acredita aquí solo para el subcriterio UI-1; salas y demás criterios quedan para los pasos previstos. La verificación independiente integral y la entrega siguen pendientes.
+- El impedimento documental de acceso a la spec base indicado en el reporte histórico siguiente ya no aplica: fue recuperada y leída. Su trazabilidad integral corresponde a P3–P8.
+
+## Registro de la corrección anterior (histórico; no son ejecuciones de P1)
+
+- Base indicada por Core: `dea64d9c1a95dbb7af735fb9e60c6946fb062891`; rama `foundry/issue-6`.
+- Cambios anteriores limitados a `src/game/`, `src/styles/`, `tests/e2e/`. Sin cambios de reglas, contratos, assets del juego, versiones ni configuración.
+
+### Evidencia TDD anterior por bloqueante
 
 - Objetivos: `tests/e2e/rework.spec.ts`, prueba parametrizada «REWORK objetivos completos sin solapamiento», 1600×900 y 1280×720.
-  - Rojo, antes de implementar: `npm run test:e2e -- tests/e2e/rework.spec.ts`, salida 1, `4 failed`. En ambas resoluciones: `Fuera del panel: Ventana: 10:00–11:00`, `Texto tapado: Ventana: 10:00–11:00`, notas de Clima/Fase fuera del panel.
+  - Rojo antes de implementar: `npm run test:e2e -- tests/e2e/rework.spec.ts`, salida 1, `4 failed`. En ambas resoluciones: `Fuera del panel: Ventana: 10:00–11:00`, `Texto tapado: Ventana: 10:00–11:00`, notas de Clima/Fase fuera del panel.
   - Verde: mismo comando, salida 0, `4 passed (31.4s)`.
-  - Se comprueba cada rectángulo de texto mediante Range y su pertenencia al panel; se comprueba que el elemento visible en su centro pertenece al panel y que scrollHeight no supera clientHeight. Se repite antes y después de preparar la misión. Captura HTTP adicional: clientHeight=471, scrollHeight=471 en ambas resoluciones.
-  - Implementación: compactar márgenes, interlineado y distribución del panel sin ocultar contenido ni añadir desplazamiento.
+  - Se comprobó cada rectángulo mediante Range, hit test central y scrollHeight <= clientHeight, antes y después de preparar misión; captura HTTP adicional 471/471 en ambas resoluciones.
+  - Implementación: compactar márgenes, interlineado y distribución sin ocultar contenido ni añadir desplazamiento.
 - Confirmación: prueba «REWORK confirmación: semántica, teclado, cancelar, confirmar y foco tras render».
-  - Rojo: comando anterior, `role` esperado `dialog`, recibido vacío. Segunda ejecución previa a implementar: `npm run test:e2e -- tests/e2e/rework.spec.ts --grep 'confirmación|riesgo'`, salida 1, `2 failed`; `cancel-action` y `confirm-action` inactivos frente a la expectativa de foco; primera navegación Tab incorrecta y pérdida de foco tras render.
-  - Verde: comando completo de las cuatro pruebas, salida 0. Comprueba nombre accesible, aria-modal, foco inicial en Cancelar, 20 Tab y 20 Shift+Tab, conservación del foco tras render, cancelación sin perder el origen, confirmación con teclado, foco durante y después de reparación, y confirmación de espera con restauración a wait-5.
+  - Rojo: comando anterior, role esperado dialog, recibido vacío. Segunda ejecución previa: `npm run test:e2e -- tests/e2e/rework.spec.ts --grep 'confirmación|riesgo'`, salida 1, `2 failed`; controles inactivos frente al foco esperado, Tab incorrecto y pérdida de foco tras render.
+  - Verde: comando completo de cuatro pruebas, salida 0. Nombre accesible, aria-modal, foco en Cancelar, 20 Tab/20 Shift+Tab, render, cancelación, confirmación de reparación y espera por teclado.
 - Riesgos: prueba «REWORK riesgo: semántica, teclado, cancelar, confirmar y foco tras render».
-  - Rojo: mismas dos ejecuciones anteriores; `risk-warning` sin role; `cancel-warning` y `launch-anyway` inactivos frente a la expectativa de foco; Tab incorrecto y pérdida de foco tras render.
-  - Verde: comando completo de las cuatro pruebas, salida 0. Misma comprobación semántica y 20 Tab/20 Shift+Tab; cancelar restaura Lanzar; confirmar con teclado enfoca el estado de despegue y después Reiniciar en el resultado.
-- Implementación de foco: identidad estable de controles antes de reemplazar innerHTML, origen de diálogo registrado al abrir, restauración después de renderizar, manejador Tab/Shift+Tab limitado al diálogo y eliminado al cerrar la escena.
-- Excepción necesaria a restaurar el control: los botones nativos deshabilitados no admiten foco. Tras confirmar una reparación se enfoca Progreso; al terminar, su panel de Reparaciones. Tras confirmar lanzamiento se enfoca Despegue y después Reiniciar. Al cancelar y al confirmar una acción cuyo control sigue disponible se restaura el control de origen. No se habilitan acciones completadas para forzar foco.
+  - Rojo: mismas dos ejecuciones; risk-warning sin role, controles sin foco esperado, Tab incorrecto y pérdida de foco tras render.
+  - Verde: cuatro pruebas, salida 0. Semántica, 20 Tab/20 Shift+Tab, cancelar restaura Lanzar; confirmar enfoca Despegue y después Reiniciar.
+- Implementación anterior de foco: identidad estable antes de innerHTML, origen registrado, restauración tras render, Tab limitado al diálogo y manejador eliminado al cerrar escena.
+- Botones deshabilitados no admiten foco: tras reparar, Progreso y después panel Reparaciones; tras lanzar, Despegue y después Reiniciar. No se habilitaron acciones completadas para forzar foco.
 
-## Regresión y entorno
+### Regresión y entorno anteriores
 
-- Node.js `v22.23.5`, npm `10.9.9`.
-- `npm ci && npx playwright install chromium`: salida 0; Chromium compatible instalado.
-- `npm test`: salida 0; `35 passed`, sin modificar las pruebas existentes.
-- `npm run build`: salida 0; compilación TypeScript y Vite 6.4.6 correctas. Persiste aviso no bloqueante de tamaño de paquete superior a 500 kB; no se cambia configuración para ocultarlo.
-- `npm run test:e2e`: salida 0; `18 passed (3.9m)` (14 existentes + 4 nuevas). Se conserva, entre otras, «J4 aviso se invalida y revalida tras controles reales de espera».
-- `PREVIEW=1 npm run test:e2e`: salida 0; `18 passed (3.8m)` sobre la compilación estática final, sin omitir comprobaciones.
-- `npm audit --json`: salida 0; metadata.vulnerabilities con info/low/moderate/high/critical/total en 0, incluyendo dependencias de desarrollo. No se usaron exclusiones, overrides ni audit fix.
-- Salidas finales guardadas en `tests/e2e/rework-unit.log`, `rework-build.log`, `rework-dev.log`, `rework-preview.log`, `rework-audit.json`, con sus archivos `.exit`.
-- Incidencias de sesión: una ejecución larga agrupada devolvió `Function failed` aunque el proceso seguía ejecutándose; no se usa su salida ausente como resultado. Se esperó a que terminara y se repitió la verificación completa con logs y códigos de salida. Un intento de captura durante el relevo del servidor recibió `ERR_CONNECTION_REFUSED`; repetido correctamente con el servidor activo.
+- Node.js v22.23.5, npm 10.9.9.
+- `npm ci && npx playwright install chromium`: salida 0.
+- `npm test`: salida 0, `35 passed`.
+- `npm run build`: salida 0, TypeScript y Vite 6.4.6; aviso no bloqueante de paquete >500 kB sin ocultarlo.
+- `npm run test:e2e`: salida 0, `18 passed (3.9m)`; 14 existentes + 4 nuevas, incluida invalidación/revalidación J4 por espera real.
+- `PREVIEW=1 npm run test:e2e`: salida 0, `18 passed (3.8m)`.
+- `npm audit --json`: salida 0; todas las severidades y total 0, sin exclusiones, overrides ni audit fix.
+- Logs anteriores: `tests/e2e/rework-unit.log`, `rework-build.log`, `rework-dev.log`, `rework-preview.log`, `rework-audit.json` y sus `.exit`.
+- Incidencias anteriores: ejecución agrupada larga devolvió `Function failed` con proceso aún activo; se esperó y repitió con logs/códigos. Captura recibió `ERR_CONNECTION_REFUSED` durante relevo del servidor y se repitió correctamente.
 
-## Revisión visual real
+### Revisión visual anterior
 
-- `tests/e2e/rework-captures/objectives-1600.png` y `objectives-1280.png`: herramienta de revisión visual confirma ocho objetivos y notas Ventana/Clima/Fase completos, dentro del panel y sin solapamientos. A 1280 el texto de notas es pequeño pero legible.
-- `tests/e2e/rework-captures/confirmation-keyboard-1280.png`: diálogo completo y foco amarillo visible en Cancelar. Captura obtenida con Enter; evaluación del navegador: focused=true, focusVisible=true.
-- `tests/e2e/rework-captures/risk-keyboard-1280.png`: diálogo completo, sin solapamiento interno, foco amarillo visible en Cancelar; navegador: role=dialog, modal=true, focused=true, focusVisible=true.
+- `tests/e2e/rework-captures/objectives-1600.png` y `objectives-1280.png`: ocho objetivos y notas completos; notas pequeñas pero legibles a 1280.
+- `tests/e2e/rework-captures/confirmation-keyboard-1280.png`: diálogo completo y foco amarillo en Cancelar; evaluación focused=true, focusVisible=true.
+- `tests/e2e/rework-captures/risk-keyboard-1280.png`: diálogo completo y foco en Cancelar; role=dialog, modal=true, focused=true, focusVisible=true.
 
-## Pendiente documental independiente — B1
+### Pendientes documentales reportados anteriormente — B1
 
-- `leer_registro(spec-solucion)` devuelve únicamente la adenda D1–D4, con referencia a la spec base «Nivel 1 Despegue, preparación y fallos deterministas», pero sin su contenido íntegro.
-- `leer_registro(eventos)` y `leer_registro(rework)`: `No existe`.
-- `leer_conversacion`: informa 69 mensajes intermedios omitidos.
-- Core debe recuperar la spec base aprobada completa, R1–R5/A1–A4/J1–J7 y contratos API reglas v1/Assets v1, con su aprobación registrada. No se reconstruyeron a partir de README/tests ni se inventó aprobación. Estas regresiones no acreditan cumplimiento íntegro de una spec inaccesible.
-- No se cambió una interfaz pública documentada; no corresponde modificar documentación de contratos en esta corrección.
-- No se acredita prueba de duración 10–15 minutos con jugadores, revisión independiente de otra familia de modelos ni checks alojados en GitHub. Corresponden al proceso de verificación, no a esta implementación.
+- En aquella ejecución solo se recuperó la adenda D1–D4 sin base; eventos/rework no existían y conversación omitía 69 mensajes. No se reconstruyeron criterios a partir del código ni se inventó aprobación. La base está recuperada en P1, sin declarar por ello cumplimiento integral.
+- Sin cambio de interfaz pública documentada: no correspondía modificar contratos.
+- No se acreditó duración humana de 10–15 minutos, revisión independiente de otra familia de modelos ni checks alojados en GitHub.
 
-## Archivos modificados o añadidos
+### Archivos de la corrección anterior
 
-- `src/game/scenes.ts`
-- `src/styles/game.css`
-- `tests/e2e/rework.spec.ts`
-- `tests/e2e/rework-report.md`
-- `tests/e2e/rework-unit.log`, `tests/e2e/rework-unit.exit`
-- `tests/e2e/rework-build.log`, `tests/e2e/rework-build.exit`
-- `tests/e2e/rework-dev.log`, `tests/e2e/rework-dev.exit`
-- `tests/e2e/rework-preview.log`, `tests/e2e/rework-preview.exit`
-- `tests/e2e/rework-audit.json`, `tests/e2e/rework-audit.exit`
-- `tests/e2e/rework-captures/objectives-1600.png`
-- `tests/e2e/rework-captures/objectives-1280.png`
-- `tests/e2e/rework-captures/confirmation-keyboard-1280.png`
-- `tests/e2e/rework-captures/risk-keyboard-1280.png`
+- `src/game/scenes.ts`, `src/styles/game.css`, `tests/e2e/rework.spec.ts`, `tests/e2e/rework-report.md`.
+- Logs y `.exit` anteriores enumerados arriba.
+- Las cuatro capturas anteriores enumeradas en Revisión visual anterior.
 
-El hash de entrega lo devuelve Core al confirmar y se incluye en el reporte final al manager; este documento no afirma una transición ni aprobación.
+Core devuelve el hash al confirmar; este documento no afirma una transición ni aprobación.
