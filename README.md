@@ -35,15 +35,16 @@ Abre **http://localhost:5173** en el navegador (si Vite anuncia otro puerto, uti
 En otra terminal, desde la misma carpeta:
 
 ```powershell
+npm test -- --maxWorkers=2
 npm run build
-npm test
 npm run test:e2e
 ```
 
 - `build` comprueba TypeScript y genera los archivos estáticos en `dist/`. Elegir hosting y publicar son trabajos separados; no es necesario hacerlo para experimentar localmente.
-- `test` ejecuta las pruebas de configuración y de motor/aprendizaje.
+- `test` ejecuta las pruebas de configuración y de motor/aprendizaje. `--maxWorkers=2` es un argumento soportado por Vitest: limita a dos procesos de pruebas para evitar competencia de recursos. Ejecuta los tres comandos de este bloque uno después de otro, no en paralelo.
 - `test:e2e` ejecuta Chromium y arranca su propio servidor HTTP en el puerto 5173. Antes de ejecutarlo, detén el servidor de desarrollo que use ese puerto; no reutiliza un servidor abierto.
-- En una máquina con pocos recursos puedes probar `npm test -- --maxWorkers=2` para reducir concurrencia. Esto no sustituye informar de un fallo de la ejecución normal.
+
+El comando integrado recomendado arriba es aplicable en PowerShell, pero **no valida Windows** ni cambia las reglas del juego o las comprobaciones de los tests. En la sesión Linux con recursos limitados, el probador reprodujo dos fallos de `npm test` sin límite de procesos: la prueba en `tests/learning/persistence.test.ts:97` agotó su tiempo de espera de **5000 ms**. Con `npm test -- --maxWorkers=2` pasaron las 199 pruebas de Vitest y las 2 de Node. El límite reduce la competencia de recursos; no aumenta el tiempo de espera ni oculta esos fallos de la ejecución sin límite. Si el comando limitado también falla en tu equipo, conserva y comunica la salida del error; no des por comprobado el proyecto.
 
 La presentación usa BootScene, BaseScene, UIScene, LaunchScene y ResultScene, resolución lógica 1600×900, ajuste FIT y pixel art. El inventario de arte original está en [`public/assets/inventory.json`](public/assets/inventory.json).
 
