@@ -6,6 +6,7 @@ import { CHASE_STEPS, POWER_STEPS, RESPAWN_STEPS, SCATTER_STEPS, chooseGuardianA
 const samePosition = (a: Readonly<Position>, b: Readonly<Position>) => a.x === b.x && a.y === b.y;
 const CAPTURE_POINTS = [200, 400, 800, 1600] as const;
 const MAX_STEPS = 3000;
+const MAX_LIVES = 3;
 
 export function createGame(seed: number): GameState {
   const normalized = normalizeSeed(seed);
@@ -24,7 +25,7 @@ export function createGame(seed: number): GameState {
       id: (i + 1) as GuardianId, position: { ...position }, direction: 0,
       active: true, respawnRemaining: 0,
     })),
-    pills, powers: POWER_STARTS.map(p => ({ ...p })), points: 0, lives: 3,
+    pills, powers: POWER_STARTS.map(p => ({ ...p })), points: 0, lives: MAX_LIVES,
     phase: 'scatter', phaseRemaining: SCATTER_STEPS, phaseChangePending: false,
     powerRemaining: 0, captureChain: 0, status: 'running',
   };
@@ -158,4 +159,73 @@ export function step(state: GameState, action: Action): StepResult {
     }
   }
   return { state: next, events };
+}
+
+// Derivado de la misma inicialización que usa step, no de objetos presentes en la partida.
+const initialObjects = createGame(0);
+const INITIAL_OBJECT_COUNT = initialObjects.pills.length + initialObjects.powers.length;
+
+/** Distancias mínimas sobre caminos transitables (BFS), sin consumir PRNG. */
+function pathDistances(origin: Readonly<Position>): Int16Array {
+  const distances = new Int16Array(WIDTH * HEIGHT).fill(-1);
+  const queue: Position[] = [{ ...origin }];
+  distances[origin.y * WIDTH + origin.x] = 0;
+  for (let head = 0; head < queue.length; head++) {
+    const current = queue[head];
+    for (const action of [0, 1, 2, 3] as const) {
+      const next = destination(current, action);
+      if (!isWalkable(next)) continue;
+      const index = next.y * WIDTH + next.x;
+      if (distances[index] !== -1) continue;
+      distances[index] = distances[current.y * WIDTH + current.x] + 1;
+      queue.push(next);
+    }
+  }
+  return distances;
+}
+
+function nearestOffset(origin: Readonly<Position>, objects: readonly Position[], distances: Int16Array): number[] {
+  let best: Position | undefined;
+  let bestDistance = Infinity;
+  for (const object of objects) {
+    const distance = distances[object.y * WIDTH + object.x];
+    if (distance < 0) continue;
+    if (distance < bestDistance || (distance === bestDistance && best &&
+        (object.y < best.y || (object.y === best.y && object.x < best.x)))) {
+      best = object;
+      bestDistance = distance;
+    }
+  }
+  return best ? [(best.x - origin.x) / WIDTH, (best.y - origin.y) / HEIGHT] : [0, 0];
+}
+
+/**
+ * Contrato de inferencia: array nuevo de 36 números, sin mutación ni aleatoriedad.
+ * Índices: 0–1 jugador x/y; 2–17 guardianes por id (x/y/activo/vulnerable);
+ * 18–21 dirección y 22–25 legalidad, ambas en orden de Action;
+ * 26–27 desplazamiento a píldora y 28–29 a poder, por camino mínimo y empate fila/columna;
+ * 30 vidas, 31 poder restante, 32 fase (scatter=0/chase=1), 33 tiempo de fase,
+ * 34 fracción de objetos pendientes, 35 pasos restantes.
+ * x/dx se dividen por WIDTH, y/dy por HEIGHT (no dimensión menos uno).
+ * Tiempo de fase dividido por duración de la fase actual; los demás contadores por su máximo.
+ * GameState válido es serializable directamente con JSON.stringify/JSON.parse;
+ * conservar TODOS los campos, incluyendo rngState y phaseChangePending, no solo la observación.
+ */
+export function observe(state: GameState): number[] {
+  const origin = state.player.position;
+  const values = [origin.x / WIDTH, origin.y / HEIGHT];
+  for (const guardian of state.guardians) {
+    const position = guardian.active ? guardian.position : GUARDIAN_STARTS[guardian.id - 1];
+    values.push(position.x / WIDTH, position.y / HEIGHT,
+      Number(guardian.active), Number(guardian.active && state.powerRemaining > 0));
+  }
+  const legal = legalActions(state);
+  for (const action of [0, 1, 2, 3] as const) values.push(Number(state.player.direction === action));
+  for (const action of [0, 1, 2, 3] as const) values.push(Number(legal.includes(action)));
+  const distances = pathDistances(origin);
+  values.push(...nearestOffset(origin, state.pills, distances), ...nearestOffset(origin, state.powers, distances),
+    state.lives / MAX_LIVES, state.powerRemaining / POWER_STEPS, Number(state.phase === 'chase'),
+    state.phaseRemaining / (state.phase === 'scatter' ? SCATTER_STEPS : CHASE_STEPS),
+    (state.pills.length + state.powers.length) / INITIAL_OBJECT_COUNT, (MAX_STEPS - state.tick) / MAX_STEPS);
+  return values;
 }
