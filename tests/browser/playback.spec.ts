@@ -209,5 +209,5 @@ async function checkLayout(page: Page, selector: string, phase: string) {
     expect(geometry.board.x + geometry.board.width).toBeLessThanOrEqual(panel.x);
   }
   expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(geometry.canvas.y + geometry.canvas.height);
-  await page.screenshot({ path: `tests/browser/evidence/observable-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
+  await page.screenshot({ path: `tests/browser/evidence/verification-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
 }
