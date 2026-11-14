@@ -1,0 +1,22 @@
+{
+  "first": {
+    "animation": "technician-work",
+    "frame": 2,
+    "playing": true,
+    "progress": "0%",
+    "clock": "Día 1, 08:50"
+  },
+  "second": {
+    "animation": "technician-work",
+    "frame": 3,
+    "playing": true,
+    "progress": "10%",
+    "clock": "Día 1, 08:50"
+  },
+  "idle": {
+    "animation": "technician-idle",
+    "frame": 0,
+    "playing": true,
+    "clock": "Día 1, 09:30"
+  }
+}
