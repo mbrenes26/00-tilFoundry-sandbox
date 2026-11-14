@@ -25,8 +25,8 @@ export function createGame(seed: number): GameState {
       active: true, respawnRemaining: 0,
     })),
     pills, powers: POWER_STARTS.map(p => ({ ...p })), points: 0, lives: 3,
-    phase: 'scatter', phaseRemaining: SCATTER_STEPS, powerRemaining: 0, captureChain: 0,
-    status: 'running',
+    phase: 'scatter', phaseRemaining: SCATTER_STEPS, phaseChangePending: false,
+    powerRemaining: 0, captureChain: 0, status: 'running',
   };
 }
 
@@ -48,6 +48,7 @@ function resetLife(state: GameState): void {
   state.captureChain = 0;
   state.phase = 'scatter';
   state.phaseRemaining = SCATTER_STEPS;
+  state.phaseChangePending = false;
 }
 
 /** Motor puro: jugador, objetos/poder, guardianes, colisiones, final, temporizadores. */
@@ -76,10 +77,9 @@ export function step(state: GameState, action: Action): StepResult {
     events.push({ type: 'power', position: { ...position }, points: 50 });
   }
 
-  // La duración completa solo existe al iniciar o inmediatamente tras cambiar de fase.
-  // El cambio al final del paso habilita (no fuerza) inversión en el siguiente.
-  const allowReverse = state.tick > 0 && state.phaseRemaining ===
-    (state.phase === 'scatter' ? SCATTER_STEPS : CHASE_STEPS);
+  // Solo una transición real habilita inversión; iniciar o reiniciar la vida no lo hace.
+  const allowReverse = state.phaseChangePending;
+  next.phaseChangePending = false;
   // Todos los objetivos usan la misma instantánea; el id 3 no ve al id 1 ya movido.
   const targets = next.guardians.map(g => guardianTarget(next, g));
   for (let i = 0; i < next.guardians.length; i++) {
@@ -153,6 +153,7 @@ export function step(state: GameState, action: Action): StepResult {
     if (next.phaseRemaining === 0) {
       next.phase = next.phase === 'scatter' ? 'chase' : 'scatter';
       next.phaseRemaining = next.phase === 'scatter' ? SCATTER_STEPS : CHASE_STEPS;
+      next.phaseChangePending = true;
       events.push({ type: 'phase', phase: next.phase });
     }
   }

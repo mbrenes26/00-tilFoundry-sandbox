@@ -97,10 +97,11 @@ describe('M-2: fronteras, vulnerabilidad y reaparición', () => {
       if (expected[i]) expect([s.phase, s.phaseRemaining]).toEqual(expected[i]);
     }
     expect(phases).toEqual([70, 270, 340, 540]);
-    const boundary = fixture(); boundary.tick = 70; boundary.phase = 'chase'; boundary.phaseRemaining = 200;
+    const before = fixture(); before.tick = 69; before.phaseRemaining = 1;
+    const boundary = step(before, 0).state; // transición real, no inferida del contador
     boundary.player.position = { x: 8, y: 7 }; actor(boundary, { x: 9, y: 7 }, 1);
     expect(step(boundary, 3).state.guardians[0].direction).toBe(3);
-    boundary.phaseRemaining = 199;
+    boundary.phaseRemaining = 199; boundary.phaseChangePending = false;
     expect(step(boundary, 3).state.guardians[0].direction).toBe(1);
     boundary.phase = 'scatter'; boundary.phaseRemaining = 1;
     expect(step(boundary, 3).state.guardians[0].direction).toBe(1); // todavía dispersión

@@ -28,8 +28,11 @@ export interface GameState {
   points: number;
   lives: number;
   phase: Phase;
-  /** Al agotarse al final del paso cambia de fase. Duración completa y tick > 0 permiten invertir una vez. */
+  /** Al agotarse al final del paso cambia de fase. */
   phaseRemaining: number;
+  /** Cambio real de fase: permite invertir en el próximo movimiento enemigo y se consume allí.
+   * Inicial y tras muerte: false. Se conserva al serializar y en estados terminales. */
+  phaseChangePending: boolean;
   /** Se aplica antes de mover guardianes y se decrementa al final: recoger devuelve 59, tras 60 movimientos queda 0. */
   powerRemaining: number;
   captureChain: number;
