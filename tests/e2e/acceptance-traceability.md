@@ -564,3 +564,58 @@ Todas las rutas siguientes son relativas a `tests/e2e/rework-captures/`. Cada pa
 - Prueba P9 en `tests/e2e/game.spec.ts:195`: Almacén inicial almacén/a bordo: combustible 120.000/0 L; oxígeno 30.000/0 L; agua 10.000/0 L; alimentos 2000/0 kg; repuestos 50/— u. Después de diseño Equilibrada, trayectoria y carga sin reparar: 20.000/100.000 L, 24.000/6000 L, 8000/2000 L, 1600/400 kg y 50/— u. Reloj 09:30 y presupuesto 750.000. Lecturas repetidas no alteran 08:30/1.000.000 antes ni 09:30/750.000 después. Pasillo/Observación solo Cerrar, sin input/select ni acciones ficticias. Inspección visual de los cuatro Almacenes y ambos paneles Pasillo se conserva como evidencia **previa**; no se afirma haber reabierto esas seis imágenes ahora.
 - Retoma visual del Constructor completada sin cambios funcionales; al Manager le corresponde obtener/registrar la comprobación independiente del Probador de estas cuatro vistas pendientes. No se declara cierre independiente de P9 ni aprobación integral A4/J2 por este rol.
 - Solo cambia esta matriz. PNG originales, tests, escenas, assets, contrato y dependencias se conservan. No se inspeccionaron animaciones ni despegues; no se ejecutaron build, suite e2e integral ni auditoría final. Sin SQL, migraciones o servicios externos. P10–P12 y entrega siguen pendientes; no se pide transición.
+
+## P10 parcial — trabajo y despegues (J3/J5/J6)
+
+- Base Core: `c7fd6d6`, PR #7. Specs `aprobada-original` y `vigente` leídas; C-2/3/4/5/7/8 respetadas. Solo fuentes de juego y evidencia/pruebas de navegador. Sin entrenamiento, cambios de contratos, arte, dependencias o manual.
+- **Paso cortado por cuota de capturas:** el Constructor inspeccionó 12 imágenes; Core rechazó las siguientes y reservó 8 al Probador. No se declara P10 terminado ni verificación independiente. P11/P12 no se ejecutan.
+
+### J3: tareas reales y medición
+
+- Pruebas existentes, sin modificar: `npm run test:e2e -- --grep 'J3 progreso|P6 J6 frames'`, código 0, **2 passed (13.7 s)**. Doble confirmación de bomba, exclusión de otras tareas, lectura estable, costos finales; frames reales idle/work de técnico en reparación y carga, configuración FIT.
+- Sonda reproducible nueva `tests/e2e/p10-observe.mjs`, no suite de aceptación ni sustituto del Probador: con Vite HTTP local en 4173, `node tests/e2e/p10-observe.mjs work`. Tres ejecuciones código 0; primero se descubrió que el panel descriptivo ocultaba al técnico. Se cerró mediante control real durante la tarea para tomar nuevas imágenes `*-base-a/b`; se conservaron las imágenes anteriores del panel abierto. Cerrar no cancela ni cambia el tiempo.
+- Medición final desde el clic de confirmación hasta el cambio del reloj mediante MutationObserver del navegador: a 1600, bomba **2011.6 ms**, antena **2012.8 ms**, carga **2013.3 ms**; a 1280, **2013.5/2013.2/2013.9 ms**. El sondeo desde Node informa 2.31–2.47 s por capturas/esperas; no es la duración de la tarea. Fuente: `tests/e2e/p10-evidence/work-{1600,1280}.json`.
+- Telemetría antes/durante/final/estable: bomba 510→530, presupuesto 1.000.000→940.000, repuestos 50→40; antena 530→550, 940.000→900.000, repuestos 40→35. Tras diseño/trayectoria, carga 570→600, 680.000→650.000; almacén 20.000 L combustible, 24.000 L O₂, 8000 L agua, 1600 kg alimentos, 35 repuestos; a bordo 100.000/6000/2000/400. Durante cada tarea reloj/recursos intactos; doble clic y evento adicional sobre Esperar no consumen ni generan otra tarea. `busy` vuelve a false y personaje a idle; muestra estable posterior sin segundo descuento. Evidencia de resumen: comando Node registrado por Core; los JSON contienen datos completos.
+- `astronaut-work` se reproduce **solo como sonda técnica**, con `Sprite.play`, en la sala Pasillo. `BaseScene.work` no asocia astronaut-work a ninguna acción jugable. Capturas generadas, **no inspeccionadas**; no se atribuye ese trabajo al jugador.
+
+### Defectos visuales encontrados y TDD real
+
+- Inspección de ascenso original a ambos tamaños: encabezado plataforma/cohete superpuesto al cohete. Avisos durante despegue decían «La partida terminó» y mostraban riesgo de combustible insuficiente al reevaluar la carga ya consumida. No es un defecto de reglas: la instantánea ganadora sigue dando 712.
+- Test nuevo `tests/e2e/p10-launch.spec.ts`, 2 tamaños, flujo ganador completo por controles reales, sin dobles del motor. Tres comprobaciones: no mostrar diagnóstico terminal, no mostrar riesgo de combustible recalculado durante la animación y ocultar el rótulo que cruza la trayectoria. Verifica 712 y retorno del rótulo/bloqueos iniciales al reiniciar.
+- Rojo **antes de producción**: `npm run test:e2e -- --grep 'P10 lanzamiento'`, código 1, **2 failed**. Primera ejecución tenía timeout de 5 s y el resultado sustituía el DOM entre aserciones; se ajustó únicamente el timeout de las tres aserciones a 500 ms, manteniendo los requisitos. Segundo rojo código 1, **2 failed (36 s aproximadamente)**, con los tres defectos presentes: texto terminal, combustible insuficiente y `.platform-label` visible.
+- Mínimo en `src/game/scenes.ts:128,133`: ocultar rótulo solo durante animación; aviso «Despegue en curso. El diagnóstico se mostrará al finalizar.» en vez de reevaluar bloqueos/riesgos terminales. Reglas, resultados y valores no cambian.
+- Verde mismo comando, código 0, **2 passed (34.7 s)**. Regresión `npm test`, código 0, **221 passed / 4 passed**. No se presenta el trabajo ya correcto como TDD rojo/verde; solo estos defectos tienen rojo funcional real.
+
+### J5/J6: lotes separados contra Phaser real
+
+| Lote | Comando | Salida real |
+| --- | --- | --- |
+| Ganadora y reinicio | `npm run test:e2e -- --grep 'J4/J5 ganadora'` | Código 0, 1 passed (20.9 s), 712 y desglose 256/140/166/150 |
+| Cinco fallos jugables | `npm run test:e2e -- --grep 'J4/J5 fallo por'` | Código 0, 5 passed (1.2 m): ángulo, bomba, antena, clima, múltiples/combustible; causas, cancelación del aviso, total 0 y reinicio |
+| Humo/llama/ascenso éxito | `npm run test:e2e -- --grep 'P6 J6 ascenso exitoso'` | Código 0, 1 passed (20.9 s), primera observación hasta resultado 6917.0 ms |
+| Humo/llama/anomalía fallo | `npm run test:e2e -- --grep 'P6 J6 ascenso fallido'` | Código 0, 1 passed (18.3 s), primera observación hasta resultado 4006.4 ms |
+
+- Las capturas P6 se respaldaron antes de ejecutar sus dos lotes y se restauraron después; no se presentan las regeneradas como las imágenes previas inspeccionadas.
+- Capturas/telemetría finales tras corregir: `P10_OUTPUT=tests/e2e/p10-evidence/final node tests/e2e/p10-observe.mjs success` y mismo comando `failure`, ambos código 0, cada lote a 1600 y 1280. Duración navegador clic→resultado éxito **7033.4/7032.2 ms**, fallo **4011.6/4016.4 ms**. Telemetría antes de corregir queda en la raíz `p10-evidence/`; no se mezcla con la final.
+- Éxito real 10:20, $640.000, 35 repuestos, 8000 L a bordo, **712**. Fallo real de ángulo 80° (aviso y confirmación), 10:20, misma reserva/piezas, 0 L a bordo; diagnóstico **256/140/166/83**, total **0** y causa 80° frente a 72°.
+- JSON de fases registran frames humo/llama 0→1 y ascenso cohete desde y=570; fallo se detiene en y=430, tinte 0xff9955, llama invisible y texto ANOMALÍA DETECTADA. Son mediciones técnicas, **no inspección visual final**.
+- Reinicio y 2400 ms posteriores en ambos tamaños y ambos resultados: igualdad serializada exacta con estado inicial, `busy=false`, `warning=false`, solo BaseScene/UIScene activas y cero objetos en LaunchScene. Errores de consola/pageerror/requestfailed y respuestas HTTP >=400: listas vacías en los seis flujos finales de sonda (trabajo + ambos resultados, a dos tamaños).
+- Código contrastado: `scenes.ts:20` crea animaciones con `this.anims`; `:41` trabajo/idle mediante Sprite.play; `:171–172` tween/timer de 2000 ms; `:183–190` humo/llama animados, ascenso 6500 ms éxito y 2200 ms fallo, anomalía a 2200 ms, resultado a 7000/4000 ms; shutdown limpia tweens y eventos en Base/UI/Launch/Result. Búsqueda sin coincidencias de `setInterval` en ese archivo. Ninguna regla de negocio se duplica.
+
+### Imágenes efectivamente inspeccionadas y corte
+
+Las doce imágenes vistas por el Constructor, todas en `tests/e2e/p10-evidence/`:
+
+1. `work-1600-repair-pump-a.png` y `work-1600-repair-pump-b.png`: progreso visible, técnico oculto por panel descriptivo; no se afirma trabajo visible en estas imágenes.
+2. `work-1280-load-a.png` y `work-1280-load-b.png`: carga con panel abierto, barra avanza, técnico oculto.
+3. `work-1600-repair-pump-base-a.png` y `work-1600-repair-pump-base-b.png`: técnico Ingeniería completo, herramienta amarilla visible, barra pasa de inicio a aproximadamente un cuarto; ambas poses capturadas se parecen y no bastan por sí solas para afirmar cambio de frame.
+4. `work-1280-load-base-a.png` y `work-1280-load-base-b.png`: técnico Combustible completo, herramienta pequeña cambia de disposición, barra avanza. La identificación de la herramienta es poco definida en pixel art; sin recortes.
+5. `success-1600-ignition-a.png`, `success-1600-ignition-b.png`, `success-1600-ascent.png`, `success-1280-ascent.png`: llama/humo presentes; humo tapa parcialmente la llama al inicio, luego llama completa y cohete elevado. Ascenso cruza el rótulo y avisos eran contradictorios; motivan el TDD descrito. **Son imágenes antes de corregir**, no acreditan la corrección visual final.
+
+**Pendiente por cuota, sin intentar rodearla:** el Constructor no pudo ver ninguna imagen `final/`. Quedan por inspeccionar las fases de éxito corregidas, anomalía/fallo a ambos tamaños, resultados y reinicios; además trabajo de reparación a 1280, carga a 1600, antena e idle y sonda astronaut-work. Core reservó 8 capturas al Probador; el Manager debe dividir lo restante. Recomendación para sus ocho primeras: `final/success-{1600,1280}-ascent.png`, `final/failure-{1600,1280}-anomaly.png`, `work-1600-load-base-b.png`, `work-1280-repair-pump-base-b.png`, `final/success-1280-result.png`, `final/failure-1280-result.png`. No se declara inspección independiente de ningún lote.
+
+### Otros límites
+
+- Preparación de sesión: Node v22.23.5/npm 10.9.9, `npm ci && npx playwright install chromium`, código 0; necesaria para P10, no revalidación de P11 ni auditoría final. No se tocó lockfile/package.json.
+- Un intento de rojo no arrancó por puerto 4173 ocupado; se identificó y detuvo el proceso Vite propio antes del rojo efectivo. No es fallo de aceptación. No se alteró configuración Playwright.
+- No hay build/preview, suite e2e integral, entrenamiento, medición humana de duración de partida, SQL o servicios externos en este paso. No se avanzan P11/P12 ni se pide VERIFYING.
