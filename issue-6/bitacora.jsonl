@@ -138,3 +138,4 @@
 {"completado": false, "costo_usd": 0.780881, "fase": "fin", "fecha": "2026-11-14T16:59:42Z", "id": "ed2f11a62865", "rol": "manager-producto", "tipo": "ejecucion"}
 {"alerta": "ejecucion-incompleta", "detalle": "una ejecución de manager-producto terminó sin completarse", "fecha": "2026-11-14T16:59:44Z", "rol": "manager-producto", "tipo": "alerta"}
 {"fase": "inicio", "fecha": "2026-11-14T16:59:46Z", "id": "9a7994abb357", "rol": "feedback-loop", "tipo": "ejecucion"}
+{"completado": true, "costo_usd": 0.540685, "fase": "fin", "fecha": "2026-11-14T17:00:42Z", "id": "9a7994abb357", "rol": "feedback-loop", "tipo": "ejecucion"}
