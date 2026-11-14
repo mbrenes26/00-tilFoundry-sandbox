@@ -1,91 +1,81 @@
 import { test, expect } from '@playwright/test';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 
-test('HTTP: Boot carga arte, Base dibuja motor, UI informa y Launch prepara importación', async ({ page }) => {
+test('I-1: arranque HTTP, escenas, arte y configuración real', async ({ page }) => {
   const errors: string[] = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', e => errors.push(e.message));
   await page.goto('/');
-  await expect(page.locator('canvas')).toBeVisible({ timeout: 5000 });
-  await expect(page.getByRole('heading', { name: 'Observar una política' })).toBeVisible();
-  await expect(page.getByLabel('Archivo de política JSON')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lúmina' })).toBeVisible();
+  await expect(page.locator('canvas')).toBeVisible();
+  await expect(page.getByLabel('Importar política JSON')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Iniciar partida' })).toBeDisabled();
-  await expect(page.getByRole('status')).toContainText('Sin política');
-  const report = await page.evaluate(async () => {
-    // @ts-ignore Import HTTP en Chromium, no en Node.
-    const { game } = await import('/src/main.ts');
+  await expect(page.getByText('Vista previa del mapa · Sin política cargada')).toBeVisible();
+  await expect.poll(async () => page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
     const base = game.scene.getScene('BaseScene');
-    const ui = game.scene.getScene('UIScene');
-    return { size: [game.scale.width, game.scale.height], fit: game.scale.scaleMode,
-      pixelArt: game.config.pixelArt, keys: game.scene.getScenes(false).map((s: any) => s.scene.key),
-      textures: ['tiles', 'actors'].map(k => game.textures.exists(k)),
-      actorCount: base.actors.length, pillCount: base.objects.getChildren().length,
-      stats: ui.summary.text, timer: base.ambienceTimer.delay,
-      animated: base.actors.every((s: any) => s.anims.isPlaying), tick: base.state.tick };
-  });
-  expect(report).toMatchObject({ size: [1600, 900], fit: 3, pixelArt: true, textures: [true, true],
-    actorCount: 5, timer: 100, animated: true, tick: 0 });
-  expect(report.keys.sort()).toEqual(['BaseScene', 'BootScene', 'LaunchScene', 'ResultScene', 'UIScene'].sort());
-  expect(report.pillCount).toBeGreaterThan(100);
-  expect(report.stats).toContain('Vidas: 3');
-  await page.waitForTimeout(500);
-  expect(await page.evaluate(async () => {
-    // @ts-ignore
-    const { game } = await import('/src/main.ts');
-    return game.scene.getScene('BaseScene').state.tick;
-  })).toBe(0);
+    return { width: game.scale.gameSize.width, height: game.scale.gameSize.height,
+      fit: game.scale.scaleMode === 3, pixelArt: game.config.pixelArt,
+      scenes: game.scene.getScenes(false).map((s: any) => s.sys.settings.key).sort(),
+      ready: base.ready, loaded: ['actors', 'tiles'].every(k => game.textures.exists(k)),
+      animation: game.anims.exists('lumina-flutter'), tick: base.state?.tick };
+  })).toEqual({ width: 1600, height: 900, fit: true, pixelArt: true,
+    scenes: ['BaseScene', 'BootScene', 'LaunchScene', 'ResultScene', 'UIScene'],
+    ready: true, loaded: true, animation: true, tick: 0 });
+  await page.screenshot({ path: 'test-results/presentation.png', fullPage: true });
   expect(errors).toEqual([]);
-  await page.screenshot({ path: 'test-results/presentation.png' });
 });
 
-test('Base interpola un estado real, UI anima progreso y Result resume finales', async ({ page }) => {
+test('I-1: dibujo de fixture puro, indicadores, tweens, ritmo y resumen final', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Observar una política' })).toBeVisible();
-  const transition = await page.evaluate(async () => {
-    // @ts-ignore
-    const { game } = await import('/src/main.ts');
-    // @ts-ignore
-    const { step } = await import('/src/game/engine.ts');
+  await expect(page.locator('canvas')).toBeVisible();
+  await expect.poll(() => page.evaluate(async () => (await import('/src/main.ts' as string)).game.scene.getScene('BaseScene').ready)).toBe(true);
+  const result = await page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
+    const { createGame } = await import('/src/game/engine.ts' as string);
+    const state = createGame(42);
+    state.player.position = { x: 2, y: 1 }; state.points = 1230; state.tick = 120;
+    state.lives = 2; state.phase = 'chase'; state.powerRemaining = 25;
+    const before = JSON.stringify(state);
     const base = game.scene.getScene('BaseScene');
-    const next = step(base.state, 1).state;
-    base.present(next);
+    base.present(state, true);
     const ui = game.scene.getScene('UIScene');
-    return { tween: base.tweens.getTweensOf(base.actors[0]).length,
-      progressTween: ui.tweens.getTweensOf(ui.progress).length, stats: ui.summary.text, next };
+    const tweening = base.tweens.isTweening(base.playerSprite) && ui.tweens.isTweening(ui.progress);
+    let pulses = 0;
+    base.setRhythm(() => pulses++);
+    await new Promise(resolve => game.scene.getScene('LaunchScene').time.delayedCall(350, resolve));
+    base.stopRhythm();
+    return { unchanged: before === JSON.stringify(state), tweening, pulses,
+      playerX: base.playerSprite.x, expectedX: base.cellCenter(state.player.position).x,
+      animated: base.playerSprite.anims.isPlaying, tick: base.state.tick };
   });
-  expect(transition.tween).toBeGreaterThan(0);
-  expect(transition.progressTween).toBeGreaterThan(0);
-  expect(transition.stats).toContain('Puntos: 10');
-  await page.waitForTimeout(180);
-  const positions = await page.evaluate(async () => {
-    // @ts-ignore
-    const { game } = await import('/src/main.ts');
+  expect(result.unchanged).toBe(true); expect(result.tweening).toBe(true);
+  expect(result.pulses).toBeGreaterThanOrEqual(2); expect(result.animated).toBe(true);
+  expect(result.playerX).toBe(result.expectedX); expect(result.tick).toBe(120);
+  await expect(page.getByTestId('points')).toHaveText('Puntos: 1230');
+  await expect(page.getByTestId('lives')).toHaveText('Vidas: 2');
+  await expect(page.getByTestId('phase')).toHaveText('Fase: persecución');
+  await expect(page.getByTestId('power')).toHaveText('Poder: 25 pasos');
+  await expect(page.getByTestId('steps')).toHaveText('Pasos: 120 / 3000');
+  await page.evaluate(async () => {
+    const { game } = await import('/src/main.ts' as string);
     const base = game.scene.getScene('BaseScene');
-    return [base.actors[0].x, base.actors[0].y];
+    const final = structuredClone(base.state); final.status = 'timeout'; final.tick = 3000;
+    base.present(final, false);
+    game.scene.start('ResultScene', { state: final });
   });
-  expect(positions).toEqual([64 + 2 * 44 + 22, 150 + 44 + 22]);
-  for (const [status, title] of [['won', 'Laberinto completado'], ['lost', 'Sin vidas'], ['timeout', 'Límite de pasos']] as const) {
-    const summary = await page.evaluate(async ({ state, status }) => {
-      // @ts-ignore
-      const { game } = await import('/src/main.ts');
-      game.scene.stop('ResultScene');
-      game.scene.run('ResultScene', { ...state, status });
-      return new Promise<string>(resolve => game.events.once('poststep', () => resolve(game.scene.getScene('ResultScene').summary.text)));
-    }, { state: transition.next, status });
-    expect(summary).toContain(title);
-    expect(summary).toContain('Puntos: 10');
-    expect(summary).toContain('Pasos: 1');
-  }
-  await page.screenshot({ path: 'test-results/result.png' });
+  await expect(page.getByRole('heading', { name: 'Límite de pasos alcanzado' })).toBeVisible();
+  await expect(page.getByTestId('result-summary')).toContainText('1230 puntos · 2 vidas · 3000 pasos');
+  await page.screenshot({ path: 'test-results/result.png', fullPage: true });
 });
 
-test('cada recurso de pixel art tiene autor, procedencia y uso original', () => {
-  const inventory = JSON.parse(readFileSync('public/assets/inventory.json', 'utf8'));
-  expect(inventory.length).toBeGreaterThan(0);
-  expect(inventory.map((entry: any) => entry.file).sort()).toEqual(readdirSync('public/assets').filter(f => f.endsWith('.svg')).sort());
-  for (const entry of inventory) {
-    expect(entry.author).toBeTruthy();
-    expect(entry.origin).toContain('original');
-    expect(entry.use).toBeTruthy();
-    expect(readFileSync(`public/assets/${entry.file}`, 'utf8')).toContain('shape-rendering="crispEdges"');
+test('I-1: inventario original completo y APIs de presentación sin setInterval', async ({ request }) => {
+  const inventory = await (await request.get('/assets/inventory.json')).json();
+  expect(inventory.resources.map((r: any) => r.file).sort()).toEqual(['actors.svg', 'tiles.svg']);
+  for (const resource of inventory.resources) {
+    expect(resource.author).toBeTruthy(); expect(resource.provenance).toContain('original'); expect(resource.use).toBeTruthy();
+    expect((await request.get(`/assets/${resource.file}`)).ok()).toBe(true);
   }
+  const sources = ['BootScene', 'BaseScene', 'UIScene', 'LaunchScene', 'ResultScene'].map(n => readFileSync(`src/scenes/${n}.ts`, 'utf8')).join('\n');
+  expect(sources).toContain('this.anims'); expect(sources).toContain('this.tweens'); expect(sources).toContain('this.time');
+  expect(sources).not.toContain('setInterval');
 });

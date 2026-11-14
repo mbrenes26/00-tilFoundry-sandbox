@@ -1,14 +1,20 @@
 import Phaser from 'phaser';
-import type { GameState } from '../game/contracts';
-import { indicators, textStyle } from '../ui/presentation';
+import { element, statusTitles, type ResultData } from '../ui/presentation';
+
 export class ResultScene extends Phaser.Scene {
-  summary!: Phaser.GameObjects.Text;
   constructor() { super('ResultScene'); }
-  create(state: GameState): void {
+  create({ state }: ResultData): void {
     if (!state || state.status === 'running') { this.scene.stop(); return; }
-    this.add.rectangle(485, 450, 800, 470, 0x101d2c, .97).setStrokeStyle(3, 0xb4dc82);
-    const title = { won: 'Laberinto completado', lost: 'Sin vidas', timeout: 'Límite de pasos' }[state.status];
-    this.summary = this.add.text(145, 285, `${title}\n\n${indicators(state)}`, { ...textStyle, fontSize: '28px' });
-    this.add.text(145, 625, 'Fin de la partida · Sin garantía de aprendizaje', { ...textStyle, fontSize: '20px', color: '#aabcc9' });
+    this.scene.stop('LaunchScene');
+    element('launch-panel').hidden = true;
+    const panel = element('result-panel');
+    panel.hidden = false;
+    panel.replaceChildren();
+    const title = document.createElement('h2'); title.textContent = statusTitles[state.status];
+    const summary = document.createElement('p'); summary.dataset.testid = 'result-summary';
+    summary.textContent = `${state.points} puntos · ${state.lives} vidas · ${state.tick} pasos`;
+    const note = document.createElement('p'); note.textContent = 'Resumen del estado final recibido del motor. Una partida no demuestra mejora del aprendizaje.';
+    panel.append(title, summary, note);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { panel.hidden = true; });
   }
 }

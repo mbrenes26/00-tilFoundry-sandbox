@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="16" viewBox="0 0 48 16" shape-rendering="crispEdges">
-<!-- Baldosa pétrea, semilla de luz y cristal de poder: diseño original, sin recursos externos. -->
-<path fill="#233e52" d="M0 0h16v16H0z"/><path fill="#355e70" d="M1 1h14v2H1zM1 3h2v11H1z"/><path fill="#172d40" d="M3 14h12v1H3zM14 3h1v11h-1z"/><path fill="#2b4a60" d="M5 5h6v6H5z"/>
-<path fill="#d6d9ae" d="M23 7h2v2h-2z"/>
-<path fill="#80b9a2" d="M39 3h2v2h2v2h2v2h-2v2h-2v2h-2v-2h-2V9h-2V7h2V5h2z"/><path fill="#def4a8" d="M39 5h2v6h-2zM37 7h6v2h-6z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="16" viewBox="0 0 64 16" shape-rendering="crispEdges">
+<!-- Original 16px tiles: wall, path, light seed, power prism. -->
+<g><path fill="#18364b" d="M0 0h16v16H0z"/><path fill="#315b6b" d="M1 1h14v2H1zM1 3h2v11H1z"/><path fill="#102335" d="M3 13h12v2H3zM13 3h2v10h-2z"/><path fill="#244557" d="M4 5h7v6H4z"/></g>
+<path fill="#0e1a2c" d="M16 0h16v16H16z"/><path fill="#17273a" d="M18 2h1v1h-1zM29 13h1v1h-1z"/>
+<path fill="#e5eaaa" d="M39 7h2v2h-2z"/>
+<path fill="#69d8cd" d="M55 3h2v2h-2zM53 5h6v6h-6zM55 11h2v2h-2z"/><path fill="#d6ffe7" d="M55 5h2v4h-2z"/>
 </svg>

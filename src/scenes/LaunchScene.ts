@@ -1,18 +1,24 @@
 import Phaser from 'phaser';
-/** La conexión de PolicyV1 y los controles se incorporan en el siguiente paso. */
+import { element } from '../ui/presentation';
+
+/** Import/start structure only; validation and execution belong to step 10. */
 export class LaunchScene extends Phaser.Scene {
   constructor() { super('LaunchScene'); }
   create(): void {
-    const panel = document.querySelector<HTMLElement>('#launch-panel')!;
+    const panel = element('launch-panel');
     panel.hidden = false;
-    panel.innerHTML = `<h1>Observar una política</h1>
-      <label for="policy-file">Archivo de política JSON</label>
-      <div class="file-picker"><span aria-hidden="true">Seleccionar archivo</span><small aria-hidden="true">Ningún archivo seleccionado</small>
-        <input id="policy-file" type="file" accept=".json,application/json" disabled>
+    element('result-panel').hidden = true;
+    panel.innerHTML = `<h2>Observa una red neuronal</h2>
+      <p>Vista previa del mapa · Sin política cargada</p>
+      <p>La luciérnaga Lúmina recorre este laberinto junto a cuatro guardianes. Esta vista no ejecuta una partida.</p>
+      <label for="policy-file">Importar política JSON</label>
+      <div style="position:relative; margin-bottom:16px">
+        <input id="policy-file" type="file" accept=".json,application/json" disabled style="position:absolute;inset:0;opacity:0;height:100%;padding:0">
+        <button type="button" disabled aria-hidden="true">Seleccionar archivo JSON</button>
       </div>
-      <button id="start-game" type="button" disabled>Iniciar partida</button>
-      <p role="status">Sin política. Vista inicial del mapa; no es una red entrenada.</p>
-      <p>La importación se habilitará al integrar la reproducción de políticas. El entrenamiento se ejecuta por separado en tu equipo.</p>`;
-    this.events.once('shutdown', () => { panel.hidden = true; panel.replaceChildren(); });
+      <p>Ningún archivo seleccionado</p>
+      <button type="button" disabled>Iniciar partida</button>
+      <p>Importación y reproducción pendientes de integrar. No hay una red entrenada cargada ni un jugador sustituto.</p>`;
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { panel.hidden = true; });
   }
 }

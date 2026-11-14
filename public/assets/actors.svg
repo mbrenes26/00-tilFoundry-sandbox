@@ -1,13 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="192" height="16" viewBox="0 0 192 16" shape-rendering="crispEdges">
-<!-- Pixel art original de Lúmina: luciérnaga y escarabajos de cristal, dos fotogramas por actor. -->
 <defs>
-<g id="firefly"><path fill="#7faeaa" d="M2 4h4v2H2zM10 4h4v2h-4zM4 6h2v3H4zM10 6h2v3h-2z"/><path fill="#e4f3b0" d="M6 3h4v8H6z"/><path fill="#e8cf70" d="M5 10h6v3H5zM6 13h4v1H6z"/><path fill="#112b35" d="M6 4h1v1H6zM9 4h1v1H9z"/></g>
-<g id="beetle"><path fill="currentColor" d="M4 2h2v3H4zM10 2h2v3h-2zM4 5h8v7H4zM6 12h4v2H6zM2 6h2v2H2zM12 6h2v2h-2zM2 10h2v2H2zM12 10h2v2h-2z"/><path fill="#152638" d="M7 7h2v6H7z"/><path fill="#eff6dd" d="M5 5h2v2H5zM9 5h2v2H9z"/></g>
+<g id="firefly"><path fill="#a8f5cc" d="M6 4h4v8H6zM7 12h2v2H7z"/><path fill="#f4eda6" d="M6 10h4v3H6z"/><path fill="#345769" d="M6 5h1v2H6zM9 5h1v2H9z"/><path fill="#c5f7e1" d="M5 2h1v2H5zM10 2h1v2h-1z"/></g>
+<g id="sentinel"><path fill="currentColor" d="M5 3h6v2H5zM3 5h10v6H3zM5 11h6v2H5zM3 12h2v2H3zM11 12h2v2h-2z"/><path fill="#13283b" d="M5 6h2v3H5zM9 6h2v3H9z"/><path fill="#eff9e4" d="M5 6h1v1H5zM9 6h1v1H9z"/></g>
 </defs>
-<use href="#firefly"/><g transform="translate(16 0)"><use href="#firefly"/><path fill="#b2dfcd" d="M1 7h4v2H1zM11 7h4v2h-4z"/></g>
-<use href="#beetle" x="32" color="#d97f98"/><use href="#beetle" x="48" y="-1" color="#e69dad"/>
-<use href="#beetle" x="64" color="#7bb9df"/><use href="#beetle" x="80" y="-1" color="#9acfeb"/>
-<use href="#beetle" x="96" color="#ae91de"/><use href="#beetle" x="112" y="-1" color="#c5abea"/>
-<use href="#beetle" x="128" color="#e2ac6e"/><use href="#beetle" x="144" y="-1" color="#efd197"/>
-<use href="#beetle" x="160" color="#8cd2aa"/><use href="#beetle" x="176" y="-1" color="#c7eed4"/>
+<g><path fill="#66aeba" d="M2 4h3v5H2zM11 4h3v5h-3z"/><use href="#firefly"/></g>
+<g transform="translate(16)"><path fill="#8acfd1" d="M1 7h4v3H1zM11 7h4v3h-4z"/><use href="#firefly"/></g>
+<g transform="translate(32)" color="#ef9f78"><use href="#sentinel"/></g>
+<g transform="translate(48)" color="#ef9f78"><use href="#sentinel" transform="translate(0 -1)"/></g>
+<g transform="translate(64)" color="#ae9aec"><use href="#sentinel"/></g>
+<g transform="translate(80)" color="#ae9aec"><use href="#sentinel" transform="translate(0 -1)"/></g>
+<g transform="translate(96)" color="#70c1e8"><use href="#sentinel"/></g>
+<g transform="translate(112)" color="#70c1e8"><use href="#sentinel" transform="translate(0 -1)"/></g>
+<g transform="translate(128)" color="#e1bd73"><use href="#sentinel"/></g>
+<g transform="translate(144)" color="#e1bd73"><use href="#sentinel" transform="translate(0 -1)"/></g>
+<g transform="translate(160)" color="#72b28c"><use href="#sentinel"/><path fill="#f5efab" d="M7 10h2v1H7z"/></g>
+<g transform="translate(176)" color="#a4d6aa"><use href="#sentinel" transform="translate(0 -1)"/><path fill="#f5efab" d="M7 9h2v1H7z"/></g>
 </svg>

@@ -1,5 +1,14 @@
 import type { GameState } from '../game/contracts';
-export const textStyle = { fontFamily: 'monospace', fontSize: '24px', color: '#dce8ee', lineSpacing: 14 };
-export function indicators(state: GameState): string {
-  return `Puntos: ${state.points}\nVidas: ${state.lives}\nFase: ${state.phase === 'scatter' ? 'Dispersión' : 'Persecución'}\nPoder: ${state.powerRemaining} pasos\nPasos: ${state.tick}`;
+
+/** Presentation consumes the shared state. It never chooses an action or advances rules. */
+export const STATE_PRESENTED = 'state-presented';
+export interface ResultData { state: GameState }
+export function element(id: string): HTMLElement {
+  const found = document.getElementById(id);
+  if (!found) throw new Error(`Falta el contenedor de interfaz: ${id}`);
+  return found;
 }
+export const statusTitles = {
+  running: 'Partida en curso', won: 'Laberinto iluminado',
+  lost: 'Sin vidas restantes', timeout: 'Límite de pasos alcanzado',
+} as const;
