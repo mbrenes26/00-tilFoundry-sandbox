@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { containsPoint, randomStarPosition } from '../../src/game/geometry';
+import { containsPoint, randomStarPosition, starCaptureRects } from '../../src/game/geometry';
 
 const area = { x: 120, y: 240, width: 1360, height: 540 };
 const size = 200;
@@ -56,5 +56,25 @@ describe('juego-2: zona visible y azar inyectado', () => {
         y: zone.y + (y / 32 - 0.5) * size }), `${x},${y}`).toBe(false);
     }
     expect(containsPoint(zone, { x: NaN, y: zone.y })).toBe(false);
+  });
+});
+
+// La inspección de navegador consume la misma geometría que containsPoint.
+describe('juego-2/5: geometría efectiva inspeccionable', () => {
+  it.each([100, 224, 44 / (360 / 1600)])('expone el contorno usado para capturar a tamaño %s', size => {
+    const zone = { x: 400, y: 440, size };
+    const rects = starCaptureRects(zone);
+    expect(rects).toHaveLength(3);
+    expect(Math.min(...rects.map(r => r.x))).toBe(zone.x - size / 2);
+    expect(Math.max(...rects.map(r => r.right))).toBe(zone.x + size / 2);
+    expect(Math.min(...rects.map(r => r.y))).toBe(zone.y - size / 2);
+    expect(Math.max(...rects.map(r => r.bottom))).toBe(zone.y + size / 2);
+    for (let y = -1; y <= 32; y++) for (let x = -1; x <= 32; x++) {
+      const point = { x: zone.x + ((x + 0.5) / 32 - 0.5) * size,
+        y: zone.y + ((y + 0.5) / 32 - 0.5) * size };
+      const inside = rects.some(r => point.x >= r.x && point.x <= r.right
+        && point.y >= r.y && point.y <= r.bottom);
+      expect(containsPoint(zone, point)).toBe(inside);
+    }
   });
 });
