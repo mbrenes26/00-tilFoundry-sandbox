@@ -29,6 +29,8 @@ export type RandomSource = () => number;
 
 export interface GameState {
   readonly config: GameConfig;
+  /** Generación de la partida; cambia al reiniciar para invalidar trabajo pendiente. */
+  readonly sessionId: number;
   readonly status: 'playing' | 'finished';
   readonly score: number;
   readonly misses: number;
@@ -36,8 +38,16 @@ export interface GameState {
   readonly processedEventIds: readonly string[];
 }
 
-/** Id único por evento físico; starId identifica lo que se vio al recibirlo. */
+/** Identidades tomadas al recibir el evento, no al procesarlo después. */
 export interface CaptureInput extends Point {
   readonly eventId: string;
+  readonly sessionId: number;
   readonly starId: number;
+}
+
+/** Tiempo activo acumulado y muestra del reloj monotónico externo. */
+export interface GameClock {
+  readonly activeMs: number;
+  readonly sampledAt: number;
+  readonly paused: boolean;
 }

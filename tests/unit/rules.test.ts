@@ -1,13 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { advanceGame, captureStar, durationForScore, startGame } from '../../src/game/rules';
+import { advanceGame, captureStar, durationForScore, restartGame, startGame } from '../../src/game/rules';
 import type { GameState } from '../../src/game/types';
 
 const config = { area: { x: 100, y: 250, width: 1400, height: 550 }, starSize: 200 };
 const random = () => 0.5;
 const start = (now = 0) => startGame(config, now, random);
 const hit = (state: GameState, now: number, eventId: string) => captureStar(state, {
-  eventId, starId: state.star!.id, x: state.star!.x, y: state.star!.y,
+  eventId, sessionId: state.sessionId, starId: state.star!.id, x: state.star!.x, y: state.star!.y,
 }, now, random);
 
 // La API recibe tiempo del reloj del juego, no consulta el reloj global.
@@ -34,19 +34,19 @@ describe('juego-2: captura e identidad de entradas', () => {
     expect(next).toMatchObject({ score: 1, misses: 0 });
     expect(next.star).toMatchObject({ id: 2, startedAt: 100, durationMs: 1900 });
     expect(state).toEqual(snapshot);
-    expect(captureStar(next, { eventId: 'a', starId: 1, x: 800, y: 525 }, 101, random)).toBe(next);
+    expect(captureStar(next, { eventId: 'a', sessionId: 1, starId: 1, x: 800, y: 525 }, 101, random)).toBe(next);
     // Ni siquiera reasignar el id de la estrella permite reutilizar el evento.
     expect(hit(next, 102, 'a')).toBe(next);
   });
 
   it('captura en el borde visible', () => {
     const state = start();
-    expect(captureStar(state, { eventId: 'edge', starId: 1, x: 700, y: 425 }, 1, random).score).toBe(1);
+    expect(captureStar(state, { eventId: 'edge', sessionId: 1, starId: 1, x: 700, y: 425 }, 1, random).score).toBe(1);
   });
 
   it('tocar fuera no altera puntos, fallos, estrella ni plazo, y consume la identidad del evento', () => {
     const state = start();
-    const next = captureStar(state, { eventId: 'outside', starId: 1, x: 0, y: 0 }, 500, random);
+    const next = captureStar(state, { eventId: 'outside', sessionId: 1, starId: 1, x: 0, y: 0 }, 500, random);
     expect(next.score).toBe(0);
     expect(next.misses).toBe(0);
     expect(next.star).toEqual(state.star);
@@ -55,7 +55,7 @@ describe('juego-2: captura e identidad de entradas', () => {
 
   it('ignora entradas dirigidas a una estrella anterior', () => {
     const next = hit(start(), 100, 'a');
-    const stale = captureStar(next, { eventId: 'b', starId: 1, x: 800, y: 525 }, 101, random);
+    const stale = captureStar(next, { eventId: 'b', sessionId: 1, starId: 1, x: 800, y: 525 }, 101, random);
     expect(stale.score).toBe(1);
     expect(stale.star).toEqual(next.star);
   });
@@ -97,7 +97,7 @@ describe('juego-3: duración y vencimiento', () => {
   it('una actualización previa al clic no deja capturar la sucesora con una entrada vieja', () => {
     const initial = start();
     const expired = advanceGame(initial, 2000, random);
-    const state = captureStar(expired, { eventId: 'late', starId: 1, x: 800, y: 525 }, 2000, random);
+    const state = captureStar(expired, { eventId: 'late', sessionId: 1, starId: 1, x: 800, y: 525 }, 2000, random);
     expect(state).toMatchObject({ score: 0, misses: 1 });
     expect(state.star).toEqual(expired.star);
   });
@@ -117,7 +117,7 @@ describe('juego-3: duración y vencimiento', () => {
     }
     expect(state).toMatchObject({ status: 'finished', star: null });
     expect(advanceGame(state, 100000, random)).toBe(state);
-    expect(captureStar(state, { eventId: 'ended', starId: 3, x: 800, y: 525 }, 100000, random)).toBe(state);
+    expect(captureStar(state, { eventId: 'ended', sessionId: 1, starId: 3, x: 800, y: 525 }, 100000, random)).toBe(state);
   });
 
   it('conserva puntaje, fallos, duración e ids en secuencias largas de aciertos y vencimientos', () => {
@@ -136,5 +136,42 @@ describe('juego-3: duración y vencimiento', () => {
     expect(state.star!.id).toBe(203);
     state = advanceGame(state, now + 500, random);
     expect(state).toMatchObject({ status: 'finished', score: 200, misses: 3, star: null });
+  });
+});
+
+describe('juego-4: reinicio y aislamiento de partidas', () => {
+  it.each(['playing', 'finished'] as const)('reinicia desde %s sin conservar recursos anteriores', (status) => {
+    let previous = hit(start(100), 200, 'used');
+    previous = advanceGame(previous, 2100, random);
+    if (status === 'finished') {
+      previous = advanceGame(previous, 4000, random);
+      previous = advanceGame(previous, 5900, random);
+      expect(previous).toMatchObject({ status: 'finished', score: 1, misses: 3, star: null });
+    }
+    const snapshot = structuredClone(previous);
+    const state = restartGame(previous, 9000, random);
+    expect(state).toMatchObject({ status: 'playing', score: 0, misses: 0, processedEventIds: [] });
+    expect(state.sessionId).toBe(previous.sessionId + 1);
+    expect(state.star).toMatchObject({ id: 1, startedAt: 9000, durationMs: 2000 });
+    expect(previous).toEqual(snapshot);
+    // El mismo id físico puede usarse en la nueva partida; los pendientes viejos no.
+    expect(hit(state, 9001, 'used').score).toBe(1);
+    const pending = { sessionId: previous.sessionId, eventId: 'pending', starId: 1, x: 800, y: 525 };
+    expect(captureStar(state, pending, 999999, random)).toBe(state);
+    expect(advanceGame(state, 999999, random, previous.sessionId)).toBe(state);
+    expect(advanceGame(state, 10999, random, state.sessionId)).toBe(state);
+    expect(advanceGame(state, 11000, random, state.sessionId).misses).toBe(1);
+  });
+
+  it('aísla entradas y callbacks de múltiples reinicios, incluso con ids de estrella repetidos', () => {
+    const original = start();
+    let state = original;
+    for (let i = 1; i <= 10; i++) state = restartGame(state, i * 100, random);
+    expect(state.sessionId).toBe(11);
+    for (let sessionId = 1; sessionId <= 10; sessionId++) {
+      expect(captureStar(state, { sessionId, eventId: 'stale', starId: 1, x: 800, y: 525 }, 100000, random)).toBe(state);
+      expect(advanceGame(state, 100000, random, sessionId)).toBe(state);
+    }
+    expect(hit(state, 1001, 'fresh').score).toBe(1);
   });
 });
