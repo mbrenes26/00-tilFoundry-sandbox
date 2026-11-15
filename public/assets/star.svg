@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" viewBox="0 0 64 32" shape-rendering="crispEdges">
+  <defs>
+    <g id="star">
+      <path fill="#80553b" d="M12 0h8v8h4v4h8v8h-8v4h-4v8h-8v-8H8v-4H0v-8h8V8h4z"/>
+      <path fill="#ffcf50" d="M14 2h4v8h4v4h8v4h-8v4h-4v8h-4v-8h-4v-4H2v-4h8v-4h4z"/>
+      <path fill="#fff1b8" d="M14 4h4v8h-4zM6 14h8v4H6z"/>
+      <path fill="#18233b" d="M12 16h2v4h-2zM20 16h2v4h-2zM14 22h6v2h-6z"/>
+    </g>
+  </defs>
+  <use href="#star"/>
+  <use href="#star" x="32"/>
+  <path fill="#ffffff" d="M46 4h4v8h-4zM38 14h8v4h-8z"/>
+</svg>

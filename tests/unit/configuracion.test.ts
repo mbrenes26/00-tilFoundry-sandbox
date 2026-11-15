@@ -46,3 +46,27 @@ describe('juego-7: ejecución reproducible por HTTP', () => {
     }
   });
 });
+
+describe('juego-6: integración Phaser y procedencia', () => {
+  it('registra las cinco escenas y mantiene la configuración lógica', () => {
+    const main = read('src/main.ts');
+    for (const scene of ['BootScene', 'BaseScene', 'UIScene', 'LaunchScene', 'ResultScene']) {
+      expect(main).toContain(scene);
+      expect(read(`src/scenes/${scene}.ts`)).toContain(`class ${scene}`);
+    }
+    expect(main).toMatch(/width: 1600/);
+    expect(main).toMatch(/height: 900/);
+    expect(main).toContain('Phaser.Scale.FIT');
+    expect(main).toContain('pixelArt: true');
+  });
+  it('consume reglas puras y usa animaciones, tweens y reloj de escena', () => {
+    const scene = read('src/scenes/LaunchScene.ts');
+    for (const api of ['captureStar(', 'advanceGame(', 'startGame(', 'createClock(', 'setPaused(', 'this.time.', 'this.tweens.', 'this.anims.']) expect(scene).toContain(api);
+    for (const name of ['BootScene', 'BaseScene', 'UIScene', 'LaunchScene', 'ResultScene']) expect(read(`src/scenes/${name}.ts`)).not.toContain('setInterval');
+    for (const asset of ['star.svg', 'background.svg']) {
+      expect(read(`public/assets/${asset}`)).toContain('shape-rendering="crispEdges"');
+      expect(read('public/assets/PROCEDENCIA.md')).toContain(asset);
+      expect(read('src/scenes/BootScene.ts')).toContain(asset);
+    }
+  });
+});
