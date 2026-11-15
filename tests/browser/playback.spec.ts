@@ -243,3 +243,5 @@ async function checkLayout(page: Page, selector: string, phase: string) {
 
 // Focused art regression; evidence uses new paths and preserves prior diagnosis.
 import "./evidence/firefly-art";
+
+import "./evidence/firefly-silhouette";
