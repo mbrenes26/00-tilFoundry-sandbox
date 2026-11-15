@@ -40,6 +40,7 @@ for (const [width, height] of [[1280, 720], [1600, 900], [360, 800], [390, 844]]
       const measurements: unknown[] = [];
       const observedFrames = new Set<string | number>();
       async function measure(screen: string) {
+        if (screen === 'partida') await expect(page.getByRole('button', { name: 'Atrapar estrella', exact: true })).toBeVisible();
         const data = await page.evaluate(() => {
           const elements = Array.from(document.querySelectorAll<HTMLElement>('h1, .game-card p, .game-card h2, button, .game-hud span, .game-note'));
           return {

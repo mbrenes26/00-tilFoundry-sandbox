@@ -207,3 +207,67 @@ for (const touch of [false, true]) {
     });
   });
 }
+
+for (const touch of [false, true]) {
+  test.describe(touch ? 'teclado en teléfono emulado' : 'teclado en escritorio', () => {
+    test.use({ viewport: touch ? { width: 360, height: 800 } : { width: 1280, height: 720 }, hasTouch: touch });
+    test('juego-2/3/5: acción accesible, repetición, frontera, pausa y reinicio', async ({ page }) => {
+      await prepare(page, 0.5, touch);
+      const action = page.getByRole('button', { name: 'Atrapar estrella', exact: true });
+      await expect(action).toBeVisible();
+      await page.keyboard.press('Tab');
+      await expect(action).toBeFocused();
+      expect(await action.evaluate(el => getComputedStyle(el).outlineStyle)).toBe('solid');
+      await page.keyboard.down('Enter');
+      await status(page, 1, 0);
+      await page.keyboard.down('Enter'); // repeat=true: no captura la sucesora.
+      await status(page, 1, 0);
+      await page.keyboard.up('Enter');
+      await page.keyboard.press('Space');
+      await status(page, 2, 0);
+      await action.evaluate(el => {
+        const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+        el.dispatchEvent(event);
+        el.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+        el.dispatchEvent(event); // misma identidad aun después de soltar.
+        el.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+      });
+      await status(page, 3, 0);
+      await now(page, 1700);
+      await page.keyboard.press('Enter');
+      await status(page, 3, 1); // vencimiento prevalece sin frame intermedio.
+      await page.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      await now(page, 10000);
+      await page.keyboard.press('Space');
+      await status(page, 3, 1);
+      await page.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      await page.keyboard.press('Space');
+      await status(page, 4, 1);
+      const oldControl = await action.elementHandle();
+      await now(page, 11600);
+      await page.clock.runFor(32);
+      await status(page, 4, 2);
+      await now(page, 13200);
+      await page.clock.runFor(32);
+      await expect(action).toHaveCount(0);
+      await page.getByRole('button', { name: 'Jugar otra vez' }).click();
+      await page.clock.runFor(32);
+      await status(page, 0, 0);
+      await oldControl!.evaluate(el => {
+        el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        (el as HTMLButtonElement).click();
+      });
+      await status(page, 0, 0);
+      await expect(action).toHaveCount(1);
+      await action.focus();
+      await page.keyboard.press('Enter');
+      await status(page, 1, 0);
+    });
+  });
+}

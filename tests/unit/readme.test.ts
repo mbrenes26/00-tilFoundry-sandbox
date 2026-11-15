@@ -9,3 +9,8 @@ it('juego-7: presenta las pantallas y los controles como disponibles, no futuros
   }
   expect(introduction).not.toMatch(/primer paso|siguientes pasos|juego previsto|todavía no están activos/i);
 });
+
+ it('documenta la acción accesible y el teclado', () => {
+  const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
+  for (const text of ['Atrapar estrella', 'Tab', 'Enter', 'Espacio']) expect(doc).toContain(text);
+});

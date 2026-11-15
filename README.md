@@ -1,8 +1,8 @@
 # Atrapa la estrella
 
-Minijuego web en español para una persona, con ratón o pantalla táctil.
+Minijuego web en español para una persona, con ratón, pantalla táctil o teclado.
 
-El juego incluye una pantalla de inicio con «Jugar», una partida con una estrella activa e indicadores de puntos y fallos, y una pantalla de resultado con el puntaje final y «Jugar otra vez». Los botones y la estrella responden a clic o toque. Las reglas y los controles disponibles se explican abajo.
+El juego incluye una pantalla de inicio con «Jugar», una partida con una estrella activa e indicadores de puntos y fallos, y una pantalla de resultado con el puntaje final y «Jugar otra vez». Los botones y la estrella responden a clic o toque. Durante la partida, pulsa Tab para enfocar «Atrapar estrella» y Enter o Espacio para capturar la estrella actual. El foco tiene un contorno visible; mantener una tecla pulsada no captura estrellas sucesivas. La acción también admite clic o toque y respeta el vencimiento y la pausa al ocultar la pestaña. Las reglas y los controles disponibles se explican abajo.
 
 ## Instalación y desarrollo
 

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { advanceGame, captureStar, startGame } from '../game/rules';
 import { createClock, gameTime, setPaused } from '../game/clock';
 import type { GameClock, GameState } from '../game/types';
-import { background } from './BaseScene';
+import { background, layer } from './BaseScene';
 import { UIScene } from './UIScene';
 import { playLayout } from '../ui/layout';
 
@@ -30,16 +30,45 @@ export class LaunchScene extends Phaser.Scene {
     this.star = this.add.sprite(0, 0, 'star', 0).setDisplaySize(layout.starSize, layout.starSize).play('twinkle');
     this.progress = this.add.rectangle(800, 760, 1000, 16, 0xffcf50);
     this.scene.launch('UIScene');
-    const capture = (pointer: Phaser.Input.Pointer) => {
+    // Todas las entradas comparten identidad, reglas puras y reloj activo.
+    const captureEvent = (event: object, x: number, y: number) => {
       if (this.clock.paused || !this.state.star) return;
-      let eventId = this.eventIds.get(pointer.event);
-      if (!eventId) { eventId = String(++this.sequence); this.eventIds.set(pointer.event, eventId); }
+      let eventId = this.eventIds.get(event);
+      if (!eventId) { eventId = String(++this.sequence); this.eventIds.set(event, eventId); }
       this.state = captureStar(this.state, {
-        x: pointer.x, y: pointer.y, eventId,
+        x, y, eventId,
         sessionId: this.state.sessionId, starId: this.state.star.id,
       }, gameTime(this.clock, performance.now()), Math.random);
       this.render();
     };
+    const capture = (pointer: Phaser.Input.Pointer) => captureEvent(pointer.event, pointer.x, pointer.y);
+    const controls = layer(this, 'game-action');
+    const action = document.createElement('button');
+    action.type = 'button';
+    action.textContent = 'Atrapar estrella';
+    controls.append(action);
+    const held = new Set<string>();
+    const activate = (event: Event) => {
+      const star = this.state.star;
+      if (star) captureEvent(event, star.x, star.y);
+    };
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault(); // Evita el clic nativo adicional y el desplazamiento.
+      if (event.repeat || held.has(event.key)) return;
+      held.add(event.key);
+      activate(event);
+    };
+    const keyup = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      held.delete(event.key);
+    };
+    const blur = () => held.clear();
+    action.addEventListener('click', activate);
+    action.addEventListener('keydown', keydown);
+    action.addEventListener('keyup', keyup);
+    action.addEventListener('blur', blur);
     const visibility = () => {
       this.clock = setPaused(this.clock, performance.now(), document.hidden);
       this.tweens.getTweensOf(this.progress).forEach(tween => document.hidden ? tween.pause() : tween.resume());
@@ -49,6 +78,11 @@ export class LaunchScene extends Phaser.Scene {
     document.addEventListener('visibilitychange', visibility);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       document.removeEventListener('visibilitychange', visibility);
+      action.removeEventListener('click', activate);
+      action.removeEventListener('keydown', keydown);
+      action.removeEventListener('keyup', keyup);
+      action.removeEventListener('blur', blur);
+      held.clear();
       this.input.off('pointerdown', capture);
       this.deadline?.remove(false);
       this.time.removeAllEvents();
