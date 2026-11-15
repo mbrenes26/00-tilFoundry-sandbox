@@ -118,11 +118,12 @@ for (const [width, height] of [[1280, 720], [1600, 900], [360, 800], [390, 844]]
           expect(observed.camera).toEqual({ scrollX: 0, scrollY: 0, zoom: 1, rotation: 0 });
           observedFrames.add(observed.frame.name);
           const rects = starCaptureRects(observed.star);
-          for (const pixel of observed.pixels) {
-            expect(rects.some(r => pixel.x >= r.x && pixel.x <= r.right
-              && pixel.y >= r.y && pixel.y <= r.bottom),
-            `fotograma ${observed.frame.name}, píxel ${pixel.x},${pixel.y}`).toBe(pixel.opaque);
-          }
+          // Una sola aserción conserva el examen exhaustivo de los 1024 píxeles,
+          // sin generar miles de pasos Playwright y adjuntos de trazas por partida.
+          const mismatches = observed.pixels.filter(pixel =>
+            rects.some(r => pixel.x >= r.x && pixel.x <= r.right
+              && pixel.y >= r.y && pixel.y <= r.bottom) !== pixel.opaque);
+          expect(mismatches.length, `fotograma ${observed.frame.name}: visible / captura; primeros desacuerdos: ${JSON.stringify(mismatches.slice(0, 3))}`).toBe(0);
           const interactive = { x: Math.min(...rects.map(r => r.x)), y: Math.min(...rects.map(r => r.y)),
             width: Math.max(...rects.map(r => r.right)) - Math.min(...rects.map(r => r.x)),
             height: Math.max(...rects.map(r => r.bottom)) - Math.min(...rects.map(r => r.y)) };
@@ -154,7 +155,9 @@ for (const [width, height] of [[1280, 720], [1600, 900], [360, 800], [390, 844]]
             css: { visible: project(observed.visible), interactive: project(interactive), area } });
         }
         measurements.push({ screen, canvas, ...data });
-        await page.screenshot({ path: info.outputPath(`${screen}-${measurements.length}.png`) });
+        const screenshot = info.outputPath(`${screen}-${measurements.length}.png`);
+        await page.screenshot({ path: screenshot });
+        await info.attach(`${screen}-${measurements.length}`, { path: screenshot, contentType: 'image/png' });
         return canvas;
       }
       await measure('inicio');
