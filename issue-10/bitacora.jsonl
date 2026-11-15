@@ -7,3 +7,4 @@
 {"completado": true, "costo_usd": 0.013825, "fase": "fin", "fecha": "2026-11-15T01:42:55Z", "id": "79ea0f587bcd", "rol": "manager-producto", "tipo": "ejecucion"}
 {"fase": "inicio", "fecha": "2026-11-15T01:44:19Z", "id": "62d13ddee65c", "rol": "manager-producto", "tipo": "ejecucion"}
 {"estado": "DISCOVERING", "fecha": "2026-11-15T01:44:21Z", "intensidad": 0.8, "tipo": "sentimiento", "tono": "neutro"}
+{"actor": "agente:manager-producto", "aprobacion": null, "desde": "DISCOVERING", "fecha": "2026-11-15T01:44:31Z", "hacia": "CANCELLED", "motivo": "Rol: manager-producto. La persona pidió explícitamente cancelar el issue-10 en el comentario #9: «Cancelar este pedido. No lo necesito». No hay spec aprobada ni PR; se solicita cerrar el trabajo sin implementar.", "riesgo": "medium", "tipo": "evento", "trabajo": "issue-10"}
