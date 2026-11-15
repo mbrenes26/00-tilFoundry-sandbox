@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atrapa la estrella</title>
+    <link rel="icon" href="data:," />
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #11182a; color: #fff; font-family: system-ui, sans-serif; }
+      main { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
+      h1 { margin: 16px; font-size: clamp(24px, 4vw, 40px); text-align: center; }
+      #game { width: 100%; flex: 1; min-height: 0; }
+      canvas { display: block; image-rendering: pixelated; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Atrapa la estrella</h1>
+      <div id="game" aria-label="Área de juego"></div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
