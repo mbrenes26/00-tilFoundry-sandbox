@@ -218,3 +218,4 @@
 {"fase": "inicio", "fecha": "2026-11-15T01:51:00Z", "id": "59d30e81e595", "rol": "manager-producto", "tipo": "ejecucion"}
 {"estado": "DISCOVERING", "fecha": "2026-11-15T01:51:01Z", "intensidad": 0.0, "tipo": "sentimiento", "tono": "neutro"}
 {"comentario": 6887578212, "estimado": 2.0, "fecha": "2026-11-15T01:53:41Z", "margen": 0.3, "tipo": "estimacion", "total": 2.6}
+{"completado": true, "costo_usd": 0.243216, "fase": "fin", "fecha": "2026-11-15T01:54:04Z", "id": "59d30e81e595", "rol": "manager-producto", "tipo": "ejecucion"}
