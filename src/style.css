@@ -1,0 +1,45 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #e7f4f3; background: #050b16; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1600px; margin: auto; }
+header { padding: 15px 4%; display: flex; align-items: baseline; gap: 24px; }
+h1 { color: #a8f5cc; font-size: 32px; margin: 0; letter-spacing: 3px; }
+header p, footer { color: #9cafc6; font-size: 14px; }
+#stage { position: relative; aspect-ratio: 16 / 9; width: 100%; }
+#game { position: absolute; inset: 0; }
+canvas { display: block; image-rendering: pixelated; }
+#hud { position: absolute; top: 3%; left: 5%; width: 90%; display: flex; flex-wrap: wrap; gap: 2%; font-size: clamp(9px, 1.35vw, 21px); padding: 1.3%; border: 1px solid #274757; border-radius: 8px; background: #101e30; }
+#hud span { white-space: nowrap; }
+.panel { position: absolute; top: 21%; left: 60%; width: 34%; padding: 2.2%; background: #111f31; border: 1px solid #355266; border-radius: 12px; font-size: clamp(10px, 1.2vw, 19px); }
+.panel h2 { margin-top: 0; color: #a8f5cc; font-size: clamp(14px, 1.8vw, 28px); }
+.panel p { line-height: 1.55; color: #bccdde; }
+label { display: block; margin-bottom: 12px; }
+input { max-width: 100%; width: 100%; font: inherit; padding: 10px 0; }
+button { width: 100%; padding: 12px; border: 1px solid #90dabb; border-radius: 6px; background: #a8f5cc; color: #0b1c22; font: inherit; font-weight: 600; }
+button:disabled { background: #28394b; color: #a4b1c0; border-color: #425a6c; cursor: not-allowed; }
+footer { padding: 12px 4%; }
+[hidden] { display: none !important; }
+
+/* Playback controls remain readable and contained at FIT sizes. */
+.panel { max-height: 74%; overflow-y: auto; overscroll-behavior: contain; }
+.panel button, .panel select { margin-bottom: 10px; }
+select { width: 100%; font: inherit; padding: 8px; color: #e7f4f3; background: #28394b; border: 1px solid #90dabb; border-radius: 6px; }
+#policy-message, #seed-message { overflow-wrap: anywhere; }
+#seed-message:empty { display: none; }
+/* On phones the canvas keeps its logical FIT resolution. The HUD and panels
+   flow below it; only the document scrolls, never a clipped control panel.
+   The 1600×900 FIT canvas is twice the phone width. Only unused right-hand
+   scenery is clipped, not the map; BaseScene pans its camera accordingly. */
+@media (max-width: 760px) {
+  header { flex-direction: column; gap: 0; }
+  header p { margin-bottom: 0; }
+  #stage { aspect-ratio: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; overflow: hidden; }
+  #game { position: relative; inset: auto; min-width: 0; width: 200%; aspect-ratio: 16 / 9; }
+  #hud { position: static; width: auto; margin: 0 12px; padding: 12px;
+    font-size: 14px; line-height: 1.5; gap: 8px 16px; }
+  .panel { position: static; width: auto; margin: 0 12px;
+    max-height: none; overflow: visible; font-size: 16px; padding: 16px; }
+  .panel h2 { font-size: 22px; }
+  .panel button, .panel select, .panel input:not([hidden]) { min-height: 44px; }
+  label { margin-bottom: 8px; }
+}
