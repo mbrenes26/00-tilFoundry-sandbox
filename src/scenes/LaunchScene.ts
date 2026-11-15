@@ -4,6 +4,7 @@ import { createClock, gameTime, setPaused } from '../game/clock';
 import type { GameClock, GameState } from '../game/types';
 import { background } from './BaseScene';
 import { UIScene } from './UIScene';
+import { playLayout } from '../ui/layout';
 
 export class LaunchScene extends Phaser.Scene {
   private state!: GameState;
@@ -23,9 +24,10 @@ export class LaunchScene extends Phaser.Scene {
     this.sequence = 0;
     this.renderedId = -1;
     this.clock = createClock(performance.now(), document.hidden);
-    this.state = startGame({ area: { x: 112, y: 200, width: 1376, height: 480 }, starSize: 224 }, 0, Math.random, this.generation);
+    const layout = playLayout(this.game.canvas.getBoundingClientRect().width / 1600);
+    this.state = startGame(layout, 0, Math.random, this.generation);
     if (!this.anims.exists('twinkle')) this.anims.create({ key: 'twinkle', frames: [{ key: 'star', frame: 0 }, { key: 'star', frame: 1 }], frameRate: 4, repeat: -1 });
-    this.star = this.add.sprite(0, 0, 'star', 0).setDisplaySize(224, 224).play('twinkle');
+    this.star = this.add.sprite(0, 0, 'star', 0).setDisplaySize(layout.starSize, layout.starSize).play('twinkle');
     this.progress = this.add.rectangle(800, 760, 1000, 16, 0xffcf50);
     this.scene.launch('UIScene');
     const capture = (pointer: Phaser.Input.Pointer) => {

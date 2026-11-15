@@ -5,22 +5,8 @@ import { UIScene } from './scenes/UIScene';
 import { LaunchScene } from './scenes/LaunchScene';
 import { ResultScene } from './scenes/ResultScene';
 
-// Los controles HTML conservan su tamaño CSS aunque el lienzo use FIT.
-const style = document.createElement('style');
-style.textContent = `
-  main { height: 100dvh; min-height: 0; overflow: hidden; }
-  #game { position: relative; overflow: hidden; }
-  .game-layer { position: absolute; inset: 0; pointer-events: none; padding: 16px; }
-  .game-card { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; text-align: center; }
-  .game-card p { margin: 0; font-size: 18px; max-width: 32ch; }
-  .game-card h2 { margin: 0; font-size: 28px; }
-  .game-card button { pointer-events: auto; min-width: 160px; min-height: 52px; padding: 12px 24px; border: 3px solid #ffe69c; background: #ffcf50; color: #18233b; font: bold 18px system-ui; cursor: pointer; box-shadow: 4px 4px 0 #80553b; }
-  .game-card button:focus-visible { outline: 3px solid white; outline-offset: 5px; }
-  .game-hud { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; font-size: 18px; font-weight: bold; }
-  .game-hud span { padding: 8px; background: #18233b; border: 2px solid #526383; }
-  .game-note { position: absolute; bottom: 16px; left: 16px; right: 16px; text-align: center; font-size: 16px; }
-`;
-document.head.append(style);
+import './style.css';
+
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game',
