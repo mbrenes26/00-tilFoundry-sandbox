@@ -36,13 +36,25 @@ describe('juego-2: zona visible y azar inyectado', () => {
     }
   });
 
-  it('incluye los bordes de la zona visible, pero no su exterior', () => {
-    const zone = { x: 200, y: 300, size: 100 };
-    for (const point of [{ x: 150, y: 250 }, { x: 250, y: 350 }, { x: 200, y: 300 }]) {
-      expect(containsPoint(zone, point)).toBe(true);
+  // Coordenadas del contorno opaco de star.svg (32×32 por fotograma).
+  it.each([100, 224, 44 / (360 / 1600)])('acepta centro, brazos y bordes visibles a tamaño %s', (size) => {
+    const zone = { x: 200, y: 300, size };
+    const visible = [[16,16], [16,0], [16,32], [0,16], [32,16],
+      [12,4], [20,4], [8,8], [24,8], [8,24], [24,24], [12,28], [20,28]];
+    for (const [x,y] of visible) {
+      expect(containsPoint(zone, { x: zone.x + (x / 32 - 0.5) * size,
+        y: zone.y + (y / 32 - 0.5) * size }), `${x},${y}`).toBe(true);
     }
-    for (const point of [{ x: 149, y: 300 }, { x: 200, y: 351 }, { x: NaN, y: 300 }]) {
-      expect(containsPoint(zone, point)).toBe(false);
+  });
+
+  it.each([100, 224, 44 / (360 / 1600)])('rechaza esquinas y escalones transparentes a tamaño %s', (size) => {
+    const zone = { x: 200, y: 300, size };
+    const transparent = [[0,0], [32,32], [4,4], [28,28], [11,4], [21,4],
+      [7,10], [25,10], [7,22], [25,22], [11,28], [21,28], [-1,16], [16,33]];
+    for (const [x,y] of transparent) {
+      expect(containsPoint(zone, { x: zone.x + (x / 32 - 0.5) * size,
+        y: zone.y + (y / 32 - 0.5) * size }), `${x},${y}`).toBe(false);
     }
+    expect(containsPoint(zone, { x: NaN, y: zone.y })).toBe(false);
   });
 });

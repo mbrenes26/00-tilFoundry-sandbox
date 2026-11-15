@@ -19,7 +19,17 @@ export function randomStarPosition(area: PlayArea, size: number, random: RandomS
   };
 }
 
+/** Contorno opaco compartido por los dos fotogramas de public/assets/star.svg.
+ * Unión de tres rectángulos centrados: 8×32, 16×16 y 32×8.
+ * Conserva los extremos del tamaño táctil, sin aceptar las esquinas transparentes.
+ */
 export function containsPoint(zone: StarZone, point: Point): boolean {
-  return Math.abs(point.x - zone.x) <= zone.size / 2
-    && Math.abs(point.y - zone.y) <= zone.size / 2;
+  // Comparar límites absolutos evita perder bordes por redondeo al restar
+  // el centro cuando el tamaño FIT es fraccionario.
+  const inside = (halfWidth: number, halfHeight: number) =>
+    point.x >= zone.x - halfWidth && point.x <= zone.x + halfWidth
+    && point.y >= zone.y - halfHeight && point.y <= zone.y + halfHeight;
+  return inside(zone.size / 8, zone.size / 2)
+    || inside(zone.size / 4, zone.size / 4)
+    || inside(zone.size / 2, zone.size / 8);
 }

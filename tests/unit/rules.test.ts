@@ -41,7 +41,7 @@ describe('juego-2: captura e identidad de entradas', () => {
 
   it('captura en el borde visible', () => {
     const state = start();
-    expect(captureStar(state, { eventId: 'edge', sessionId: 1, starId: 1, x: 700, y: 425 }, 1, random).score).toBe(1);
+    expect(captureStar(state, { eventId: 'edge', sessionId: 1, starId: 1, x: 700, y: 525 }, 1, random).score).toBe(1);
   });
 
   it('tocar fuera no altera puntos, fallos, estrella ni plazo, y consume la identidad del evento', () => {
@@ -51,6 +51,20 @@ describe('juego-2: captura e identidad de entradas', () => {
     expect(next.misses).toBe(0);
     expect(next.star).toEqual(state.star);
     expect(hit(next, 501, 'outside')).toBe(next);
+  });
+
+  it.each([[0, 0], [4, 4], [28, 28], [7, 10]])('la transparencia %s no captura ni cambia el vencimiento', (x, y) => {
+    const initial = start();
+    const star = initial.star!;
+    const next = captureStar(initial, { eventId: 'transparent', sessionId: 1, starId: star.id,
+      x: star.x + (x / 32 - 0.5) * star.size,
+      y: star.y + (y / 32 - 0.5) * star.size }, 1999, random);
+    expect(next).toMatchObject({ score: 0, misses: 0 });
+    expect(next.star).toBe(star);
+    expect(hit(next, 1999, 'transparent')).toBe(next);
+    expect(advanceGame(next, 1999, random)).toBe(next);
+    expect(advanceGame(next, 2000, random)).toMatchObject({ score: 0, misses: 1,
+      star: { id: 2, startedAt: 2000, durationMs: 2000 } });
   });
 
   it('ignora entradas dirigidas a una estrella anterior', () => {

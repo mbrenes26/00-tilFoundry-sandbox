@@ -1,3 +1,5 @@
+import type Phaser from 'phaser';
+import type { GameState } from '../../src/game/types';
 import { expect, test, type Page } from '@playwright/test';
 
 test.setTimeout(90000);
@@ -6,6 +8,24 @@ async function prepare(page: Page, random = 0.5, touch = false) {
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(+epoch + 1000));
   await page.addInitScript(value => { Math.random = () => value; }, random);
+  // Observación del estado real sin añadir interfaces de prueba a producción.
+  await page.addInitScript(() => {
+    const target = window as unknown as { Phaser: typeof Phaser; testGame: Phaser.Game };
+    let phaser: typeof Phaser;
+    Object.defineProperty(window, 'Phaser', {
+      configurable: true,
+      get: () => phaser,
+      set: (value: typeof Phaser) => {
+        phaser = value;
+        const prototype = value.Game.prototype as unknown as { boot(this: Phaser.Game): void };
+        const boot = prototype.boot;
+        prototype.boot = function () {
+          target.testGame = this;
+          return boot.call(this);
+        };
+      },
+    });
+  });
   await page.goto('/');
   await expect.poll(async () => {
     await page.clock.runFor(100);
@@ -128,3 +148,62 @@ test('juego-3: el navegador respeta el mínimo de 500 ms', async ({ page }) => {
   await page.clock.runFor(17);
   await status(page, 20, 1);
 });
+
+async function activeStar(page: Page) {
+  return page.evaluate(() => {
+    const game = (window as unknown as { testGame: Phaser.Game }).testGame;
+    const scene = game.scene.getScene('LaunchScene') as unknown as { state: GameState };
+    return scene.state.star!;
+  });
+}
+
+async function activeFrame(page: Page) {
+  return page.evaluate(() => {
+    const game = (window as unknown as { testGame: Phaser.Game }).testGame;
+    const scene = game.scene.getScene('LaunchScene') as unknown as { star: Phaser.GameObjects.Sprite };
+    return String(scene.star.frame.name);
+  });
+}
+
+for (const touch of [false, true]) {
+  test.describe(touch ? 'silueta: teléfono táctil' : 'silueta: ratón de escritorio', () => {
+    test.use({ viewport: touch ? { width: 360, height: 800 } : { width: 1280, height: 720 }, hasTouch: touch });
+    test('juego-2/3/5: transparencia conserva identidad y plazo; brazos capturan una vez', async ({ page }) => {
+      await prepare(page, 0.5, touch);
+      const initial = await activeStar(page);
+      const canvas = (await page.locator('canvas').boundingBox())!;
+      expect(initial.size * canvas.width / 1600).toBeGreaterThanOrEqual(44);
+      expect(initial.size * canvas.height / 900).toBeGreaterThanOrEqual(44);
+      const enter = async (x: number, y: number) => {
+        const position = await point(page, initial.x + (x / 32 - 0.5) * initial.size,
+          initial.y + (y / 32 - 0.5) * initial.size);
+        if (touch) await page.touchscreen.tap(position.x, position.y);
+        else await page.mouse.click(position.x, position.y);
+      };
+      await now(page, 1999);
+      const frames = new Set<string>();
+      for (let frame = 0; frame < 2; frame++) {
+        frames.add(await activeFrame(page));
+        for (const [x,y] of [[2,2], [30,30], [7,10], [-2,16]]) {
+          await enter(x,y);
+          await status(page, 0, 0);
+          expect(await activeStar(page)).toEqual(initial);
+        }
+        await page.clock.runFor(250); // Animación real; el reloj activo sigue en 1999.
+      }
+      expect([...frames].sort()).toEqual(['0', '1']);
+      await status(page, 0, 0);
+      await now(page, 2000);
+      await page.clock.runFor(17);
+      await status(page, 0, 1);
+      expect(await activeStar(page)).toMatchObject({ id: initial.id + 1, startedAt: 2000, durationMs: 2000 });
+      // Los cuatro brazos y el centro son visibles en ambos fotogramas.
+      for (const [x,y] of [[16,2], [2,16], [30,16], [16,30], [16,16]]) {
+        await enter(x,y);
+        await page.clock.runFor(250);
+      }
+      await status(page, 5, 1);
+      expect(await activeStar(page)).toMatchObject({ id: initial.id + 6, startedAt: 2000, durationMs: 1500 });
+    });
+  });
+}
