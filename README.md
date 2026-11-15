@@ -2,7 +2,7 @@
 
 Minijuego web en español para una persona, con ratón o pantalla táctil.
 
-**Estado de construcción:** este primer paso prepara la instalación, el lienzo Phaser y las pruebas por HTTP. Las reglas y las pantallas jugables se incorporan en los siguientes pasos; los controles descritos abajo son los del juego previsto, todavía no están activos.
+El juego incluye una pantalla de inicio con «Jugar», una partida con una estrella activa e indicadores de puntos y fallos, y una pantalla de resultado con el puntaje final y «Jugar otra vez». Los botones y la estrella responden a clic o toque. Las reglas y los controles disponibles se explican abajo.
 
 ## Instalación y desarrollo
 
