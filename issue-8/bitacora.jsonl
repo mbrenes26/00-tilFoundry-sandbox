@@ -210,3 +210,4 @@
 {"completado": true, "costo_usd": 0.600521, "fase": "fin", "fecha": "2026-11-15T02:18:39Z", "id": "f7eb2a0392bc", "rol": "manager-producto", "tipo": "ejecucion"}
 {"accion": "aviso", "fecha": "2026-11-15T02:55:34Z", "motivo": "mensaje fijo al cliente", "tipo": "guardia", "traba": "2026-11-15T02:00:47Z"}
 {"fase": "inicio", "fecha": "2026-11-15T03:24:24Z", "id": "05b157c055fb", "rol": "manager-producto", "tipo": "ejecucion"}
+{"estado": "REWORK", "fecha": "2026-11-15T03:24:26Z", "intensidad": 0.8, "tipo": "sentimiento", "tono": "neutro"}
