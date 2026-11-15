@@ -118,6 +118,15 @@ for (const [width, height] of [[1280, 720], [1600, 900], [360, 800], [390, 844]]
           expect(observed.camera).toEqual({ scrollX: 0, scrollY: 0, zoom: 1, rotation: 0 });
           observedFrames.add(observed.frame.name);
           const rects = starCaptureRects(observed.star);
+          // Guardar la observación antes de validar: un tamaño incorrecto también deja
+          // evidencia del sprite real, su transformación y la geometría efectiva.
+          const { pixels: sampledPixels, ...observation } = observed;
+          const observationFile = info.outputPath(`objetivo-fotograma-${observed.frame.name}.json`);
+          await writeFile(observationFile, JSON.stringify({ viewport: { width, height }, random, canvas,
+            ...observation, rects, testedPixels: sampledPixels.length }, null, 2));
+          await info.attach(`objetivo-fotograma-${observed.frame.name}`, {
+            path: observationFile, contentType: 'application/json',
+          });
           // Una sola aserción conserva el examen exhaustivo de los 1024 píxeles,
           // sin generar miles de pasos Playwright y adjuntos de trazas por partida.
           const mismatches = observed.pixels.filter(pixel =>
