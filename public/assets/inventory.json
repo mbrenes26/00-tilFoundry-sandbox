@@ -3,8 +3,8 @@
   "resources": [
     {
       "file": "actors.svg",
-      "author": "Agente constructor de TIL Foundry, issue-8, paso 9",
-      "provenance": "Diseño original creado para este repositorio mediante rectángulos y paths SVG sobre cuadrícula de 16 píxeles; sin recursos externos ni personajes copiados.",
+      "author": "Agente constructor de TIL Foundry, issue-8, paso 9; revisión original de luciérnaga: agente constructor, issue-8, rework arte 390 px",
+      "provenance": "Diseño original creado para este repositorio mediante rectángulos y paths SVG sobre cuadrícula de 16 píxeles; sin recursos externos ni personajes copiados. Revisión propia de frames 0–1: alas marfil anchas en dos poses, cabeza oscura con antenas y abdomen ámbar luminoso; paleta cálida distinta de los prismas turquesa. Mantiene cuadrícula 16×16, sin material externo.",
       "use": "Spritesheet de 12 frames 16×16: luciérnaga Lúmina (0–1), guardianes terracota/lila/celeste/ámbar (2–9), guardianes vulnerables (10–11). Animaciones Phaser de dos frames."
     },
     {

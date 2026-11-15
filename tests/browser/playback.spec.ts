@@ -240,3 +240,6 @@ async function checkLayout(page: Page, selector: string, phase: string) {
   expect(geometry.board.y + geometry.board.height).toBeLessThanOrEqual(geometry.canvas.y + geometry.canvas.height);
   await page.screenshot({ path: `tests/browser/evidence/identity-layout-${page.viewportSize()!.width}-${phase}.png`, fullPage: true });
 }
+
+// Focused art regression; evidence uses new paths and preserves prior diagnosis.
+import "./evidence/firefly-art";

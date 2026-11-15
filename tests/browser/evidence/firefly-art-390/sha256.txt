@@ -1,0 +1,12 @@
+8c1c72af25253ade244654941c767a88b69de965d16e02a88b1627160571aacd  tests/browser/evidence/firefly-art-390/after-import-0-viewport.png
+71df136eb7781af4ae79f5d96b34e10cfb7a1ac659d63c003959f591f072d057  tests/browser/evidence/firefly-art-390/after-import-1-viewport.png
+34f38b34877239fb894f0b9c13fc5fd8070ed61a17cf4af479391a1c84ddb17a  tests/browser/evidence/firefly-art-390/after-playback-0-viewport.png
+7de6ad34dda550aa595fccf6db0f9d9e08a3a571813a6272c36d9307924b20f8  tests/browser/evidence/firefly-art-390/after-playback-1-viewport.png
+e6e35262998c4e3be29d43d0e0096fc54857bc72ae2f04c5e23d2f0013e136f5  tests/browser/evidence/firefly-art-390/before-import-0-viewport.png
+eb496532b3d9ac9b7262c789b71d6c2d1c1f01197271e77c0ab5e6ad183a55d3  tests/browser/evidence/firefly-art-390/before-import-1-viewport.png
+6c0e8de290934e74c55df4a1419a4f75bcdbe5003bee173ac9dcf03b51ee9f40  tests/browser/evidence/firefly-art-390/after-import-0.json
+ae7d1019c52e8cb5f954549e61484beaccdb93c721d4ca22fde488a97679dd7f  tests/browser/evidence/firefly-art-390/after-import-1.json
+403cf4b82a3f8db86443bff5bc5754e2a21ec03ff15b9fc8c76c707f11f075d6  tests/browser/evidence/firefly-art-390/after-playback-0.json
+aba4aa1a5bba3ac1e7ca05c8eab8c7d30e4e7a6a6a4851b075e9f9a5353860c7  tests/browser/evidence/firefly-art-390/after-playback-1.json
+e12ae7a4d8d8c2dc06ae15b173ce135569b0ffb16f53b7226ae8d4e583ad7f5e  tests/browser/evidence/firefly-art-390/before-import-0.json
+b7807779ac09c5aeaeaa69f83460845be2065b34aa4891ac42b2867030fba44a  tests/browser/evidence/firefly-art-390/before-import-1.json
