@@ -10,7 +10,19 @@ it('juego-7: presenta las pantallas y los controles como disponibles, no futuros
   expect(introduction).not.toMatch(/primer paso|siguientes pasos|juego previsto|todavía no están activos/i);
 });
 
- it('documenta la acción accesible y el teclado', () => {
+it('documenta la acción accesible y el teclado', () => {
   const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
   for (const text of ['Atrapar estrella', 'Tab', 'Enter', 'Espacio']) expect(doc).toContain(text);
+});
+
+it('juego-2 y juego-5: documenta medidas reales de la silueta, no una captura cuadrada', () => {
+  const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
+  expect(doc).not.toContain('Zona cuadrada de estrella');
+  for (const text of ['silueta', 'esquinas transparentes', 'ambos fotogramas', 'medidas.json']) expect(doc).toContain(text);
+});
+
+it('documenta el cierre secuencial sin servidores concurrentes en 4173', () => {
+  const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
+  expect(doc).toContain('npm test && npm run build && npm run test:e2e -- --workers=2 && TEST_STATIC=1 npm run test:e2e -- --workers=2');
+  expect(doc).toContain('No ejecutes dos suites de navegador a la vez');
 });
