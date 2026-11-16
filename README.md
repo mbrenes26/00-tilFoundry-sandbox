@@ -32,8 +32,18 @@ Las pruebas unitarias usan Vitest; las de navegador usan Chromium mediante Playw
 Para verificar el cierre completo, después de instalar Chromium, ejecuta una sola cadena en una terminal POSIX:
 
 ```sh
-npm test && npm run build && npm run test:e2e -- --workers=2 && TEST_STATIC=1 npm run test:e2e -- --workers=2
+evidencia=$(mktemp -d) &&
+npm test && npm run build &&
+npm run test:e2e -- --workers=2 &&
+cp -R test-results "$evidencia/desarrollo" &&
+TEST_STATIC=1 npm run test:e2e -- --workers=2 &&
+cp -R test-results "$evidencia/estatico" &&
+printf 'Evidencia de ambos modos: %s\n' "$evidencia"
 ```
+
+La cadena ejecuta las unitarias y el build una vez y cada suite Chromium una vez. Copia los resultados de desarrollo antes de que la suite estática los reemplace, y muestra la carpeta temporal con las capturas y medidas de ambos modos. Esa carpeta puede borrarse cuando termines de revisar la evidencia.
+
+No repitas el cierre completo si todas las etapas terminaron en verde y no cambiaste archivos: revisa las capturas y medidas guardadas. Si cambias código o pruebas, vuelve a verificar la versión nueva; si una etapa falla, corrige la causa y verifica lo afectado. No se garantiza una duración máxima, pues depende de la máquina.
 
 Cada etapa espera a que termine la anterior y la cadena se detiene si falla alguna. No ejecutes dos suites de navegador a la vez: ambas usan el puerto 4173 y reemplazan los mismos resultados. Si aparece «already used», espera a que termine la suite que ya está en marcha o detén el servidor de vista previa que hayas iniciado; después repite la etapa fallida. No reutilices un servidor desconocido ni cambies la configuración para omitir esa comprobación.
 

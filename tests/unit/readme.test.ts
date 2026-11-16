@@ -23,6 +23,21 @@ it('juego-2 y juego-5: documenta medidas reales de la silueta, no una captura cu
 
 it('documenta el cierre secuencial sin servidores concurrentes en 4173', () => {
   const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
-  expect(doc).toContain('npm test && npm run build && npm run test:e2e -- --workers=2 && TEST_STATIC=1 npm run test:e2e -- --workers=2');
+  expect(doc).toContain('npm test && npm run build &&');
+  expect(doc).toContain('npm run test:e2e -- --workers=2 &&');
+  expect(doc).toContain('TEST_STATIC=1 npm run test:e2e -- --workers=2 &&');
   expect(doc).toContain('No ejecutes dos suites de navegador a la vez');
+});
+
+it('cierre: conserva evidencia de ambos modos sin repetir suites ya aprobadas', () => {
+  const doc = readFileSync(new URL('../../README.md', import.meta.url), 'utf8');
+  const closing = doc.split('Para verificar el cierre completo')[1].split('## Versión estática')[0];
+  const command = closing.match(/```sh\n([\s\S]*?)```/)![1];
+  expect(command.match(/npm test/g)).toHaveLength(1);
+  expect(command.match(/npm run build/g)).toHaveLength(1);
+  expect(command.match(/npm run test:e2e/g)).toHaveLength(2);
+  expect(command).toContain('cp -R test-results "$evidencia/desarrollo"');
+  expect(command).toContain('cp -R test-results "$evidencia/estatico"');
+  expect(command.indexOf('"$evidencia/desarrollo"')).toBeLessThan(command.indexOf('TEST_STATIC=1'));
+  expect(closing).toContain('No repitas el cierre completo');
 });
