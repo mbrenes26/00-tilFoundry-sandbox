@@ -6,8 +6,11 @@ avísale a TIL Costa Rica.
 
 ## Cómo hacer un pedido
 
-1. Abre un issue que describa lo que necesitas, con tus palabras.
-2. Escribe `/foundry start` en un comentario de ese issue.
+1. Presiona [Abrir un pedido](https://github.com/mbrenes26/00-tilFoundry-sandbox/issues/new?template=pedido.yml), llena el formulario corto (qué necesitas, para quién
+   es y cómo sabrás que quedó bien) y publícalo: el pedido empieza solo.
+2. Si el formulario no aparece, tu repositorio todavía no tiene la plantilla de pedido: se aprueba con
+   `/foundry approve template` en el issue "Instalación de TIL Foundry". Mientras tanto, abre un issue que
+   describa lo que necesitas, con tus palabras, y escribe `/foundry start` en un comentario de ese issue.
 3. TIL Foundry te va a escribir en el mismo issue: te hace preguntas hasta entender la necesidad y te
    propone un plan, que dice qué se construye y cómo se sabe que está bien.
 4. Si estás de acuerdo con el plan, apruébalo con el comando que te indica el mensaje. Nada se construye sin
@@ -50,6 +53,7 @@ se puede entregar y qué archivos entran en el alcance.
 | `/foundry budget issue-<n> <monto>` | En el issue del pedido | Una persona con permiso de escritura | Aprueba más presupuesto de construcción, en USD (por ejemplo `/foundry budget issue-7 5`); si el pedido estaba detenido por presupuesto, sigue. Con `=` reajusta el total aprobado, mayor o menor (por ejemplo `/foundry budget issue-7 = 16`) |
 | `/foundry rate <puntaje> [comentario]` | En el issue del pedido | Una persona con permiso de escritura | Responde a la pregunta de satisfacción que te hace TIL Foundry al aprobar el plan (del 1 al 5) y al entregar (del 0 al 10). Es opcional |
 | `/foundry recheck` | En el issue "Instalación de TIL Foundry" | Una persona con permiso de escritura | Vuelve a revisar la configuración del repositorio; si no falta nada, cierra ese issue |
+| `/foundry approve template` | En el issue "Instalación de TIL Foundry" | Una persona con permiso de escritura | Agrega la plantilla de pedido a tu repositorio: desde ahí abres un pedido llenando un formulario corto, y empieza solo |
 | `/foundry support <mensaje>` | En cualquier issue de tu repositorio | Una persona con permiso de escritura | Le escribe al equipo de TIL Foundry (por ejemplo, si algo no avanza o quieres hablar con una persona); te responde en ese mismo issue. No cambia tu pedido ni gasta su presupuesto |
 
 Cada comando va solo en su propia línea del comentario.
