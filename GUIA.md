@@ -23,6 +23,17 @@ avísale a TIL Costa Rica.
 Todo lo que escribe un agente aparece como `til-foundry[bot]`; lo que decides tú queda firmado con tu
 cuenta.
 
+### Mientras conversas
+
+- **Fuentes:** si quieres que TIL Foundry use esta guía, la memoria (`LEEME.md`) o un issue de este
+  repositorio, dilo en tu pedido y menciona el issue con su número, por ejemplo «usa el #1 como fuente».
+  TIL Foundry lo lee; no hace falta que lo pegues. Solo lee los issues que tú mencionas.
+- **Imágenes y documentos:** adjúntalos en el issue de tu pedido (arrastrándolos al comentario), también si
+  el repositorio es privado. TIL Foundry los descarga y los usa; no hace falta subirlos a otro lado.
+- **Decisiones:** si algo se traba, TIL Foundry no te pide investigar: te trae opciones numeradas (la
+  solución que recomienda, ya verificada, una provisional si hace falta, o detener), cada una con lo que
+  cambia en el presupuesto y en el plazo. Respondes con el número de la opción.
+
 ## Quién hace qué
 
 TIL Foundry es una fábrica con una jerarquía fija, y la hace cumplir Core, no la buena voluntad de un
