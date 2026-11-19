@@ -17,8 +17,10 @@ avísale a TIL Costa Rica.
    tu aprobación.
 5. TIL Foundry construye con pruebas y prepara la entrega, que en GitHub se llama *pull request*. Una revisión
    independiente revisa la seguridad y el código, y la experiencia de uso y la interfaz si cambia lo que ves.
-6. Cuando la revisión independiente pasa, decides la entrega. Al aceptarla, TIL Foundry la incorpora a tu
-   repositorio y cierra el issue.
+6. Cuando la revisión independiente pasa, decides la entrega. Si lo construido se puede ver en un navegador, el
+   mensaje que te pide la decisión puede traer el enlace a una vista previa temporal, con datos de ejemplo, para
+   que lo pruebes antes de decidir; se borra cuando el pedido termina. Al aceptar la entrega, TIL Foundry la
+   incorpora a tu repositorio y cierra el issue.
 
 Todo lo que escribe un agente aparece como `til-foundry[bot]`; lo que decides tú queda firmado con tu
 cuenta.
