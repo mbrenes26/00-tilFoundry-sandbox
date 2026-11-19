@@ -63,6 +63,7 @@ se puede entregar y qué archivos entran en el alcance.
 | `/foundry reject issue-<n> <ESTADO>` | En el issue del pedido | Una persona con permiso de escritura | Lo rechaza; si es la entrega, TIL Foundry corrige lo que expliques en el comentario |
 | `/foundry budget issue-<n> <monto>` | En el issue del pedido | Una persona con permiso de escritura | Aprueba más presupuesto de construcción, en USD (por ejemplo `/foundry budget issue-7 5`); si el pedido estaba detenido por presupuesto, sigue. Con `=` reajusta el total aprobado, mayor o menor (por ejemplo `/foundry budget issue-7 = 16`) |
 | `/foundry rate <puntaje> [comentario]` | En el issue del pedido | Una persona con permiso de escritura | Responde a la pregunta de satisfacción que te hace TIL Foundry al aprobar el plan (del 1 al 5) y al entregar (del 0 al 10). Es opcional |
+| `/foundry rate price <1-3>` y `/foundry rate value <1-3>` | En el issue del pedido | Una persona con permiso de escritura | Responden las dos preguntas opcionales que te hace TIL Foundry al entregar: cómo te pareció el precio (1 barato, 2 justo, 3 caro) y qué fue para tu negocio (1 algo pequeño, 2 algo importante, 3 algo muy importante) |
 | `/foundry recheck` | En el issue "Instalación de TIL Foundry" | Una persona con permiso de escritura | Vuelve a revisar la configuración del repositorio; si no falta nada, cierra ese issue |
 | `/foundry approve template` | En el issue "Instalación de TIL Foundry" | Una persona con permiso de escritura | Agrega la plantilla de pedido a tu repositorio: desde ahí abres un pedido llenando un formulario corto, y empieza solo |
 | `/foundry support <mensaje>` | En cualquier issue de tu repositorio | Una persona con permiso de escritura | Le escribe al equipo de TIL Foundry (por ejemplo, si algo no avanza o quieres hablar con una persona); te responde en ese mismo issue. No cambia tu pedido ni gasta su presupuesto |
@@ -100,7 +101,9 @@ En los comandos, la etapa se escribe con su nombre en inglés, tal como te lo in
 ## Tu opinión
 
 Al aprobar el plan y al entregar el pedido, TIL Foundry te hace una pregunta corta. Responder es opcional:
-escribe `/foundry rate` con tu puntaje y, si quieres, un comentario. Para mejorar, TIL Foundry también mide el
+escribe `/foundry rate` con tu puntaje y, si quieres, un comentario. Al entregar te hace dos más, también
+opcionales: cómo te pareció el precio (`/foundry rate price`, del 1 al 3) y qué fue para tu negocio
+(`/foundry rate value`, del 1 al 3). Para mejorar, TIL Foundry también mide el
 tono de tus comentarios en el issue (positivo, neutro o frustrado). Nunca guarda el texto fuera del issue:
 solo esa etiqueta y tu puntaje.
 
